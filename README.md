@@ -40,6 +40,15 @@ And calculate things like:
 - city, region, and country from ip
 - browser, os, and device_type from user_agent
 
+The server should generate a visit token (and a vistor token if one is not passed) and respond with the tokens:
+
+```json
+{
+  "visit_token": "xLvSgAsL25lhWwnauJp9YYDegRlat3WQ",
+  "visitor_token": "kuDn3aigx1NubkJJH7IBAIxGqm754U69"
+}
+```
+
 ## Events
 
 Track events with:
