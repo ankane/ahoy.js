@@ -134,7 +134,15 @@
     if (getCookie("ahoy_visit")) {
       log("Visit started");
 
+      visitorToken = visitorToken || generateId();
+      visitToken = generateId();
+
+      setCookie("ahoy_visit", visitToken, visitTtl);
+      setCookie("ahoy_visitor", visitorToken, visitorTtl);
+
       var data = {
+        visit_token: visitToken,
+        visitor_token: visitorToken,
         platform: ahoy.platform || "Web",
         landing_page: window.location.href
       };
@@ -144,17 +152,9 @@
         data.referrer = document.referrer;
       }
 
-      if (visitorToken) {
-        data.visitor_token = visitorToken;
-      }
-
       log(data);
 
-      $.post("/ahoy/visits", data, function(response) {
-        setCookie("ahoy_visit", response.visit_token, visitTtl);
-        setCookie("ahoy_visitor", response.visitor_token, visitorTtl);
-        setReady();
-      }, "json");
+      $.post("/ahoy/visits", data, setReady, "json");
     } else {
       log("Cookies disabled");
       setReady();
