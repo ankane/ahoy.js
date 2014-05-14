@@ -102,6 +102,22 @@ Properties
 - text - `View Account`
 - href - `/account`
 
+### Submits
+
+```javascript
+ahoy.trackSubmits();
+````
+
+Name - `$submit`
+
+### Changes
+
+```javascript
+ahoy.trackChanges();
+````
+
+Name - `$change`
+
 ## Development
 
 Ahoy is built with developers in mind.  You can run the following code in your browser’s console.
