@@ -132,22 +132,22 @@
   visitToken = getCookie("ahoy_visit");
   visitorToken = getCookie("ahoy_visitor");
 
-  if (visitToken && visitorToken && visitToken != "test") {
+  if (visitToken && visitorToken) {
     // TODO keep visit alive?
     log("Active visit");
     setReady();
   } else {
-    setCookie("ahoy_visit", "test", 1);
+    visitToken = generateId();
+    setCookie("ahoy_visit", visitToken, visitTtl);
 
     // make sure cookies are enabled
     if (getCookie("ahoy_visit")) {
       log("Visit started");
 
-      visitorToken = visitorToken || generateId();
-      visitToken = generateId();
-
-      setCookie("ahoy_visit", visitToken, visitTtl);
-      setCookie("ahoy_visitor", visitorToken, visitorTtl);
+      if (!visitorToken) {
+        visitorToken = generateId();
+        setCookie("ahoy_visitor", visitorToken, visitorTtl);
+      }
 
       var data = {
         visit_token: visitToken,
@@ -156,7 +156,6 @@
         landing_page: window.location.href,
         screen_width: window.screen.width,
         screen_height: window.screen.height
-
       };
 
       // referrer
