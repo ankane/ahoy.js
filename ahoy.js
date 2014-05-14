@@ -118,6 +118,15 @@
     });
   }
 
+  function eventProperties(e) {
+    var $target = $(e.currentTarget);
+    return {
+      tag: $target.get(0).tagName.toLowerCase(),
+      id: $target.attr("id"),
+      class: $target.attr("class")
+    };
+  }
+
   // main
 
   visitToken = getCookie("ahoy_visit");
@@ -190,12 +199,12 @@
     saveEventQueue();
 
     // wait in case navigating to reduce duplicate events
-    setTimeout( function() {
+    setTimeout( function () {
       trackEvent(event);
     }, 1000);
   };
 
-  ahoy.trackView = function() {
+  ahoy.trackView = function () {
     var properties = {
       url: window.location.href,
       title: document.title
@@ -203,19 +212,27 @@
     ahoy.track("$view", properties);
   };
 
-  ahoy.trackClicks = function() {
-    $(document).on("click", "a, button, input[type=submit]", function(e) {
+  ahoy.trackClicks = function () {
+    $(document).on("click", "a, button, input[type=submit]", function (e) {
       var $target = $(e.currentTarget);
-      var tag = $target.get(0).tagName.toLowerCase();
-      var text = tag == "input" ? $target.val() : $.trim($target.text());
-      var properties = {
-        tag: tag,
-        id: $target.attr("id"),
-        class: $target.attr("class"),
-        text: text,
-        href: $target.attr("href")
-      };
+      properties = eventProperties(e);
+      properties.text = properties.tag == "input" ? $target.val() : $.trim($target.text());
+      properties.href = $target.attr("href");
       ahoy.track("$click", properties);
+    });
+  };
+
+  ahoy.trackSubmits = function () {
+    $(document).on("submit", "form", function (e) {
+      properties = eventProperties(e);
+      ahoy.track("$submit", properties);
+    });
+  };
+
+  ahoy.trackChanges = function () {
+    $(document).on("change", "input, textarea, select", function (e) {
+      properties = eventProperties(e);
+      ahoy.track("$change", properties);
     });
   };
 
