@@ -153,7 +153,10 @@
         visit_token: visitToken,
         visitor_token: visitorToken,
         platform: ahoy.platform || "Web",
-        landing_page: window.location.href
+        landing_page: window.location.href,
+        screen_width: window.screen.width,
+        screen_height: window.screen.height
+
       };
 
       // referrer
