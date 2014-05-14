@@ -215,7 +215,7 @@
   ahoy.trackClicks = function () {
     $(document).on("click", "a, button, input[type=submit]", function (e) {
       var $target = $(e.currentTarget);
-      properties = eventProperties(e);
+      var properties = eventProperties(e);
       properties.text = properties.tag == "input" ? $target.val() : $.trim($target.text());
       properties.href = $target.attr("href");
       ahoy.track("$click", properties);
@@ -224,14 +224,14 @@
 
   ahoy.trackSubmits = function () {
     $(document).on("submit", "form", function (e) {
-      properties = eventProperties(e);
+      var properties = eventProperties(e);
       ahoy.track("$submit", properties);
     });
   };
 
   ahoy.trackChanges = function () {
     $(document).on("change", "input, textarea, select", function (e) {
-      properties = eventProperties(e);
+      var properties = eventProperties(e);
       ahoy.track("$change", properties);
     });
   };
@@ -239,6 +239,8 @@
   ahoy.trackAll = function() {
     ahoy.trackView();
     ahoy.trackClicks();
+    ahoy.trackSubmits();
+    ahoy.trackChanges();
   };
 
   // push events from queue
