@@ -150,6 +150,9 @@ var ahoy = {"domain": "yourdomain.com"};
 
 ## TODO
 
+- Send events in batches
+- Add page and section for automatic events
+- Add `trackContent` method
 - Remove jQuery dependency
 - Customize endpoints
 
