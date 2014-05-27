@@ -27,7 +27,7 @@
     if (ahoy.domain) {
       cookieDomain = "; domain=" + ahoy.domain;
     }
-    document.cookie = name + "=" + value + expires + cookieDomain + "; path=/";
+    document.cookie = name + "=" + escape(value) + expires + cookieDomain + "; path=/";
   }
 
   function getCookie(name) {
