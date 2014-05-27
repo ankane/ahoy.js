@@ -100,7 +100,7 @@
         $.ajax({
           type: "POST",
           url: "/ahoy/events",
-          data: JSON.stringify(event),
+          data: JSON.stringify([event]),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function() {
