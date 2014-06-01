@@ -12,6 +12,7 @@
   var queue = [];
   var canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
   var eventQueue = [];
+  var page = ahoy.page || window.location.pathname;
 
   // cookies
 
@@ -123,7 +124,9 @@
     return {
       tag: $target.get(0).tagName.toLowerCase(),
       id: $target.attr("id"),
-      "class": $target.attr("class")
+      "class": $target.attr("class"),
+      page: page,
+      section: $target.closest("*[data-section]").data("section")
     };
   }
 
@@ -209,7 +212,8 @@
   ahoy.trackView = function () {
     var properties = {
       url: window.location.href,
-      title: document.title
+      title: document.title,
+      page: page
     };
     ahoy.track("$view", properties);
   };

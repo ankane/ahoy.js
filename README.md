@@ -73,6 +73,24 @@ Track all views and clicks with:
 ahoy.trackAll();
 ```
 
+Set the page with:
+
+```javascript
+var ahoy = {
+  page: "Landing page"
+}
+```
+
+And sections with:
+
+```html
+<div data-section="Header">
+  <a href="/home">Home</a>
+</div>
+```
+
+These are included in event properties if set.
+
 ### Views
 
 ```javascript
