@@ -5,7 +5,7 @@
 
   var ahoy = window.ahoy || window.Ahoy || {};
   var $ = window.jQuery || window.Zepto || window.$;
-  var visitToken, visitorToken;
+  var visitId, visitorId;
   var visitTtl = 4 * 60; // 4 hours
   var visitorTtl = 2 * 365 * 24 * 60; // 2 years
   var isReady = false;
@@ -126,29 +126,29 @@
 
   // main
 
-  visitToken = getCookie("ahoy_visit");
-  visitorToken = getCookie("ahoy_visitor");
+  visitId = getCookie("ahoy_visit");
+  visitorId = getCookie("ahoy_visitor");
 
-  if (visitToken && visitorToken) {
+  if (visitId && visitorId) {
     // TODO keep visit alive?
     log("Active visit");
     setReady();
   } else {
-    visitToken = generateId();
-    setCookie("ahoy_visit", visitToken, visitTtl);
+    visitId = generateId();
+    setCookie("ahoy_visit", visitId, visitTtl);
 
     // make sure cookies are enabled
     if (getCookie("ahoy_visit")) {
       log("Visit started");
 
-      if (!visitorToken) {
-        visitorToken = generateId();
-        setCookie("ahoy_visitor", visitorToken, visitorTtl);
+      if (!visitorId) {
+        visitorId = generateId();
+        setCookie("ahoy_visitor", visitorId, visitorTtl);
       }
 
       var data = {
-        visit_token: visitToken,
-        visitor_token: visitorToken,
+        visit_token: visitId,
+        visitor_token: visitorId,
         platform: ahoy.platform || "Web",
         landing_page: window.location.href,
         screen_width: window.screen.width,
