@@ -1,3 +1,11 @@
+/*
+ * Ahoy.js
+ * Simple, powerful JavaScript analytics
+ * https://github.com/ankane/ahoy.js
+ * v0.1.0
+ * MIT License
+ */
+
 /*jslint browser: true, indent: 2, plusplus: true, vars: true */
 
 (function (window) {
