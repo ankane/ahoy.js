@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "homepage": "https://github.com/ankane/ahoy.js",
   "description": "To get basic analytics about the website jQuery plugin",
-  "main": "js/ahoy.js",
+  "main": "ahoy.js",
   "dependencies": {
     "jquery": ">1.9.0"
   },
