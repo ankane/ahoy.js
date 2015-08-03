@@ -1,6 +1,6 @@
 {
   "name": "ahoy.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/ankane/ahoy.js",
   "description": "To get basic analytics about the website jQuery plugin",
   "main": "ahoy.js",
