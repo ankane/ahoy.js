@@ -15,6 +15,9 @@ Download [ahoy.js](https://raw.githubusercontent.com/ankane/ahoy.js/master/ahoy.
 <script src="jquery.js"></script>
 <script src="ahoy.js"></script>
 ```
+Via bower
+
+bower install ahoy
 
 ## How It Works
 
