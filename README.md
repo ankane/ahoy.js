@@ -22,6 +22,12 @@ Or use Bower
 bower install ahoy
 ```
 
+Or use npm
+
+```sh
+npm install ahoy.js
+```
+
 ## How It Works
 
 When someone lands on your website, they are assigned a visit token and a visitor token.

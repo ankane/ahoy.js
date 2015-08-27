@@ -1,0 +1,28 @@
+{
+  "name": "ahoy.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ankane/ahoy.js",
+  "description": "Simple, powerful JavaScript analytics",
+  "main": "ahoy.js",
+  "dependencies": {
+    "jquery": ">1.9.0"
+  },
+  "keywords": [
+    "analytics",
+    "locations",
+    "referral"
+  ],
+  "authors": [
+    "ankane"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ankane/ahoy.js"
+  },
+  "ignore": [
+    "**/.*",
+    "test",
+    "tests"
+  ]
+}
