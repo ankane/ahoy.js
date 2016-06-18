@@ -1,11 +1,12 @@
 /*
  * Ahoy.js
  * Simple, powerful JavaScript analytics
- * https://github.com/ankane/ahoy.js
+ * https://github.com/g2crowd/ahoy.js
  * v0.1.0
  * MIT License
  */
 
+/* Changes include ahoy.loaded, ahoy.setDefatulProperties, ahoy.host */
 /*jslint browser: true, indent: 2, plusplus: true, vars: true */
 
 (function (window) {
@@ -18,11 +19,13 @@
   var visitorTtl = 2 * 365 * 24 * 60; // 2 years
   var isReady = false;
   var queue = [];
+  var defaultProperties = {};
   var canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
   var eventQueue = [];
   var page = ahoy.page || window.location.pathname;
-  var visitsUrl = ahoy.visitsUrl || "/ahoy/visits"
-  var eventsUrl = ahoy.eventsUrl || "/ahoy/events"
+  var visitsUrl = ahoy.visitsUrl || "/ahoy/visits";
+  var eventsUrl = ahoy.eventsUrl || "/ahoy/events";
+  ahoy.loaded = $.Deferred();
 
   // cookies
 
@@ -104,7 +107,7 @@
       if (canStringify) {
         $.ajax({
           type: "POST",
-          url: eventsUrl,
+          url: ahoy.host + eventsUrl,
           data: JSON.stringify([event]),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
@@ -135,56 +138,58 @@
   }
 
   // main
+  ahoy.loaded.then(function () {
+    visitId = getCookie("ahoy_visit");
+    visitorId = getCookie("ahoy_visitor");
+    track = getCookie("ahoy_track");
 
-  visitId = getCookie("ahoy_visit");
-  visitorId = getCookie("ahoy_visitor");
-  track = getCookie("ahoy_track");
-
-  if (visitId && visitorId && !track) {
-    // TODO keep visit alive?
-    log("Active visit");
-    setReady();
-  } else {
-    if (track) {
-      destroyCookie("ahoy_track");
-    }
-
-    if (!visitId) {
-      visitId = generateId();
-      setCookie("ahoy_visit", visitId, visitTtl);
-    }
-
-    // make sure cookies are enabled
-    if (getCookie("ahoy_visit")) {
-      log("Visit started");
-
-      if (!visitorId) {
-        visitorId = generateId();
-        setCookie("ahoy_visitor", visitorId, visitorTtl);
-      }
-
-      var data = {
-        visit_token: visitId,
-        visitor_token: visitorId,
-        platform: ahoy.platform || "Web",
-        landing_page: window.location.href,
-        screen_width: window.screen.width,
-        screen_height: window.screen.height
-      };
-
-      // referrer
-      if (document.referrer.length > 0) {
-        data.referrer = document.referrer;
-      }
-
-      log(data);
-
-      $.post(visitsUrl, data, setReady, "json");
-    } else {
-      log("Cookies disabled");
+    if (visitId && visitorId && !track) {
+      // TODO keep visit alive?
+      log("Active visit");
       setReady();
+    } else {
+      if (track) {
+        destroyCookie("ahoy_track");
+      }
+
+      if (!visitId) {
+        visitId = generateId();
+        setCookie("ahoy_visit", visitId, visitTtl);
+      }
+
+      // make sure cookies are enabled
+      if (getCookie("ahoy_visit")) {
+        log("Visit started");
+
+        if (!visitorId) {
+          visitorId = generateId();
+          setCookie("ahoy_visitor", visitorId, visitorTtl);
+        }
+
+        var data = {
+          visit_token: visitId,
+          visitor_token: visitorId,
+          platform: ahoy.platform || "Web",
+          landing_page: window.location.href,
+          screen_width: window.screen.width,
+          screen_height: window.screen.height
+        };
+
+        data = $.extend(defaultProperties, data);
+        // referrer
+        if (document.referrer.length > 0) {
+          data.referrer = document.referrer;
+        }
+
+        log(data);
+
+        $.post(ahoy.host + visitsUrl, data, setReady, "json");
+      } else {
+        log("Cookies disabled");
+        setReady();
+      }
     }
-  }
+  });
 
   ahoy.getVisitId = ahoy.getVisitToken = function () {
     return visitId;
@@ -213,6 +218,7 @@
 
   ahoy.track = function (name, properties) {
     // generate unique id
+    properties = $.extend(defaultProperties, properties);
     var event = {
       id: generateId(),
       name: name,
@@ -234,7 +240,8 @@
     var properties = {
       url: window.location.href,
       title: document.title,
-      page: page
+      page: page,
+      visit_token: visitId
     };
     ahoy.track("$view", properties);
   };
@@ -243,6 +250,7 @@
     $(document).on("click", "a, button, input[type=submit]", function (e) {
       var $target = $(e.currentTarget);
       var properties = eventProperties(e);
+      properties.visit_token = visitId;
       properties.text = properties.tag == "input" ? $target.val() : $.trim($target.text().replace(/[\s\r\n]+/g, " "));
       properties.href = $target.attr("href");
       ahoy.track("$click", properties);
@@ -252,6 +260,7 @@
   ahoy.trackSubmits = function () {
     $(document).on("submit", "form", function (e) {
       var properties = eventProperties(e);
+      properties.visit_token = visitId;
       ahoy.track("$submit", properties);
     });
   };
@@ -259,6 +268,7 @@
   ahoy.trackChanges = function () {
     $(document).on("change", "input, textarea, select", function (e) {
       var properties = eventProperties(e);
+      properties.visit_token = visitId;
       ahoy.track("$change", properties);
     });
   };
@@ -268,6 +278,14 @@
     ahoy.trackClicks();
     ahoy.trackSubmits();
     ahoy.trackChanges();
+  };
+
+  ahoy.setDefaultProperties = function(properties) {
+    defaultProperties = $.extend(defaultProperties, properties);
+  };
+
+  ahoy.reload = function() {
+    ahoy.loaded = $.Deferred()
   };
 
   // push events from queue
