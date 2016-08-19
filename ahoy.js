@@ -20,8 +20,9 @@
   var queue = [];
   var canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
   var eventQueue = [];
-  var visitsUrl = ahoy.visitsUrl || "/ahoy/visits"
-  var eventsUrl = ahoy.eventsUrl || "/ahoy/events"
+  var visitsUrl = ahoy.visitsUrl || "/ahoy/visits";
+  var eventsUrl = ahoy.eventsUrl || "/ahoy/events";
+  var canTrackNow = ahoy.trackNow && canStringify && typeof(window.navigator.sendBeacon) !== "undefined";
 
   // cookies
 
@@ -122,6 +123,13 @@
     });
   }
 
+  function trackEventNow(event) {
+    ready( function () {
+      var payload = new Blob([JSON.stringify([event])], {type : "application/json; charset=utf-8"});
+      navigator.sendBeacon(eventsUrl, payload)
+    });
+  }
+
   function page() {
     return ahoy.page || window.location.pathname;
   }
@@ -137,8 +145,9 @@
     };
   }
 
-  // main
   function createVisit() {
+    isReady = false;
+
     visitId = ahoy.getVisitId();
     visitorId = ahoy.getVisitorId();
     track = getCookie("ahoy_track");
@@ -217,7 +226,7 @@
 
   ahoy.track = function (name, properties) {
     if (!ahoy.getVisitId()) {
-      ready(createVisit)
+      createVisit();
     }
 
     // generate unique id
@@ -231,13 +240,17 @@
     };
     log(event);
 
-    eventQueue.push(event);
-    saveEventQueue();
+    if (canTrackNow) {
+      trackEventNow(event);
+    } else {
+      eventQueue.push(event);
+      saveEventQueue();
 
-    // wait in case navigating to reduce duplicate events
-    setTimeout( function () {
-      trackEvent(event);
-    }, 1000);
+      // wait in case navigating to reduce duplicate events
+      setTimeout( function () {
+        trackEvent(event);
+      }, 1000);
+    }
   };
 
   ahoy.trackView = function () {
