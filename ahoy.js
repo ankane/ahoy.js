@@ -11,7 +11,29 @@
 (function (window) {
   "use strict";
 
+  var config = {
+    urlPrefix: "",
+    visitsUrl: "/ahoy/visits",
+    eventsUrl: "/ahoy/events",
+    domain: null,
+    page: null,
+    platform: "Web",
+    trackNow: false
+  };
+
   var ahoy = window.ahoy || window.Ahoy || {};
+
+  ahoy.configure = function (options) {
+    for (var key in options) {
+      if (options.hasOwnProperty(key)) {
+        config[key] = options[key];
+      }
+    }
+  };
+
+  // legacy
+  ahoy.configure(ahoy);
+
   var $ = window.jQuery || window.Zepto || window.$;
   var visitId, visitorId, track;
   var visitTtl = 4 * 60; // 4 hours
@@ -20,9 +42,18 @@
   var queue = [];
   var canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
   var eventQueue = [];
-  var visitsUrl = ahoy.visitsUrl || "/ahoy/visits";
-  var eventsUrl = ahoy.eventsUrl || "/ahoy/events";
-  var canTrackNow = ahoy.trackNow && canStringify && typeof(window.navigator.sendBeacon) !== "undefined";
+
+  function visitsUrl() {
+    return config.urlPrefix + config.visitsUrl;
+  }
+
+  function eventsUrl() {
+    return config.urlPrefix + config.eventsUrl;
+  }
+
+  function canTrackNow() {
+    return config.trackNow && canStringify && typeof(window.navigator.sendBeacon) !== "undefined";
+  }
 
   // cookies
 
@@ -35,8 +66,8 @@
       date.setTime(date.getTime() + (ttl * 60 * 1000));
       expires = "; expires=" + date.toGMTString();
     }
-    if (ahoy.domain) {
-      cookieDomain = "; domain=" + ahoy.domain;
+    if (config.domain) {
+      cookieDomain = "; domain=" + config.domain;
     }
     document.cookie = name + "=" + escape(value) + expires + cookieDomain + "; path=/";
   }
@@ -98,40 +129,74 @@
     }
   }
 
+  // from jquery-ujs
+
+  function csrfToken() {
+    return $("meta[name=csrf-token]").attr("content");
+  }
+
+  function csrfParam() {
+    return $("meta[name=csrf-param]").attr("content");
+  }
+
+  function CSRFProtection(xhr) {
+    var token = csrfToken();
+    if (token) xhr.setRequestHeader("X-CSRF-Token", token);
+  }
+
+  function sendRequest(url, data, success) {
+    if (canStringify) {
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        beforeSend: CSRFProtection,
+        success: success
+      });
+    }
+  }
+
+  function eventData(event) {
+    var data = {
+      events: [event],
+      visit_token: event.visit_token,
+      visitor_token: event.visitor_token
+    };
+    delete event.visit_token;
+    delete event.visitor_token;
+    return data;
+  }
+
   function trackEvent(event) {
     ready( function () {
-      // ensure JSON is defined
-      if (canStringify) {
-        $.ajax({
-          type: "POST",
-          url: eventsUrl,
-          data: JSON.stringify([event]),
-          contentType: "application/json; charset=utf-8",
-          dataType: "json",
-          success: function() {
-            // remove from queue
-            for (var i = 0; i < eventQueue.length; i++) {
-              if (eventQueue[i].id == event.id) {
-                eventQueue.splice(i, 1);
-                break;
-              }
-            }
-            saveEventQueue();
+      sendRequest(eventsUrl(), eventData(event), function() {
+        // remove from queue
+        for (var i = 0; i < eventQueue.length; i++) {
+          if (eventQueue[i].id == event.id) {
+            eventQueue.splice(i, 1);
+            break;
           }
-        });
-      }
+        }
+        saveEventQueue();
+      });
     });
   }
 
   function trackEventNow(event) {
     ready( function () {
-      var payload = new Blob([JSON.stringify([event])], {type : "application/json; charset=utf-8"});
-      navigator.sendBeacon(eventsUrl, payload)
+      var data = eventData(event);
+      var param = csrfParam();
+      var token = csrfToken();
+      if (param && token) data[param] = token;
+      var payload = new Blob([JSON.stringify(data)], {type : "application/json; charset=utf-8"});
+      navigator.sendBeacon(eventsUrl(), payload);
     });
   }
 
   function page() {
-    return ahoy.page || window.location.pathname;
+    return config.page || window.location.pathname;
   }
 
   function eventProperties(e) {
@@ -178,7 +243,7 @@
         var data = {
           visit_token: visitId,
           visitor_token: visitorId,
-          platform: ahoy.platform || "Web",
+          platform: config.platform,
           landing_page: window.location.href,
           screen_width: window.screen.width,
           screen_height: window.screen.height
@@ -191,7 +256,7 @@
 
         log(data);
 
-        $.post(visitsUrl, data, setReady, "json");
+        sendRequest(visitsUrl(), data, setReady);
       } else {
         log("Cookies disabled");
         setReady();
@@ -225,32 +290,39 @@
   };
 
   ahoy.track = function (name, properties) {
-    if (!ahoy.getVisitId()) {
-      createVisit();
-    }
-
     // generate unique id
     var event = {
       id: generateId(),
-      visit_token: ahoy.getVisitId(),
-      visitor_token: ahoy.getVisitorId(),
       name: name,
-      properties: properties,
+      properties: properties || {},
       time: (new Date()).getTime() / 1000.0
     };
-    log(event);
 
-    if (canTrackNow) {
-      trackEventNow(event);
-    } else {
-      eventQueue.push(event);
-      saveEventQueue();
+    // wait for createVisit to log
+    $( function () {
+      log(event);
+    });
 
-      // wait in case navigating to reduce duplicate events
-      setTimeout( function () {
-        trackEvent(event);
-      }, 1000);
-    }
+    ready( function () {
+      if (!ahoy.getVisitId()) {
+        createVisit();
+      }
+
+      event.visit_token = ahoy.getVisitId();
+      event.visitor_token = ahoy.getVisitorId();
+
+      if (canTrackNow()) {
+        trackEventNow(event);
+      } else {
+        eventQueue.push(event);
+        saveEventQueue();
+
+        // wait in case navigating to reduce duplicate events
+        setTimeout( function () {
+          trackEvent(event);
+        }, 1000);
+      }
+    });
   };
 
   ahoy.trackView = function () {
@@ -293,7 +365,7 @@
     ahoy.trackChanges();
   };
 
-  createVisit();
+  $(createVisit);
 
   // push events from queue
   try {
