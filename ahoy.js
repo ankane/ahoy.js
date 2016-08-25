@@ -18,7 +18,8 @@
     domain: null,
     page: null,
     platform: "Web",
-    trackNow: false
+    trackNow: false,
+    startOnReady: true
   };
 
   var ahoy = window.ahoy || window.Ahoy || {};
@@ -359,23 +360,31 @@
   };
 
   ahoy.trackAll = function() {
+    ahoy.start();
     ahoy.trackView();
     ahoy.trackClicks();
     ahoy.trackSubmits();
     ahoy.trackChanges();
   };
 
-  $(createVisit);
+  ahoy.start = function (options) {
+    ahoy.configure(options || {});
+    createVisit();
+
+    for (var i = 0; i < eventQueue.length; i++) {
+      trackEvent(eventQueue[i]);
+    }
+
+    ahoy.start = function () {};
+  };
+
+  if (config.startOnReady) { $(function () { ahoy.start(); }); }
 
   // push events from queue
   try {
     eventQueue = JSON.parse(getCookie("ahoy_events") || "[]");
   } catch (e) {
     // do nothing
-  }
-
-  for (var i = 0; i < eventQueue.length; i++) {
-    trackEvent(eventQueue[i]);
   }
 
   window.ahoy = ahoy;
