@@ -360,16 +360,21 @@
   };
 
   ahoy.trackAll = function() {
-    ahoy.start();
     ahoy.trackView();
     ahoy.trackClicks();
     ahoy.trackSubmits();
     ahoy.trackChanges();
   };
 
-  ahoy.start = function (options) {
-    ahoy.configure(options || {});
+  ahoy.start = function () {
     createVisit();
+
+    // push events from queue
+    try {
+      eventQueue = JSON.parse(getCookie("ahoy_events") || "[]");
+    } catch (e) {
+      // do nothing
+    }
 
     for (var i = 0; i < eventQueue.length; i++) {
       trackEvent(eventQueue[i]);
@@ -378,14 +383,7 @@
     ahoy.start = function () {};
   };
 
-  if (config.startOnReady) { $(function () { ahoy.start(); }); }
-
-  // push events from queue
-  try {
-    eventQueue = JSON.parse(getCookie("ahoy_events") || "[]");
-  } catch (e) {
-    // do nothing
-  }
+  if (config.startOnReady) { $(ahoy.start); }
 
   window.ahoy = ahoy;
 }(window));
