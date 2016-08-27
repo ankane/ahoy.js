@@ -88,9 +88,7 @@ ahoy.trackAll();
 Set the page with:
 
 ```javascript
-var ahoy = {
-  page: "Landing page"
-}
+ahoy.configure({page: "Landing page"});
 ```
 
 And sections with:
@@ -175,7 +173,7 @@ ahoy.debug(false);
 To track visits across multiple subdomains, add this **before** the javascript files.
 
 ```javascript
-var ahoy = {"domain": "yourdomain.com"};
+ahoy.configure({domain: "yourdomain.com"});
 ```
 
 ## TODO
