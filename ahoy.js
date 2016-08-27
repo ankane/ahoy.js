@@ -18,7 +18,8 @@
     domain: null,
     page: null,
     platform: "Web",
-    trackNow: false
+    trackNow: false,
+    startOnReady: true
   };
 
   var ahoy = window.ahoy || window.Ahoy || {};
@@ -365,18 +366,24 @@
     ahoy.trackChanges();
   };
 
-  $(createVisit);
+  ahoy.start = function () {
+    createVisit();
 
-  // push events from queue
-  try {
-    eventQueue = JSON.parse(getCookie("ahoy_events") || "[]");
-  } catch (e) {
-    // do nothing
-  }
+    // push events from queue
+    try {
+      eventQueue = JSON.parse(getCookie("ahoy_events") || "[]");
+    } catch (e) {
+      // do nothing
+    }
 
-  for (var i = 0; i < eventQueue.length; i++) {
-    trackEvent(eventQueue[i]);
-  }
+    for (var i = 0; i < eventQueue.length; i++) {
+      trackEvent(eventQueue[i]);
+    }
+
+    ahoy.start = function () {};
+  };
+
+  if (config.startOnReady) { $(ahoy.start); }
 
   window.ahoy = ahoy;
 }(window));
