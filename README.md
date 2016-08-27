@@ -5,7 +5,7 @@
 - Easily track unique visitors
 - Track events across page navigation
 
-Use it with any backend.  For Rails, check out the [Ahoy gem](https://github.com/ankane/ahoy).
+Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/ankane/ahoy).
 
 ## Installation
 
@@ -166,6 +166,23 @@ Turn off logging
 
 ```javascript
 ahoy.debug(false);
+```
+
+## Configuration
+
+Here’s the default configuration:
+
+```javascript
+ahoy.configure({
+  urlPrefix: "",
+  visitsUrl: "/ahoy/visits",
+  eventsUrl: "/ahoy/events",
+  cookieDomain: null,
+  page: null,
+  platform: "Web",
+  useBeacon: false,
+  startOnReady: true
+});
 ```
 
 ## Reference
