@@ -185,12 +185,12 @@ ahoy.configure({
 });
 ```
 
-## Reference
+## Subdomains
 
-To track visits across multiple subdomains, add this **before** the javascript files.
+To track visits across multiple subdomains, use:
 
 ```javascript
-ahoy.configure({domain: "yourdomain.com"});
+ahoy.configure({cookieDomain: "yourdomain.com"});
 ```
 
 ## TODO
