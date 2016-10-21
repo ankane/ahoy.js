@@ -327,17 +327,17 @@
     });
   };
 
-  ahoy.trackView = function (additional_properties) {
+  ahoy.trackView = function (additionalProperties) {
     var properties = {
       url: window.location.href,
       title: document.title,
       page: page()
     };
 
-    if (typeof additional_properties !== 'undefined' ) {
-      for(var attr_name in additional_properties) {
-        if (additional_properties.hasOwnProperty(attr_name)) {
-          properties[attr_name] = additional_properties[attr_name];
+    if (typeof additionalProperties !== 'undefined' ) {
+      for(var attr_name in additionalProperties) {
+        if (additionalProperties.hasOwnProperty(attr_name)) {
+          properties[attr_name] = additionalProperties[attr_name];
         }
       }
     }
