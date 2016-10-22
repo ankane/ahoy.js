@@ -334,7 +334,7 @@
       page: page()
     };
 
-    if (typeof additionalProperties !== 'undefined' ) {
+    if (additionalProperties) {
       for(var attr_name in additionalProperties) {
         if (additionalProperties.hasOwnProperty(attr_name)) {
           properties[attr_name] = additionalProperties[attr_name];
