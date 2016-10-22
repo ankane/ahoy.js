@@ -335,9 +335,9 @@
     };
 
     if (additionalProperties) {
-      for(var attr_name in additionalProperties) {
-        if (additionalProperties.hasOwnProperty(attr_name)) {
-          properties[attr_name] = additionalProperties[attr_name];
+      for(var propName in additionalProperties) {
+        if (additionalProperties.hasOwnProperty(propName)) {
+          properties[propName] = additionalProperties[propName];
         }
       }
     }
