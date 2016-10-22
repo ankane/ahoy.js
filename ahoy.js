@@ -327,12 +327,20 @@
     });
   };
 
-  ahoy.trackView = function () {
+  ahoy.trackView = function (additionalProperties) {
     var properties = {
       url: window.location.href,
       title: document.title,
       page: page()
     };
+
+    if (additionalProperties) {
+      for(var propName in additionalProperties) {
+        if (additionalProperties.hasOwnProperty(propName)) {
+          properties[propName] = additionalProperties[propName];
+        }
+      }
+    }
     ahoy.track("$view", properties);
   };
 
