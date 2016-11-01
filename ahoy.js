@@ -359,17 +359,25 @@
   };
 
   ahoy.trackSubmits = function () {
-    $(document).on("submit", "form", function (e) {
-      var properties = eventProperties(e);
-      ahoy.track("$submit", properties);
-    });
+    var elements = document.querySelectorAll("form");
+
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener("submit", function(e) {
+        var properties = eventProperties(e);
+        ahoy.track("$submit", properties);
+      });
+    }
   };
 
   ahoy.trackChanges = function () {
-    $(document).on("change", "input, textarea, select", function (e) {
-      var properties = eventProperties(e);
-      ahoy.track("$change", properties);
-    });
+    var elements = document.querySelectorAll("change", "input, textarea, select");
+
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener("change", function(e) {
+        var properties = eventProperties(e);
+        ahoy.track("$change", properties);
+      });
+    }
   };
 
   ahoy.trackAll = function() {
