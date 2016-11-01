@@ -301,7 +301,7 @@
     };
 
     // wait for createVisit to log
-    $( function () {
+    document.addEventListener("DOMContentLoaded", function() {
       log(event);
     });
 
@@ -404,7 +404,7 @@
     ahoy.start = function () {};
   };
 
-  $( function () {
+  document.addEventListener("DOMContentLoaded", function() {
     if (config.startOnReady) {
       ahoy.start();
     }
