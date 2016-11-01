@@ -361,7 +361,7 @@
       elements[i].addEventListener('click', function (e) {
         var target = e.currentTarget;
         var properties = eventProperties(e);
-        properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " "));
+        properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
         properties.href = target.href;
         ahoy.track("$click", properties);
       });
