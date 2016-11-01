@@ -202,14 +202,24 @@
   }
 
   function eventProperties(e) {
-    var $target = $(e.currentTarget);
+    var target = e.currentTarget;
     return {
-      tag: $target.get(0).tagName.toLowerCase(),
-      id: $target.attr("id"),
-      "class": $target.attr("class"),
+      tag: target.tagName.toLowerCase(),
+      id: target.id,
+      "class": target.className,
       page: page(),
-      section: $target.closest("*[data-section]").data("section")
+      section: getClosestSection(target)
     };
+  }
+
+  function getClosestSection(element) {
+    for ( ; element && element !== document; element = element.parentNode) {
+      if (element.hasAttribute('data-section')) {
+        return element.getAttribute('data-section');
+      }
+    }
+
+    return null;
   }
 
   function createVisit() {
