@@ -392,7 +392,11 @@
     ahoy.start = function () {};
   };
 
-  if (config.startOnReady) { $(ahoy.start); }
+  $( function () {
+    if (config.startOnReady) {
+      ahoy.start();
+    }
+  });
 
   window.ahoy = ahoy;
 }(window));
