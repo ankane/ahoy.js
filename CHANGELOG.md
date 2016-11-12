@@ -1,6 +1,7 @@
-## 0.1.1 [unreleased]
+## 0.2.0 [unreleased]
 
-- Added `getVisitToken` and `getVisitorToken` methods
+- Added `configure` function
+- Added `getVisitToken` and `getVisitorToken` functions
 - Added `visitsUrl` and `eventsUrl` options
 
 ## 0.1.0
