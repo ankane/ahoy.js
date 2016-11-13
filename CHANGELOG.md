@@ -1,4 +1,4 @@
-## 0.2.0 [unreleased]
+## 0.2.0
 
 - Added `configure` function
 - Added `getVisitToken` and `getVisitorToken` functions

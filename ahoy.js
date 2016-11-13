@@ -2,7 +2,7 @@
  * Ahoy.js
  * Simple, powerful JavaScript analytics
  * https://github.com/ankane/ahoy.js
- * v0.1.0
+ * v0.2.0
  * MIT License
  */
 
