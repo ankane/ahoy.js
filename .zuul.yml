@@ -1,0 +1,8 @@
+name: Ahoy.js
+ui: tape
+scripts:
+  - node_modules/jquery/dist/jquery.js
+  - ahoy.js
+browsers:
+  - name: chrome
+    version: latest
