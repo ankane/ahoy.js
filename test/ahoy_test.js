@@ -8,8 +8,12 @@ let server;
 
 before('before', (t) => {
   server = sinon.fakeServer.create();
-  server.autoRespond = true;
-  server.respondWith('GET', '/ahoy/visits', [200, {}, '']);
+  server.respondImmediately = true;
+  server.respondWith('POST', '/ahoy/visits',
+    [200, {},'{}']);
+
+  ahoy.reset();
+  Cookies.set('ahoy_track', true);
 
   t.end();
 })
@@ -22,9 +26,6 @@ test('Defines ahoy', (t) => {
 
 test('Initialization', (t) => {
   t.plan(6);
-
-  ahoy.reset();
-  Cookies.set('ahoy_track', true);
 
   t.notEqual(Cookies.get('ahoy_track'), undefined, 'Should have ahoy_track cookie');
   t.equal(Cookies.get('ahoy_visit'), undefined, 'Should not have ahoy_visit cookie');
@@ -40,14 +41,13 @@ test('Initialization', (t) => {
 test('POSTs the visit to the backend', (t) => {
   t.plan(3);
 
-  ahoy.reset();
-  ahoy.start();
-
   t.equal(server.requests.length, 1, 'Should have fired request');
-  t.equal(server.requests[0].requestHeaders['X-CSRF-Token'],
+
+  const request = server.requests[0];
+  t.equal(request.requestHeaders['X-CSRF-Token'],
           'test-token-abcdef123456',
           'Should set CSRF header');
-  t.equal(server.requests[0].url, '/ahoy/visits', 'Should POST to correct URL');
+  t.equal(request.url, '/ahoy/visits', 'Should POST to correct URL');
 });
 
 after('after', (t) => {
