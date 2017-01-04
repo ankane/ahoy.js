@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 const before = test;
 const after = test;
-const AHOY_TRACK_TIMEOUT = 1000;
+const AHOY_TRACK_TIMEOUT = 1500;
 let server;
 
 before('before', (t) => {
