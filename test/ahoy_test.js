@@ -65,6 +65,42 @@ test('Manual tracking', (t) => {
   }, AHOY_TRACK_TIMEOUT);
 });
 
+test('View tracking', (t) => {
+  t.plan(3);
+
+  ahoy.trackView();
+  setTimeout(function() {
+    t.equal(server.requests.length, 3, 'Should have fired request');
+
+    const request = server.requests[2];
+    const requestData = JSON.parse(request.requestBody);
+
+    t.equal(request.url, '/ahoy/events', 'Should POST to correct URL');
+    t.equal(requestData.events[0].name, '$view', 'Should POST correct event');
+  }, AHOY_TRACK_TIMEOUT);
+});
+
+test('Click tracking', (t) => {
+  t.plan(6);
+
+  ahoy.trackClicks();
+  document.getElementById('ahoy-test-link').click();
+
+  setTimeout(function() {
+    t.equal(server.requests.length, 4, 'Should have fired request');
+
+    const request = server.requests[3];
+    const requestData = JSON.parse(request.requestBody);
+    const requestProperties = requestData.events[0].properties;
+
+    t.equal(request.url, '/ahoy/events', 'Should POST to correct URL');
+    t.equal(requestData.events[0].name, '$click', 'Should POST correct event');
+    t.equal(requestProperties.id, 'ahoy-test-link', 'Correct event ID property');
+    t.equal(requestProperties.section, 'Header', 'Correct event section property');
+    t.equal(requestProperties.text, 'Home', 'Correct event text property');
+  }, AHOY_TRACK_TIMEOUT);
+});
+
 after('after', (t) => {
   server.restore();
 
