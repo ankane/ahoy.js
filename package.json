@@ -35,7 +35,8 @@
     "zuul": "^3.11.1"
   },
   "scripts": {
-    "test": "zuul --local 8080 test/ahoy_test.js"
+    "test": "zuul test/ahoy_test.js",
+    "test:local": "zuul --local 8080 test/ahoy_test.js"
   },
   "browserify": {
     "transform": [ ["babelify", { "presets": [ "es2015" ] } ] ]
