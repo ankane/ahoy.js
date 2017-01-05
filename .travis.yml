@@ -1,0 +1,6 @@
+language: node_js
+node_js:
+- '6.1'
+env:
+  global:
+    secure: rtcrP/E6FhoH18wiSYeJKBgqnSweIi8miAD2jU+A9J9YBwNhOeR6A1S9LL0Xmi8Q4Vk2NyyckVFrfnWq6aEj14sbKqVXEsVkM7Iuw2MrqS4XLgAARYgvz1TcUhxFkZcfu53m2M4iDcaJdu7Yzw5rF2jeb7yI1dZZ7vH8PbiF+p8=
