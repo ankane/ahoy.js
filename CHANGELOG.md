@@ -1,3 +1,7 @@
+## 0.2.1 [unreleased]
+
+- Fixed issue with duplicate events
+
 ## 0.2.0
 
 - Added `configure` function
