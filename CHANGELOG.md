@@ -1,4 +1,4 @@
-## 0.2.1 [unreleased]
+## 0.2.1
 
 - Fixed issue with duplicate events
 
