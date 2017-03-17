@@ -134,11 +134,11 @@
   // from jquery-ujs
 
   function csrfToken() {
-    return $("meta[name=csrf-token]").attr("content");
+    return document.head.querySelector("meta[name=csrf-token]").content;
   }
 
   function csrfParam() {
-    return $("meta[name=csrf-param]").attr("content");
+    return document.head.querySelector("meta[name=csrf-param]").content;
   }
 
   function CSRFProtection(xhr) {
@@ -148,15 +148,28 @@
 
   function sendRequest(url, data, success) {
     if (canStringify) {
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        beforeSend: CSRFProtection,
-        success: success
-      });
+      if ($) {
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: JSON.stringify(data),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          beforeSend: CSRFProtection,
+          success: success
+        });
+      } else {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            success();
+          }
+        };
+        CSRFProtection(xhr);
+        xhr.send(JSON.stringify(data));
+      }
     }
   }
 
