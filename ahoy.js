@@ -131,14 +131,16 @@
     }
   }
 
-  // from jquery-ujs
+  // from rails-ujs
 
   function csrfToken() {
-    return document.head.querySelector("meta[name=csrf-token]").content;
+    var meta = document.querySelector("meta[name=csrf-token]");
+    return meta && meta.content;
   }
 
   function csrfParam() {
-    return document.head.querySelector("meta[name=csrf-param]").content;
+    var meta = document.querySelector("meta[name=csrf-param]");
+    return meta && meta.content;
   }
 
   function CSRFProtection(xhr) {
