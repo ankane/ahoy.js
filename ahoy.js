@@ -369,17 +369,21 @@
     ahoy.track("$view", properties);
   };
 
+  ahoy.trackClick = function (element) {
+    element.addEventListener('click', function (e) {
+      var target = e.currentTarget;
+      var properties = eventProperties(e);
+      properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
+      properties.href = target.href;
+      ahoy.track("$click", properties);
+    });
+  };
+
   ahoy.trackClicks = function () {
     var elements = document.querySelectorAll("a, button, input[type=submit]");
 
     for (var i = 0; i < elements.length; i++) {
-      elements[i].addEventListener('click', function (e) {
-        var target = e.currentTarget;
-        var properties = eventProperties(e);
-        properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
-        properties.href = target.href;
-        ahoy.track("$click", properties);
-      });
+      ahoy.trackClick(elements[i]);
     }
   };
 
