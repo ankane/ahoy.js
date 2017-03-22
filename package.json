@@ -36,15 +36,6 @@
     "test:local": "zuul --local 8080 test/ahoy_test.js"
   },
   "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
-    ]
+    "transform": [ ["babelify", { "presets": [ "es2015" ] } ] ]
   }
 }
