@@ -116,6 +116,13 @@
     }
   }
 
+  function onEvent(eventName, selector, callback) {
+    var elements = document.querySelectorAll(selector);
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener(eventName, callback);
+    }
+  }
+
   // http://stackoverflow.com/a/2117523/1177228
   function generateId() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -369,8 +376,8 @@
     ahoy.track("$view", properties);
   };
 
-  ahoy.trackClick = function (element) {
-    element.addEventListener('click', function (e) {
+  ahoy.trackClicks = function () {
+    onEvent("click", "a, button, input[type=submit]", function (e) {
       var target = e.currentTarget;
       var properties = eventProperties(e);
       properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
@@ -379,34 +386,18 @@
     });
   };
 
-  ahoy.trackClicks = function () {
-    var elements = document.querySelectorAll("a, button, input[type=submit]");
-
-    for (var i = 0; i < elements.length; i++) {
-      ahoy.trackClick(elements[i]);
-    }
-  };
-
   ahoy.trackSubmits = function () {
-    var elements = document.querySelectorAll("form");
-
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].addEventListener("submit", function(e) {
-        var properties = eventProperties(e);
-        ahoy.track("$submit", properties);
-      });
-    }
+    onEvent("submit", "form", function (e) {
+      var properties = eventProperties(e);
+      ahoy.track("$submit", properties);
+    });
   };
 
   ahoy.trackChanges = function () {
-    var elements = document.querySelectorAll("change", "input, textarea, select");
-
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].addEventListener("change", function(e) {
-        var properties = eventProperties(e);
-        ahoy.track("$change", properties);
-      });
-    }
+    onEvent("change", "input, textarea, select", function (e) {
+      var properties = eventProperties(e);
+      ahoy.track("$change", properties);
+    });
   };
 
   ahoy.trackAll = function() {
