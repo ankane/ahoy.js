@@ -11,3 +11,5 @@ browsers:
     version: latest
   - name: ie
     version: 11..latest
+  - name: ie
+    version: 8
