@@ -116,6 +116,10 @@
     }
   }
 
+  function onReady(callback) {
+    document.addEventListener("DOMContentLoaded", callback);
+  }
+
   function onEvent(eventName, selector, callback) {
     var elements = document.querySelectorAll(selector);
     for (var i = 0; i < elements.length; i++) {
@@ -333,7 +337,7 @@
     };
 
     // wait for createVisit to log
-    document.addEventListener("DOMContentLoaded", function() {
+    onReady( function() {
       log(event);
     });
 
@@ -424,7 +428,7 @@
     ahoy.start = function () {};
   };
 
-  document.addEventListener("DOMContentLoaded", function() {
+  onReady( function() {
     if (config.startOnReady) {
       ahoy.start();
     }
