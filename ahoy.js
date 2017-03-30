@@ -116,6 +116,13 @@
     }
   }
 
+  function onEvent(eventName, selector, callback) {
+    var elements = document.querySelectorAll(selector);
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener(eventName, callback);
+    }
+  }
+
   // http://stackoverflow.com/a/2117523/1177228
   function generateId() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -131,14 +138,16 @@
     }
   }
 
-  // from jquery-ujs
+  // from rails-ujs
 
   function csrfToken() {
-    return $("meta[name=csrf-token]").attr("content");
+    var meta = document.querySelector("meta[name=csrf-token]");
+    return meta && meta.content;
   }
 
   function csrfParam() {
-    return $("meta[name=csrf-param]").attr("content");
+    var meta = document.querySelector("meta[name=csrf-param]");
+    return meta && meta.content;
   }
 
   function CSRFProtection(xhr) {
@@ -148,15 +157,28 @@
 
   function sendRequest(url, data, success) {
     if (canStringify) {
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        beforeSend: CSRFProtection,
-        success: success
-      });
+      if ($) {
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: JSON.stringify(data),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          beforeSend: CSRFProtection,
+          success: success
+        });
+      } else {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            success();
+          }
+        };
+        CSRFProtection(xhr);
+        xhr.send(JSON.stringify(data));
+      }
     }
   }
 
@@ -202,14 +224,24 @@
   }
 
   function eventProperties(e) {
-    var $target = $(e.currentTarget);
+    var target = e.currentTarget;
     return {
-      tag: $target.get(0).tagName.toLowerCase(),
-      id: $target.attr("id"),
-      "class": $target.attr("class"),
+      tag: target.tagName.toLowerCase(),
+      id: target.id,
+      "class": target.className,
       page: page(),
-      section: $target.closest("*[data-section]").data("section")
+      section: getClosestSection(target)
     };
+  }
+
+  function getClosestSection(element) {
+    for ( ; element && element !== document; element = element.parentNode) {
+      if (element.hasAttribute('data-section')) {
+        return element.getAttribute('data-section');
+      }
+    }
+
+    return null;
   }
 
   function createVisit() {
@@ -301,7 +333,7 @@
     };
 
     // wait for createVisit to log
-    $( function () {
+    document.addEventListener("DOMContentLoaded", function() {
       log(event);
     });
 
@@ -345,24 +377,24 @@
   };
 
   ahoy.trackClicks = function () {
-    $(document).on("click", "a, button, input[type=submit]", function (e) {
-      var $target = $(e.currentTarget);
+    onEvent("click", "a, button, input[type=submit]", function (e) {
+      var target = e.currentTarget;
       var properties = eventProperties(e);
-      properties.text = properties.tag == "input" ? $target.val() : $.trim($target.text().replace(/[\s\r\n]+/g, " "));
-      properties.href = $target.attr("href");
+      properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
+      properties.href = target.href;
       ahoy.track("$click", properties);
     });
   };
 
   ahoy.trackSubmits = function () {
-    $(document).on("submit", "form", function (e) {
+    onEvent("submit", "form", function (e) {
       var properties = eventProperties(e);
       ahoy.track("$submit", properties);
     });
   };
 
   ahoy.trackChanges = function () {
-    $(document).on("change", "input, textarea, select", function (e) {
+    onEvent("change", "input, textarea, select", function (e) {
       var properties = eventProperties(e);
       ahoy.track("$change", properties);
     });
@@ -392,7 +424,7 @@
     ahoy.start = function () {};
   };
 
-  $( function () {
+  document.addEventListener("DOMContentLoaded", function() {
     if (config.startOnReady) {
       ahoy.start();
     }
