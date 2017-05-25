@@ -35,7 +35,7 @@
   // legacy
   ahoy.configure(ahoy);
 
-  var $ = window.jQuery || window.Zepto || window.$;
+  var $ = $ || window.jQuery || window.Zepto || window.$;
   var visitId, visitorId, track;
   var visitTtl = 4 * 60; // 4 hours
   var visitorTtl = 2 * 365 * 24 * 60; // 2 years
