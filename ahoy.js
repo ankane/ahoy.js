@@ -123,6 +123,19 @@
     }
   }
 
+  function documentReady(fn) {
+    if (document.readyState != 'loading'){
+      fn();
+    } else if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState != 'loading')
+          fn();
+      });
+    }
+  }
+
   // http://stackoverflow.com/a/2117523/1177228
   function generateId() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -333,7 +346,7 @@
     };
 
     // wait for createVisit to log
-    document.addEventListener("DOMContentLoaded", function() {
+    documentReady(function() {
       log(event);
     });
 
@@ -424,7 +437,7 @@
     ahoy.start = function () {};
   };
 
-  document.addEventListener("DOMContentLoaded", function() {
+  documentReady(function() {
     if (config.startOnReady) {
       ahoy.start();
     }
