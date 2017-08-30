@@ -19,7 +19,8 @@
     page: null,
     platform: "Web",
     useBeacon: false,
-    startOnReady: true
+    startOnReady: true,
+    crossDomain: false
   };
 
   var ahoy = window.ahoy || window.Ahoy || {};
@@ -151,6 +152,9 @@
       $.ajax({
         type: "POST",
         url: url,
+        xhrFields: {
+          withCredentials: config.crossDomain
+        },
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
