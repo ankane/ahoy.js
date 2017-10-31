@@ -1,7 +1,3 @@
-## 0.2.2
-
-- Fixed issue with caching issue caused by getting dom element's data-section property with jQuery's `.data` function. Switch to using the `.attr` function.
-
 ## 0.2.1
 
 - Fixed issue with duplicate events
