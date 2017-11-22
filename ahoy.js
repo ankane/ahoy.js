@@ -93,6 +93,19 @@
   function destroyCookie(name) {
     setCookie(name, "", -1);
   }
+  
+  function getCookieSuffix() {
+    return sessionStorage.getItem('ahoy_cookie_suffix');
+  }
+
+  function setCookieSuffix() {
+    var suffix = sessionStorage.getItem('ahoy_cookie_suffix');
+    if (suffix == null) {
+      suffix = new Date().valueOf();
+      sessionStorage.setItem('ahoy_cookie_suffix', suffix);
+    }
+    return suffix;
+  }
 
   function log(message) {
     if (getCookie("ahoy_debug")) {
@@ -127,7 +140,7 @@
   function saveEventQueue() {
     // TODO add stringify method for IE 7 and under
     if (canStringify) {
-      setCookie("ahoy_events", JSON.stringify(eventQueue), 1);
+      setCookie("ahoy_events_" + getCookieSuffix(), JSON.stringify(eventQueue), 1);
     }
   }
 
@@ -277,7 +290,7 @@
   ahoy.reset = function () {
     destroyCookie("ahoy_visit");
     destroyCookie("ahoy_visitor");
-    destroyCookie("ahoy_events");
+    destroyCookie("ahoy_events_" + getCookieSuffix());
     destroyCookie("ahoy_track");
     return true;
   };
@@ -377,7 +390,7 @@
 
   // push events from queue
   try {
-    eventQueue = JSON.parse(getCookie("ahoy_events") || "[]");
+    eventQueue = JSON.parse(getCookie("ahoy_events_" + getCookieSuffix()) || "[]");
   } catch (e) {
     // do nothing
   }
@@ -388,7 +401,7 @@
 
   ahoy.start = function () {
     createVisit();
-
+    setCookieSuffix();
     ahoy.start = function () {};
   };
 
