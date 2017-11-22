@@ -220,7 +220,7 @@
     track = getCookie("ahoy_track");
 
     if (visitId && visitorId && !track) {
-      // TODO keep visit alive?
+      setCookie("ahoy_visit", visitId, visitTtl);
       log("Active visit");
       setReady();
     } else {
