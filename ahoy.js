@@ -333,7 +333,7 @@
       title: document.title,
       page: page()
     };
-
+    
     if (additionalProperties) {
       for(var propName in additionalProperties) {
         if (additionalProperties.hasOwnProperty(propName)) {
@@ -344,35 +344,56 @@
     ahoy.track("$view", properties);
   };
 
-  ahoy.trackClicks = function () {
+  ahoy.trackClicks = function (additionalProperties) {
     $(document).on("click", "a, button, input[type=submit]", function (e) {
       var $target = $(e.currentTarget);
       var properties = eventProperties(e);
       properties.text = properties.tag == "input" ? $target.val() : $.trim($target.text().replace(/[\s\r\n]+/g, " "));
       properties.href = $target.attr("href");
+      if (additionalProperties) {
+        for(var propName in additionalProperties) {
+          if (additionalProperties.hasOwnProperty(propName)) {
+            properties[propName] = additionalProperties[propName];
+          }
+        }
+      }
       ahoy.track("$click", properties);
     });
   };
 
-  ahoy.trackSubmits = function () {
+  ahoy.trackSubmits = function (additionalProperties) {
     $(document).on("submit", "form", function (e) {
       var properties = eventProperties(e);
+      if (additionalProperties) {
+        for(var propName in additionalProperties) {
+          if (additionalProperties.hasOwnProperty(propName)) {
+            properties[propName] = additionalProperties[propName];
+          }
+        }
+      }
       ahoy.track("$submit", properties);
     });
   };
 
-  ahoy.trackChanges = function () {
+  ahoy.trackChanges = function (additionalProperties) {
     $(document).on("change", "input, textarea, select", function (e) {
       var properties = eventProperties(e);
+      if (additionalProperties) {
+        for(var propName in additionalProperties) {
+          if (additionalProperties.hasOwnProperty(propName)) {
+            properties[propName] = additionalProperties[propName];
+          }
+        }
+      }
       ahoy.track("$change", properties);
     });
   };
 
-  ahoy.trackAll = function() {
-    ahoy.trackView();
-    ahoy.trackClicks();
-    ahoy.trackSubmits();
-    ahoy.trackChanges();
+  ahoy.trackAll = function(additionalProperties) {
+    ahoy.trackView(additionalProperties);
+    ahoy.trackClicks(additionalProperties);
+    ahoy.trackSubmits(additionalProperties);
+    ahoy.trackChanges(additionalProperties);
   };
 
   // push events from queue
