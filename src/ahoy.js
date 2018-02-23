@@ -8,7 +8,7 @@
 
 import objectToFormData from "object-to-formdata";
 
-var config = {
+let config = {
   urlPrefix: "",
   visitsUrl: "/ahoy/visits",
   eventsUrl: "/ahoy/events",
@@ -19,10 +19,10 @@ var config = {
   startOnReady: true
 };
 
-var ahoy = window.ahoy || window.Ahoy || {};
+let ahoy = window.ahoy || window.Ahoy || {};
 
 ahoy.configure = function (options) {
-  for (var key in options) {
+  for (let key in options) {
     if (options.hasOwnProperty(key)) {
       config[key] = options[key];
     }
@@ -32,14 +32,14 @@ ahoy.configure = function (options) {
 // legacy
 ahoy.configure(ahoy);
 
-var $ = window.jQuery || window.Zepto || window.$;
-var visitId, visitorId, track;
-var visitTtl = 4 * 60; // 4 hours
-var visitorTtl = 2 * 365 * 24 * 60; // 2 years
-var isReady = false;
-var queue = [];
-var canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
-var eventQueue = [];
+let $ = window.jQuery || window.Zepto || window.$;
+let visitId, visitorId, track;
+let visitTtl = 4 * 60; // 4 hours
+let visitorTtl = 2 * 365 * 24 * 60; // 2 years
+let isReady = false;
+let queue = [];
+let canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
+let eventQueue = [];
 
 function visitsUrl() {
   return config.urlPrefix + config.visitsUrl;
@@ -57,14 +57,14 @@ function canTrackNow() {
 
 // http://www.quirksmode.org/js/cookies.html
 function setCookie(name, value, ttl) {
-  var expires = "";
-  var cookieDomain = "";
+  let expires = "";
+  let cookieDomain = "";
   if (ttl) {
-    var date = new Date();
+    let date = new Date();
     date.setTime(date.getTime() + (ttl * 60 * 1000));
     expires = "; expires=" + date.toGMTString();
   }
-  var domain = config.cookieDomain || config.domain;
+  let domain = config.cookieDomain || config.domain;
   if (domain) {
     cookieDomain = "; domain=" + domain;
   }
@@ -72,9 +72,9 @@ function setCookie(name, value, ttl) {
 }
 
 function getCookie(name) {
-  var i, c;
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
+  let i, c;
+  let nameEQ = name + "=";
+  let ca = document.cookie.split(';');
   for (i = 0; i < ca.length; i++) {
     c = ca[i];
     while (c.charAt(0) === ' ') {
@@ -98,8 +98,8 @@ function log(message) {
 }
 
 function setReady() {
-  var callback;
-  while (callback = queue.shift()) {
+  let callback;
+  while ((callback = queue.shift())) {
     callback();
   }
   isReady = true;
@@ -114,8 +114,8 @@ function ready(callback) {
 }
 
 function onEvent(eventName, selector, callback) {
-  var elements = document.querySelectorAll(selector);
-  for (var i = 0; i < elements.length; i++) {
+  let elements = document.querySelectorAll(selector);
+  for (let i = 0; i < elements.length; i++) {
     elements[i].addEventListener(eventName, callback);
   }
 }
@@ -136,7 +136,7 @@ function documentReady(fn) {
 // http://stackoverflow.com/a/2117523/1177228
 function generateId() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    let r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
     return v.toString(16);
   });
 }
@@ -151,17 +151,17 @@ function saveEventQueue() {
 // from rails-ujs
 
 function csrfToken() {
-  var meta = document.querySelector("meta[name=csrf-token]");
+  let meta = document.querySelector("meta[name=csrf-token]");
   return meta && meta.content;
 }
 
 function csrfParam() {
-  var meta = document.querySelector("meta[name=csrf-param]");
+  let meta = document.querySelector("meta[name=csrf-param]");
   return meta && meta.content;
 }
 
 function CSRFProtection(xhr) {
-  var token = csrfToken();
+  let token = csrfToken();
   if (token) xhr.setRequestHeader("X-CSRF-Token", token);
 }
 
@@ -178,7 +178,7 @@ function sendRequest(url, data, success) {
         success: success
       });
     } else {
-      var xhr = new XMLHttpRequest();
+      let xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.onload = function() {
@@ -193,7 +193,7 @@ function sendRequest(url, data, success) {
 }
 
 function eventData(event) {
-  var data = {
+  let data = {
     events: [event],
     visit_token: event.visit_token,
     visitor_token: event.visitor_token
@@ -207,7 +207,7 @@ function trackEvent(event) {
   ready( function () {
     sendRequest(eventsUrl(), eventData(event), function() {
       // remove from queue
-      for (var i = 0; i < eventQueue.length; i++) {
+      for (let i = 0; i < eventQueue.length; i++) {
         if (eventQueue[i].id == event.id) {
           eventQueue.splice(i, 1);
           break;
@@ -220,9 +220,9 @@ function trackEvent(event) {
 
 function trackEventNow(event) {
   ready( function () {
-    var data = eventData(event);
-    var param = csrfParam();
-    var token = csrfToken();
+    let data = eventData(event);
+    let param = csrfParam();
+    let token = csrfToken();
     if (param && token) data[param] = token;
     navigator.sendBeacon(eventsUrl(), objectToFormData(data));
   });
@@ -233,7 +233,7 @@ function page() {
 }
 
 function eventProperties(e) {
-  var target = e.currentTarget;
+  let target = e.currentTarget;
   return {
     tag: target.tagName.toLowerCase(),
     id: target.id,
@@ -283,7 +283,7 @@ function createVisit() {
         setCookie("ahoy_visitor", visitorId, visitorTtl);
       }
 
-      var data = {
+      let data = {
         visit_token: visitId,
         visitor_token: visitorId,
         platform: config.platform,
@@ -334,7 +334,7 @@ ahoy.debug = function (enabled) {
 
 ahoy.track = function (name, properties) {
   // generate unique id
-  var event = {
+  let event = {
     id: generateId(),
     name: name,
     properties: properties || {},
@@ -369,14 +369,14 @@ ahoy.track = function (name, properties) {
 };
 
 ahoy.trackView = function (additionalProperties) {
-  var properties = {
+  let properties = {
     url: window.location.href,
     title: document.title,
     page: page()
   };
 
   if (additionalProperties) {
-    for(var propName in additionalProperties) {
+    for(let propName in additionalProperties) {
       if (additionalProperties.hasOwnProperty(propName)) {
         properties[propName] = additionalProperties[propName];
       }
@@ -387,8 +387,8 @@ ahoy.trackView = function (additionalProperties) {
 
 ahoy.trackClicks = function () {
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    var target = e.currentTarget;
-    var properties = eventProperties(e);
+    let target = e.currentTarget;
+    let properties = eventProperties(e);
     properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = target.href;
     ahoy.track("$click", properties);
@@ -397,14 +397,14 @@ ahoy.trackClicks = function () {
 
 ahoy.trackSubmits = function () {
   onEvent("submit", "form", function (e) {
-    var properties = eventProperties(e);
+    let properties = eventProperties(e);
     ahoy.track("$submit", properties);
   });
 };
 
 ahoy.trackChanges = function () {
   onEvent("change", "input, textarea, select", function (e) {
-    var properties = eventProperties(e);
+    let properties = eventProperties(e);
     ahoy.track("$change", properties);
   });
 };
@@ -423,7 +423,7 @@ try {
   // do nothing
 }
 
-for (var i = 0; i < eventQueue.length; i++) {
+for (let i = 0; i < eventQueue.length; i++) {
   trackEvent(eventQueue[i]);
 }
 
