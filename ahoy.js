@@ -18,7 +18,7 @@
     cookieDomain: null,
     page: null,
     platform: "Web",
-    useBeacon: false,
+    useBeacon: true,
     startOnReady: true
   };
 
