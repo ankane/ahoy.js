@@ -1,3 +1,7 @@
+## 1.0.0 [unreleased]
+
+- Removed jQuery dependency
+
 ## 0.2.1
 
 - Fixed issue with duplicate events
