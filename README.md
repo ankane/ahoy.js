@@ -28,6 +28,12 @@ Or use npm
 npm install ahoy.js
 ```
 
+#### Usage with with Node / Rollup / Webpack
+
+```js
+import { ahoy } from 'ahoy.js';
+```
+
 ## How It Works
 
 When someone lands on your website, they are assigned a visit token and a visitor token.
