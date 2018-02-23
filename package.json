@@ -26,10 +26,8 @@
     "type": "git",
     "url": "https://github.com/ankane/ahoy.js"
   },
-  "ignore": [
-    "**/.*",
-    "test",
-    "tests"
+  "files": [
+    "dist"
   ],
   "devDependencies": {
     "babel-loader": "^7.1.2",
