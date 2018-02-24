@@ -28,10 +28,10 @@ Or use npm
 npm install ahoy.js
 ```
 
-#### Usage with with Node / Rollup / Webpack
+#### Usage with with Node / Rollup / Webpack [master]
 
 ```js
-import { ahoy } from 'ahoy.js';
+import ahoy from 'ahoy.js';
 ```
 
 ## How It Works

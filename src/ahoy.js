@@ -439,4 +439,4 @@ documentReady(function() {
   }
 });
 
-export { ahoy };
+export default ahoy;

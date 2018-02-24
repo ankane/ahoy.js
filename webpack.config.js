@@ -9,6 +9,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
+    library: "ahoy",
+    libraryExport: "default",
     libraryTarget: "umd"
   },
   module: {
