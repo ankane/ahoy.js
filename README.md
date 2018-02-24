@@ -209,8 +209,6 @@ ahoy.configure({cookieDomain: "yourdomain.com"});
 - Send events in batches
 - Add page and section for automatic events
 - Add `trackContent` method
-- Remove jQuery dependency
-- Customize endpoints
 
 ## History
 
