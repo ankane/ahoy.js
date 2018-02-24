@@ -201,10 +201,17 @@ To track visits across multiple subdomains, use:
 ahoy.configure({cookieDomain: "yourdomain.com"});
 ```
 
-## Testing
+## Dev Setup
 
-1. Install the dependencies with `npm install`
-2. Run `npm run test:local` and open `http://localhost:8080/__zuul` in your browser
+```sh
+git clone https://github.com/ankane/ahoy.js.git
+cd ahoy.js
+yarn install
+yarn build
+yarn test:local
+```
+
+And visit `http://localhost:8080/__zuul` in your browser.
 
 ## TODO
 
