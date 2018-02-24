@@ -7,6 +7,8 @@
 
 Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/ankane/ahoy).
 
+[![Build Status](https://travis-ci.org/ankane/ahoy.js.svg?branch=master)](https://travis-ci.org/ankane/ahoy.js)
+
 ## Installation
 
 Download [ahoy.js](https://raw.githubusercontent.com/ankane/ahoy.js/master/ahoy.js) and include it after jQuery.
