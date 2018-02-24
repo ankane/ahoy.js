@@ -1,6 +1,7 @@
 language: node_js
 node_js:
 - '6.1'
+script: yarn build && yarn test
 env:
   global:
   - secure: UzhXRA3TZbTqBuh17gOlid4d9tpa4maBaDI7SiJpSQBOH/hRQCfTWr/ZfQLr9og0e8PT1d5d0UzWPbu3WbiL9Uiq2yNj3uBqJ0cdhxLvxoxsIl8oPd37/Xa8cI7Cmz2YBIwnnEgUQKbydffQGIA1IGkZMRnP4Aj9BY5+A+QabW8=

@@ -1,1 +1,1 @@
-ahoy.configure({ startOnReady: false, trackNow: false });
+ahoy.configure({startOnReady: false, useBeacon: false});

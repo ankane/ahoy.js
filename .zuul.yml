@@ -2,7 +2,7 @@ name: Ahoy.js
 ui: tape
 html: test/template.html
 scripts:
-  - ahoy.js
+  - dist/ahoy.js
   - test/test_helper.js
 browsers:
   - name: chrome
