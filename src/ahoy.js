@@ -233,15 +233,30 @@ function page() {
   return config.page || window.location.pathname;
 }
 
+function presence(str) {
+  return (str && str.length > 0) ? str : null;
+}
+
+function cleanObject(obj) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (obj[key] === null) {
+        delete obj[key];
+      }
+    }
+  }
+  return obj;
+}
+
 function eventProperties(e) {
   let target = e.target;
-  return {
+  return cleanObject({
     tag: target.tagName.toLowerCase(),
-    id: target.id,
-    "class": target.className,
+    id: presence(target.id),
+    "class": presence(target.className),
     page: page(),
     section: getClosestSection(target)
-  };
+  });
 }
 
 function getClosestSection(element) {
