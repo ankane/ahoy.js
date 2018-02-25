@@ -113,24 +113,25 @@ function ready(callback) {
   }
 }
 
-function onEvent(eventName, selector, callback) {
-  let elements = document.querySelectorAll(selector);
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].addEventListener(eventName, callback);
+function matchesSelector(element, selector) {
+  if (element.matches) {
+    return element.matches(selector);
+  } else {
+    return element.msMatchesSelector(selector);
   }
 }
 
-function documentReady(fn) {
-  if (document.addEventListener) {
-    document.addEventListener('DOMContentLoaded', fn);
-  } else if (document.attachEvent) {
-    document.attachEvent('onreadystatechange', function() {
-      if (document.readyState != 'loading')
-        fn();
-    });
-  } else if (document.readyState != 'loading'){
-    fn();
-  }
+function onEvent(eventName, selector, callback) {
+  document.addEventListener(eventName, function (e) {
+    if (matchesSelector(e.target, selector)) {
+      callback(e);
+    }
+  });
+}
+
+// http://beeker.io/jquery-document-ready-equivalent-vanilla-javascript
+function documentReady(callback) {
+  document.readyState === "interactive" || document.readyState === "complete" ? callback() : document.addEventListener("DOMContentLoaded", callback);
 }
 
 // http://stackoverflow.com/a/2117523/1177228
@@ -233,7 +234,7 @@ function page() {
 }
 
 function eventProperties(e) {
-  let target = e.currentTarget;
+  let target = e.target;
   return {
     tag: target.tagName.toLowerCase(),
     id: target.id,
@@ -387,7 +388,7 @@ ahoy.trackView = function (additionalProperties) {
 
 ahoy.trackClicks = function () {
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    let target = e.currentTarget;
+    let target = e.target;
     let properties = eventProperties(e);
     properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = target.href;
