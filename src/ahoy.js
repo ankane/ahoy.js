@@ -335,10 +335,10 @@ ahoy.debug = function (enabled) {
 ahoy.track = function (name, properties) {
   // generate unique id
   let event = {
-    id: generateId(),
     name: name,
     properties: properties || {},
-    time: (new Date()).getTime() / 1000.0
+    time: (new Date()).getTime() / 1000.0,
+    id: generateId()
   };
 
   // wait for createVisit to log
