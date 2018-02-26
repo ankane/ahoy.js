@@ -225,7 +225,7 @@ function trackEventNow(event) {
     let param = csrfParam();
     let token = csrfToken();
     if (param && token) data[param] = token;
-    navigator.sendBeacon(eventsUrl(), objectToFormData(data));
+    window.navigator.sendBeacon(eventsUrl(), objectToFormData(data));
   });
 }
 
