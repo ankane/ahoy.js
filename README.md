@@ -11,28 +11,21 @@ Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/
 
 ## Installation
 
-Download [ahoy.js](https://raw.githubusercontent.com/ankane/ahoy.js/master/ahoy.js) and include it after jQuery.
+Download [ahoy.js](https://unpkg.com/ahoy.js@0.3.0) and include it on your page.
 
 ```html
-<script src="jquery.js"></script>
 <script src="ahoy.js"></script>
 ```
 
-Or use Bower
+Or use Yarn:
 
 ```sh
-bower install ahoy
+yarn add ahoy.js
 ```
 
-Or use npm
+And import it with:
 
-```sh
-npm install ahoy.js
-```
-
-#### Usage with with Node / Rollup / Webpack [master]
-
-```js
+```es6
 import ahoy from 'ahoy.js';
 ```
 
