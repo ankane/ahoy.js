@@ -1,6 +1,7 @@
 ## 0.3.0 [unreleased]
 
 - Removed jQuery dependency
+- Removed support for IE < 9
 
 ## 0.2.1
 
