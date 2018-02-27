@@ -337,31 +337,32 @@ ahoy.track = function (name, properties) {
     id: generateId()
   };
 
-  // wait for createVisit to log
-  documentReady(function() {
-    log(event);
-  });
-
   ready( function () {
     if (!ahoy.getVisitId()) {
       createVisit();
     }
 
-    event.visit_token = ahoy.getVisitId();
-    event.visitor_token = ahoy.getVisitorId();
+    ready( function () {
+      log(event);
 
-    if (canTrackNow()) {
-      trackEventNow(event);
-    } else {
-      eventQueue.push(event);
-      saveEventQueue();
+      event.visit_token = ahoy.getVisitId();
+      event.visitor_token = ahoy.getVisitorId();
 
-      // wait in case navigating to reduce duplicate events
-      setTimeout( function () {
-        trackEvent(event);
-      }, 1000);
-    }
+      if (canTrackNow()) {
+        trackEventNow(event);
+      } else {
+        eventQueue.push(event);
+        saveEventQueue();
+
+        // wait in case navigating to reduce duplicate events
+        setTimeout( function () {
+          trackEvent(event);
+        }, 1000);
+      }
+    });
   });
+
+  return true;
 };
 
 ahoy.trackView = function (additionalProperties) {
