@@ -1,3 +1,8 @@
+## 0.3.1 [unreleased]
+
+- Better handling of visit expiration in JavaScript
+- Wait for successful response to destroy `ahoy_track` cookie
+
 ## 0.3.0
 
 - Removed jQuery dependency
