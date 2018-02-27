@@ -128,7 +128,6 @@ function generateId() {
 }
 
 function saveEventQueue() {
-  // TODO add stringify method for IE 7 and under
   if (canStringify) {
     setCookie("ahoy_events", JSON.stringify(eventQueue), 1);
   }
