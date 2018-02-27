@@ -285,7 +285,8 @@ function createVisit() {
         platform: config.platform,
         landing_page: window.location.href,
         screen_width: window.screen.width,
-        screen_height: window.screen.height
+        screen_height: window.screen.height,
+        js: true
       };
 
       // referrer
