@@ -335,7 +335,8 @@ ahoy.track = function (name, properties) {
     name: name,
     properties: properties || {},
     time: (new Date()).getTime() / 1000.0,
-    id: generateId()
+    id: generateId(),
+    js: true
   };
 
   ready( function () {
