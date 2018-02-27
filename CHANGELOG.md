@@ -2,6 +2,7 @@
 
 - Better handling of visit expiration in JavaScript
 - Wait for successful response to destroy `ahoy_track` cookie
+- Better compatibility with older browsers
 
 ## 0.3.0
 
