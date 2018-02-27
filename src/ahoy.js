@@ -98,7 +98,12 @@ function matchesSelector(element, selector) {
     element.oMatchesSelector ||
     element.webkitMatchesSelector
 
-  return matches.apply(element, [selector]);
+  if (matches) {
+    return matches.apply(element, [selector]);
+  } else {
+    log("Unable to match");
+    return false;
+  }
 }
 
 function onEvent(eventName, selector, callback) {
