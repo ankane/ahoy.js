@@ -7,6 +7,7 @@
  */
 
 import objectToFormData from "object-to-formdata";
+import Cookies from './cookies';
 
 let config = {
   urlPrefix: "",
@@ -55,40 +56,16 @@ function canTrackNow() {
 
 // cookies
 
-// http://www.quirksmode.org/js/cookies.html
 function setCookie(name, value, ttl) {
-  let expires = "";
-  let cookieDomain = "";
-  if (ttl) {
-    let date = new Date();
-    date.setTime(date.getTime() + (ttl * 60 * 1000));
-    expires = "; expires=" + date.toGMTString();
-  }
-  let domain = config.cookieDomain || config.domain;
-  if (domain) {
-    cookieDomain = "; domain=" + domain;
-  }
-  document.cookie = name + "=" + escape(value) + expires + cookieDomain + "; path=/";
+  Cookies.set(name, value, ttl, config.cookieDomain || config.domain);
 }
 
 function getCookie(name) {
-  let i, c;
-  let nameEQ = name + "=";
-  let ca = document.cookie.split(';');
-  for (i = 0; i < ca.length; i++) {
-    c = ca[i];
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1, c.length);
-    }
-    if (c.indexOf(nameEQ) === 0) {
-      return unescape(c.substring(nameEQ.length, c.length));
-    }
-  }
-  return null;
+  return Cookies.get(name);
 }
 
 function destroyCookie(name) {
-  setCookie(name, "", -1);
+  Cookies.set(name, "", -1);
 }
 
 function log(message) {
