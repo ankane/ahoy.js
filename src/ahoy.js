@@ -91,11 +91,14 @@ function ready(callback) {
 }
 
 function matchesSelector(element, selector) {
-  if (element.matches) {
-    return element.matches(selector);
-  } else {
-    return element.msMatchesSelector(selector);
-  }
+  let matches = element.matches ||
+    element.matchesSelector ||
+    element.mozMatchesSelector ||
+    element.msMatchesSelector ||
+    element.oMatchesSelector ||
+    element.webkitMatchesSelector
+
+  return matches.apply(element, [selector]);
 }
 
 function onEvent(eventName, selector, callback) {
