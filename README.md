@@ -182,7 +182,7 @@ ahoy.configure({
   platform: "Web",
   useBeacon: false,
   startOnReady: true,
-  crossDomain: false
+  withCredentials: false
 });
 ```
 
@@ -194,14 +194,13 @@ To track visits across multiple subdomains, use:
 ahoy.configure({cookieDomain: "yourdomain.com"});
 ```
 
-## Cross-domain
+## withCredentials
 
-To track visits across multiple domains, use:
 ```javascript
-ahoy.configure({crossDomain: true});
+ahoy.configure({withCredentials: true});
 ```
 
-This option needs to be set to `true` if you want to track events from a different domain and you need requests to be made using credentials such as cookies, authorization headers or TLS client certificates. Under the hood, ahoy makes the ajax requests by setting the `XMLHttpRequest.withCredentials` property to `true`, which is well-documented right [here](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials).
+Indicates whether or not cross-site Access-Control requests should be made using credentials. This option needs to be set to `true` if you want to track events from a different domain and you need requests to be made using credentials such as cookies, authorization headers or TLS client certificates. Under the hood, ahoy makes the ajax requests by setting the `XMLHttpRequest.withCredentials` property to `true`, which is well-documented right [here](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials). If the `withCredentials` option is set to true, then the `useBeacon` is discarded.
 
 ## Testing
 

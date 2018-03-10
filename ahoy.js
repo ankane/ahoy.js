@@ -20,7 +20,7 @@
     platform: "Web",
     useBeacon: false,
     startOnReady: true,
-    crossDomain: false
+    withCredentials: false
   };
 
   var ahoy = window.ahoy || window.Ahoy || {};
@@ -54,7 +54,7 @@
   }
 
   function canTrackNow() {
-    return (config.useBeacon || config.trackNow) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined";
+    return (config.useBeacon || config.trackNow) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined" && !config.withCredentials;
   }
 
   // cookies
@@ -153,7 +153,7 @@
         type: "POST",
         url: url,
         xhrFields: {
-          withCredentials: config.crossDomain
+          withCredentials: config.withCredentials
         },
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
