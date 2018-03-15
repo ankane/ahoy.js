@@ -1,4 +1,4 @@
-## 0.3.1 [unreleased]
+## 0.3.1
 
 - Better handling of visit expiration in JavaScript
 - Wait for successful response to destroy `ahoy_track` cookie
