@@ -9,6 +9,8 @@
 import objectToFormData from "object-to-formdata";
 import Cookies from './cookies';
 
+let ahoy = window.ahoy || window.Ahoy || {};
+
 let config = {
   urlPrefix: "",
   visitsUrl: "/ahoy/visits",
@@ -17,10 +19,8 @@ let config = {
   page: null,
   platform: "Web",
   useBeacon: true,
-  startOnReady: true
+  startOnReady: ahoy.startOnReady !== false
 };
-
-let ahoy = window.ahoy || window.Ahoy || {};
 
 ahoy.configure = function (options) {
   for (let key in options) {

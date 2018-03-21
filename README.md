@@ -186,6 +186,18 @@ ahoy.configure({
 });
 ```
 
+By default, ahoy will start tracking as soon as the DOM is ready. In order to
+prevent this, you need to set the configuration while the DOM is still loading.
+
+In case this is not possible in your situation (e.g. because you are only loading
+Ahoy after the DOM is ready), you can configure Ahoy not to start immediately by
+
+```
+window.ahoy = { startOnReady: false }
+
+# require ahoy.js here
+```
+
 ## Subdomains
 
 To track visits across multiple subdomains, use:
