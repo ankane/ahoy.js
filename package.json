@@ -4,8 +4,6 @@
   "homepage": "https://github.com/ankane/ahoy.js",
   "description": "Simple, powerful JavaScript analytics",
   "main": "dist/ahoy.js",
-  "module": "src/ahoy.js",
-  "jsnext:main": "src/ahoy.js",
   "scripts": {
     "build": "webpack",
     "lint": "eslint src",
@@ -29,8 +27,7 @@
     "url": "https://github.com/ankane/ahoy.js"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "devDependencies": {
     "babel-loader": "^7.1.2",
