@@ -96,7 +96,7 @@ function matchesSelector(element, selector) {
     element.mozMatchesSelector ||
     element.msMatchesSelector ||
     element.oMatchesSelector ||
-    element.webkitMatchesSelector
+    element.webkitMatchesSelector;
 
   if (matches) {
     return matches.apply(element, [selector]);
