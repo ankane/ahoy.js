@@ -1,3 +1,7 @@
+## 0.3.2
+
+- Fixed module build
+
 ## 0.3.1
 
 - Better handling of visit expiration in JavaScript

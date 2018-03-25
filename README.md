@@ -11,7 +11,7 @@ Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/
 
 ## Installation
 
-Download [ahoy.js](https://unpkg.com/ahoy.js@0.3.1) and include it on your page.
+Download [ahoy.js](https://unpkg.com/ahoy.js) and include it on your page.
 
 ```html
 <script src="ahoy.js"></script>
