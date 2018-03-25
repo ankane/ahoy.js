@@ -1,11 +1,3 @@
-/*
- * Ahoy.js
- * Simple, powerful JavaScript analytics
- * https://github.com/ankane/ahoy.js
- * v0.3.1
- * MIT License
- */
-
 import objectToFormData from "object-to-formdata";
 import Cookies from './cookies';
 

@@ -38,7 +38,6 @@ test('Initialization and visit creation', (t) => {
 
   ahoy.start();
 
-  t.equal(Cookies.get('ahoy_track'), undefined, 'Should remove ahoy_track cookie');
   t.notEqual(Cookies.get('ahoy_visit'), undefined, 'Should have ahoy_visit cookie');
   t.notEqual(Cookies.get('ahoy_visitor'), undefined, 'Should have ahoy_visitor cookie');
 });
