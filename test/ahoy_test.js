@@ -1,6 +1,6 @@
-import test from 'tape';
-import Cookies from 'js-cookie';
-import fauxJax from 'faux-jax';
+var test = require("tape");
+var Cookies = require("js-cookie");
+var fauxJax = require("faux-jax");
 
 const before = test;
 
@@ -18,7 +18,7 @@ test('Defines ahoy', (t) => {
 });
 
 test('Initialization and visit creation', (t) => {
-  t.plan(9);
+  t.plan(8);
 
   t.notEqual(Cookies.get('ahoy_track'), undefined, 'Should have ahoy_track cookie');
   t.equal(Cookies.get('ahoy_visit'), undefined, 'Should not have ahoy_visit cookie');
