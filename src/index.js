@@ -257,7 +257,7 @@ function createVisit() {
   track = getCookie("ahoy_track");
 
   if (config.trackVisits == false) {
-    log("New visit, not tracking");
+    log("Visit tracking disabled");
     setReady();
   } else if (visitId && visitorId && !track) {
     // TODO keep visit alive?
