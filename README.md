@@ -182,9 +182,14 @@ ahoy.configure({
   page: null,
   platform: "Web",
   useBeacon: false,
-  startOnReady: true
+  startOnReady: true,
+  trackVisits: true
 });
 ```
+
+When `trackVisits` is set to `false`, Ahoy.js will not attempt to create a visit
+on the server, but assumes that the server itself will return visit and visitor
+cookies.
 
 ## Subdomains
 
