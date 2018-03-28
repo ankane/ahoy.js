@@ -9,7 +9,8 @@ let config = {
   page: null,
   platform: "Web",
   useBeacon: true,
-  startOnReady: true
+  startOnReady: true,
+  trackVisits: true
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -255,7 +256,10 @@ function createVisit() {
   visitorId = ahoy.getVisitorId();
   track = getCookie("ahoy_track");
 
-  if (visitId && visitorId && !track) {
+  if (config.trackVisits == false) {
+    log("New visit, not tracking");
+    setReady();
+  } else if (visitId && visitorId && !track) {
     // TODO keep visit alive?
     log("Active visit");
     setReady();
