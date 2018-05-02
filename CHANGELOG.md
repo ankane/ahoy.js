@@ -1,3 +1,7 @@
+## 0.3.3 [unreleased]
+
+- Added `cookies` option
+
 ## 0.3.2
 
 - Fixed module build

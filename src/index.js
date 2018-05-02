@@ -10,7 +10,8 @@ let config = {
   platform: "Web",
   useBeacon: true,
   startOnReady: true,
-  trackVisits: true
+  trackVisits: true,
+  cookies: true
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -121,7 +122,7 @@ function generateId() {
 }
 
 function saveEventQueue() {
-  if (canStringify) {
+  if (config.cookies && canStringify) {
     setCookie("ahoy_events", JSON.stringify(eventQueue), 1);
   }
 }
@@ -172,9 +173,11 @@ function sendRequest(url, data, success) {
 
 function eventData(event) {
   let data = {
-    events: [event],
-    visit_token: event.visit_token,
-    visitor_token: event.visitor_token
+    events: [event]
+  };
+  if (config.cookies) {
+    data.visit_token = event.visit_token;
+    data.visitor_token = event.visitor_token;
   };
   delete event.visit_token;
   delete event.visitor_token;
@@ -256,7 +259,7 @@ function createVisit() {
   visitorId = ahoy.getVisitorId();
   track = getCookie("ahoy_track");
 
-  if (config.trackVisits == false) {
+  if (config.cookies === false || config.trackVisits === false) {
     log("Visit tracking disabled");
     setReady();
   } else if (visitId && visitorId && !track) {
@@ -343,7 +346,7 @@ ahoy.track = function (name, properties) {
   };
 
   ready( function () {
-    if (!ahoy.getVisitId()) {
+    if (config.cookies && !ahoy.getVisitId()) {
       createVisit();
     }
 
