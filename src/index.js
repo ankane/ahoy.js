@@ -113,7 +113,7 @@ function documentReady(callback) {
   document.readyState === "interactive" || document.readyState === "complete" ? callback() : document.addEventListener("DOMContentLoaded", callback);
 }
 
-// http://stackoverflow.com/a/2117523/1177228
+// https://stackoverflow.com/a/2117523/1177228
 function generateId() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     let r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);

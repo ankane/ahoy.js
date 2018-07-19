@@ -1,4 +1,4 @@
-// http://www.quirksmode.org/js/cookies.html
+// https://www.quirksmode.org/js/cookies.html
 
 export default {
   set: function (name, value, ttl, domain) {
