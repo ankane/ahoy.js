@@ -11,7 +11,8 @@ let config = {
   useBeacon: true,
   startOnReady: true,
   trackVisits: true,
-  cookies: true
+  cookies: true,
+  requestHeaders: undefined,
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -144,6 +145,26 @@ function CSRFProtection(xhr) {
   if (token) xhr.setRequestHeader("X-CSRF-Token", token);
 }
 
+function addHeaders(xhr) {
+  CSRFProtection(xhr);
+
+  if (!config.requestHeaders) {
+    return;
+  }
+
+  let customHeaders;
+
+  if (Object.prototype.toString.call(config.requestHeaders) === '[object Object]') {
+    customHeaders = config.requestHeaders;
+  } else if (typeof config.requestHeaders === 'function') {
+    customHeaders = config.requestHeaders();
+  }
+
+  for (let key in customHeaders) {
+    xhr.setRequestHeader(key, customHeaders[key]);
+  }
+}
+
 function sendRequest(url, data, success) {
   if (canStringify) {
     if ($) {
@@ -153,7 +174,7 @@ function sendRequest(url, data, success) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        beforeSend: CSRFProtection,
+        beforeSend: addHeaders,
         success: success
       });
     } else {
@@ -165,7 +186,7 @@ function sendRequest(url, data, success) {
           success();
         }
       };
-      CSRFProtection(xhr);
+      addHeaders(xhr);
       xhr.send(JSON.stringify(data));
     }
   }

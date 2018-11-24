@@ -64,6 +64,74 @@ test('Manual tracking', (t) => {
   ahoy.track('Test Request', { foo: 'bar' });
 });
 
+test('Tracking with custom headers', (t) => {
+  t.plan(6);
+
+  fauxJax.install();
+  fauxJax.once('request', function(request) {
+    const event = JSON.parse(request.requestBody).events[0];
+
+    t.equal(request.requestMethod, 'POST', 'Should use POST method');
+    t.equal(request.requestURL, '/ahoy/events', 'Should POST to correct URL');
+    t.equal(request.requestHeaders['X-CSRF-Token'],
+            'test-token-abcdef123456',
+            'Should set CSRF header');
+    t.equal(request.requestHeaders['HeaderA'],
+            'foo',
+            'Should set custom header');
+    t.equal(request.requestHeaders['HeaderB'],
+            'bar',
+            'Should set custom header');
+    t.equal(event.name, 'Test Headers', 'Should set event name property');
+
+    request.respond(200, {}, '{}');
+    fauxJax.restore();
+  });
+
+  ahoy.configure({
+    requestHeaders: {
+      HeaderA: 'foo',
+      HeaderB: 'bar',
+    },
+  });
+
+  ahoy.track('Test Headers');
+});
+
+test('Tracking with a custom headers callback', (t) => {
+  t.plan(6);
+
+  fauxJax.install();
+  fauxJax.once('request', function(request) {
+    const event = JSON.parse(request.requestBody).events[0];
+
+    t.equal(request.requestMethod, 'POST', 'Should use POST method');
+    t.equal(request.requestURL, '/ahoy/events', 'Should POST to correct URL');
+    t.equal(request.requestHeaders['X-CSRF-Token'],
+            'test-token-abcdef123456',
+            'Should set CSRF header');
+    t.equal(request.requestHeaders['HeaderA'],
+            'foo',
+            'Should set custom header');
+    t.equal(request.requestHeaders['HeaderB'],
+            'bar',
+            'Should set custom header');
+    t.equal(event.name, 'Test Headers', 'Should set event name property');
+
+    request.respond(200, {}, '{}');
+    fauxJax.restore();
+  });
+
+  ahoy.configure({
+    requestHeaders: () => ({
+      HeaderA: 'foo',
+      HeaderB: 'bar',
+    }),
+  });
+
+  ahoy.track('Test Headers');
+});
+
 test('View tracking', (t) => {
   t.plan(3);
 
