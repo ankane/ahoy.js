@@ -11,7 +11,8 @@ let config = {
   useBeacon: true,
   startOnReady: true,
   trackVisits: true,
-  cookies: true
+  cookies: true,
+  requestFn: undefined,
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -145,6 +146,11 @@ function CSRFProtection(xhr) {
 }
 
 function sendRequest(url, data, success) {
+  if (config.requestFn) {
+    config.requestFn(url, data, success);
+    return;
+  }
+
   if (canStringify) {
     if ($) {
       $.ajax({
