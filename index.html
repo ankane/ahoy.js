@@ -3,11 +3,13 @@
   <head>
     <title>ahoy.js</title>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="dist/ahoy.js"></script>
     <script>
-      ahoy.configure({visitParams: {brand_id: 1}})
+      ahoy.configure({headers: {"test": "123"}})
       // ahoy.trackAll();
       // ahoy.trackView({hello: "world"});
+      ahoy.reset()
     </script>
   </head>
   <body>

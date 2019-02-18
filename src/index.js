@@ -12,6 +12,7 @@ let config = {
   startOnReady: true,
   trackVisits: true,
   cookies: true,
+  headers: {},
   visitParams: {}
 };
 
@@ -45,8 +46,12 @@ function eventsUrl() {
   return config.urlPrefix + config.eventsUrl;
 }
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 function canTrackNow() {
-  return (config.useBeacon || config.trackNow) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined";
+  return (config.useBeacon || config.trackNow) && isEmpty(config.headers) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined";
 }
 
 // cookies
@@ -155,12 +160,18 @@ function sendRequest(url, data, success) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         beforeSend: CSRFProtection,
-        success: success
+        success: success,
+        headers: config.headers
       });
     } else {
       let xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
+      for (let header in config.headers) {
+        if (config.headers.hasOwnProperty(header)) {
+          xhr.setRequestHeader(header, config.headers[header]);
+        }
+      }
       xhr.onload = function() {
         if (xhr.status === 200) {
           success();
