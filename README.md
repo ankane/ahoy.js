@@ -221,12 +221,12 @@ ahoy.configure({headers: {"Authorization": "Bearer ..."}})
 
 ### Fetch
 
-If you use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) to make requests, Ahoy cookies are not sent to the server by default. You can pass the info in headers with:
+If you use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) to make requests and the JavaScript library is on a different domain or subdomain as the server, Ahoy cookies are not sent to the server by default. You can pass the info in headers with:
 
 ```javascript
 fetch(url, {
   headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
-}
+})
 ```
 
 ## Dev Setup

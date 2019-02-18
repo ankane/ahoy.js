@@ -9,6 +9,11 @@
       ahoy.configure({headers: {"test": "123"}})
       // ahoy.trackAll();
       // ahoy.trackView({hello: "world"});
+
+      fetch("/fetch", {
+        headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
+      })
+
       ahoy.reset()
     </script>
   </head>
