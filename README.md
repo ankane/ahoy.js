@@ -191,12 +191,32 @@ When `trackVisits` is set to `false`, Ahoy.js will not attempt to create a visit
 on the server, but assumes that the server itself will return visit and visitor
 cookies.
 
-## Subdomains
+### Subdomains
 
 To track visits across multiple subdomains, use:
 
 ```javascript
 ahoy.configure({cookieDomain: "yourdomain.com"});
+```
+
+### Users [master]
+
+Ahoy automatically associates users with visits and events if the user is authenticated on the server.
+
+If you use cookies for authentication and the JavaScript library is on the same subdomain as the server, no additional configuration is needed.
+
+If you use cookies and the JavaScript library is on a different domain or subdomain as the server, set:
+
+```javascript
+ahoy.configure({withCredentials: true});
+```
+
+This will [send credentials](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials) such as cookies, authorization headers or TLS client certificates to the server.
+
+If you use headers for authentication, pass them with:
+
+```javascript
+ahoy.configure({headers: {"Authorization": "Bearer ..."}})
 ```
 
 ## Dev Setup

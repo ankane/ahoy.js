@@ -2,6 +2,7 @@
 
 - Added `headers` option
 - Added `visitParams` option
+- Added `withCredentials` option
 
 ## 0.3.3
 

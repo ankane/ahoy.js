@@ -13,7 +13,8 @@ let config = {
   trackVisits: true,
   cookies: true,
   headers: {},
-  visitParams: {}
+  visitParams: {},
+  withCredentials: false
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -51,7 +52,7 @@ function isEmpty(obj) {
 }
 
 function canTrackNow() {
-  return (config.useBeacon || config.trackNow) && isEmpty(config.headers) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined";
+  return (config.useBeacon || config.trackNow) && isEmpty(config.headers) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined" && !config.withCredentials;
 }
 
 // cookies
@@ -161,11 +162,15 @@ function sendRequest(url, data, success) {
         dataType: "json",
         beforeSend: CSRFProtection,
         success: success,
-        headers: config.headers
+        headers: config.headers,
+        xhrFields: {
+          withCredentials: config.withCredentials
+        }
       });
     } else {
       let xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
+      xhr.withCredentials = config.withCredentials;
       xhr.setRequestHeader("Content-Type", "application/json");
       for (let header in config.headers) {
         if (config.headers.hasOwnProperty(header)) {
