@@ -179,7 +179,7 @@ function eventData(event) {
   if (config.cookies) {
     data.visit_token = event.visit_token;
     data.visitor_token = event.visitor_token;
-  };
+  }
   delete event.visit_token;
   delete event.visitor_token;
   return data;
