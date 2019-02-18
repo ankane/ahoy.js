@@ -178,12 +178,16 @@ ahoy.configure({
   urlPrefix: "",
   visitsUrl: "/ahoy/visits",
   eventsUrl: "/ahoy/events",
-  cookieDomain: null,
   page: null,
   platform: "Web",
-  useBeacon: false,
+  useBeacon: true,
   startOnReady: true,
-  trackVisits: true
+  trackVisits: true,
+  cookies: true,
+  cookieDomain: null,
+  headers: {},
+  visitParams: {},
+  withCredentials: false
 });
 ```
 
