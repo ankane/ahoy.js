@@ -1,3 +1,7 @@
+## 0.3.4 [unreleased]
+
+- Added `visitParams` option
+
 ## 0.3.3
 
 - Added `cookies` option

@@ -11,7 +11,8 @@ let config = {
   useBeacon: true,
   startOnReady: true,
   trackVisits: true,
-  cookies: true
+  cookies: true,
+  visitParams: {}
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -294,6 +295,12 @@ function createVisit() {
       // referrer
       if (document.referrer.length > 0) {
         data.referrer = document.referrer;
+      }
+
+      for (let key in config.visitParams) {
+        if (config.visitParams.hasOwnProperty(key)) {
+          data[key] = config.visitParams[key];
+        }
       }
 
       log(data);

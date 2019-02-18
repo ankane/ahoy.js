@@ -3,11 +3,10 @@
   <head>
     <title>ahoy.js</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="ahoy.js"></script>
+    <script src="dist/ahoy.js"></script>
     <script>
-      // ahoy.configure({startOnReady: false})
-      ahoy.trackAll();
+      ahoy.configure({visitParams: {brand_id: 1}})
+      // ahoy.trackAll();
       // ahoy.trackView({hello: "world"});
     </script>
   </head>
