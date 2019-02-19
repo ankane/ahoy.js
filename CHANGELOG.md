@@ -1,4 +1,4 @@
-## 0.3.4 [unreleased]
+## 0.3.4
 
 - Added `headers` option
 - Added `visitParams` option
