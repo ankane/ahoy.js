@@ -92,19 +92,7 @@ function ready(callback) {
 }
 
 function matchesSelector(element, selector) {
-  let matches = element.matches ||
-    element.matchesSelector ||
-    element.mozMatchesSelector ||
-    element.msMatchesSelector ||
-    element.oMatchesSelector ||
-    element.webkitMatchesSelector;
-
-  if (matches) {
-    return matches.apply(element, [selector]);
-  } else {
-    log("Unable to match");
-    return false;
-  }
+  return element.closest(selector);
 }
 
 function onEvent(eventName, selector, callback) {
