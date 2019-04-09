@@ -203,7 +203,7 @@ To track visits across multiple subdomains, use:
 ahoy.configure({cookieDomain: "yourdomain.com"});
 ```
 
-### Users [master]
+### Users
 
 Ahoy automatically associates users with visits and events if the user is authenticated on the server.
 
