@@ -255,7 +255,8 @@ function eventProperties(e) {
     id: presence(target.id),
     "class": presence(target.className),
     page: page(),
-    section: getClosestSection(target)
+    section: getClosestSection(target),
+    value: target.value
   });
 }
 
