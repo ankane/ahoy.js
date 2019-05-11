@@ -14,6 +14,7 @@ let config = {
   cookieDomain: null,
   headers: {},
   visitParams: {},
+  eventParams: {},
   withCredentials: false
 };
 
@@ -359,10 +360,18 @@ ahoy.debug = function (enabled) {
 };
 
 ahoy.track = function (name, properties) {
+  let eventProperties = properties || {}
+
+  for (let key in config.eventParams) {
+    if (config.eventParams.hasOwnProperty(key)) {
+      eventProperties[key] = config.eventParams[key];
+    }
+  }
+
   // generate unique id
   let event = {
     name: name,
-    properties: properties || {},
+    properties: eventProperties,
     time: (new Date()).getTime() / 1000.0,
     id: generateId(),
     js: true
