@@ -360,18 +360,18 @@ ahoy.debug = function (enabled) {
 };
 
 ahoy.track = function (name, properties) {
-  let eventProperties = properties || {}
+  let eventPropertiesObj = properties || {}
 
   for (let key in config.eventParams) {
     if (config.eventParams.hasOwnProperty(key)) {
-      eventProperties[key] = config.eventParams[key];
+      eventPropertiesObj[key] = config.eventParams[key];
     }
   }
 
   // generate unique id
   let event = {
     name: name,
-    properties: eventProperties,
+    properties: eventPropertiesObj,
     time: (new Date()).getTime() / 1000.0,
     id: generateId(),
     js: true
