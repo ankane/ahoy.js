@@ -100,6 +100,17 @@ And sections with:
 </div>
 ```
 
+Or default properties:
+
+```javascript
+ahoy.configure({
+  eventParams: {
+    admin: true,
+    darkMode: false
+  }
+});
+```
+
 These are included in event properties if set.
 
 ### Views
