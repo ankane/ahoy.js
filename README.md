@@ -131,6 +131,20 @@ Properties
 - text - `View Account`
 - href - `/account`
 
+Setting custom properties with `data-ahoy-click-` attributes:
+
+```html
+<a href="/my_product" data-ahoy-click-product_id="123" data-ahoy-click-cat="456">Extra</a>
+```
+
+Properties
+
+- tag - `a`
+- id - `account-link`
+- text - `Extra`
+- href - `/my_product`
+- properties - `{product_id: '123', cat: '456'}`
+
 ### Submits
 
 ```javascript

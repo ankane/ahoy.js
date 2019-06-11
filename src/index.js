@@ -333,6 +333,23 @@ function createVisit() {
   }
 }
 
+function extraClickProperties(element) {
+  let prefix = "data-ahoy-click-";
+
+  let properties = {};
+
+  let attributeNames = element.getAttributeNames();
+  for (let i = 0; i < attributeNames.length; i++) {
+    let attributeName = attributeNames[i];
+    if (attributeName.startsWith(prefix)) {
+      let propertyName = attributeName.substring(prefix.length);
+      properties[propertyName] = element.getAttribute(attributeName);
+    }
+  }
+
+  return properties;
+}
+
 ahoy.getVisitId = ahoy.getVisitToken = function () {
   return getCookie("ahoy_visit");
 };
@@ -419,6 +436,11 @@ ahoy.trackClicks = function () {
     let properties = eventProperties(e);
     properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = target.href;
+
+    let extraProperties = extraClickProperties(target);
+    if (Object.keys(extraProperties).length > 0) {
+      properties.properties = extraProperties;
+    }
     ahoy.track("$click", properties);
   });
 };
