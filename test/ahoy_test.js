@@ -42,6 +42,31 @@ test('Initialization and visit creation', (t) => {
   t.notEqual(Cookies.get('ahoy_visitor'), undefined, 'Should have ahoy_visitor cookie');
 });
 
+test('Ready callback', (t) => {
+  t.plan(1);
+
+  fauxJax.install();
+  fauxJax.once('request', function(request) {
+    t.equal(request.requestMethod, 'POST', 'Should use POST method');
+    t.equal(request.requestURL, '/ahoy/visits', 'Should POST to correct URL');
+    t.equal(request.requestHeaders['X-CSRF-Token'],
+            'test-token-abcdef123456',
+            'Should set CSRF header');
+
+    request.respond(200, { 'Content-Type': 'application/json' }, '{}');
+    fauxJax.restore();
+  });
+
+  let value = false;
+  ahoy.ready(() => {
+    value = true;
+  });
+
+  ahoy.start();
+
+  t.equal(value, true, 'Value should be true');
+});
+
 test('Manual tracking', (t) => {
   t.plan(5);
 

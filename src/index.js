@@ -83,7 +83,7 @@ function setReady() {
   isReady = true;
 }
 
-function ready(callback) {
+ahoy.ready = function (callback) {
   if (isReady) {
     callback();
   } else {
@@ -202,7 +202,7 @@ function eventData(event) {
 }
 
 function trackEvent(event) {
-  ready( function () {
+  ahoy.ready( function () {
     sendRequest(eventsUrl(), eventData(event), function() {
       // remove from queue
       for (let i = 0; i < eventQueue.length; i++) {
@@ -217,7 +217,7 @@ function trackEvent(event) {
 }
 
 function trackEventNow(event) {
-  ready( function () {
+  ahoy.ready( function () {
     let data = eventData(event);
     let param = csrfParam();
     let token = csrfToken();
@@ -368,12 +368,12 @@ ahoy.track = function (name, properties) {
     js: true
   };
 
-  ready( function () {
+  ahoy.ready( function () {
     if (config.cookies && !ahoy.getVisitId()) {
       createVisit();
     }
 
-    ready( function () {
+    ahoy.ready( function () {
       log(event);
 
       event.visit_token = ahoy.getVisitId();
