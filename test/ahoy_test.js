@@ -47,12 +47,6 @@ test('Ready callback', (t) => {
 
   fauxJax.install();
   fauxJax.once('request', function(request) {
-    t.equal(request.requestMethod, 'POST', 'Should use POST method');
-    t.equal(request.requestURL, '/ahoy/visits', 'Should POST to correct URL');
-    t.equal(request.requestHeaders['X-CSRF-Token'],
-            'test-token-abcdef123456',
-            'Should set CSRF header');
-
     request.respond(200, { 'Content-Type': 'application/json' }, '{}');
     fauxJax.restore();
   });
