@@ -54,11 +54,10 @@ test('Ready callback', (t) => {
   let value = false;
   ahoy.ready(() => {
     value = true;
+    t.equal(value, true, 'Value should be true');
   });
 
   ahoy.start();
-
-  t.equal(value, true, 'Value should be true');
 });
 
 test('Manual tracking', (t) => {
