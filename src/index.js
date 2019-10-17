@@ -153,7 +153,7 @@ function CSRFProtection(xhr) {
 
 function sendRequest(url, data, success) {
   if (canStringify) {
-    if ($) {
+    if ($ && $.ajax) {
       $.ajax({
         type: "POST",
         url: url,
