@@ -1,3 +1,7 @@
+## 0.3.5 [unreleased]
+
+- Fixed error with jQuery slim
+
 ## 0.3.4
 
 - Added `headers` option
