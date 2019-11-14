@@ -39,6 +39,6 @@
 - Added `getVisitToken` and `getVisitorToken` functions
 - Added `visitsUrl` and `eventsUrl` options
 
-## 0.1.0
+## 0.1.0 (2015-08-06)
 
 - First versioned release
