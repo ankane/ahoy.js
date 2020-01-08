@@ -134,7 +134,7 @@ Properties
 Setting custom properties with `data-ahoy-click-` attributes:
 
 ```html
-<a href="/my_product" data-ahoy-click-product_id="123" data-ahoy-click-cat="456">Extra</a>
+<a href="/my_product" data-ahoy-click-product-id="123" data-ahoy-click-cat="456">Extra</a>
 ```
 
 Properties

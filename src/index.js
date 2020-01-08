@@ -342,7 +342,7 @@ function extraClickProperties(element) {
   for (let i = 0; i < attributeNames.length; i++) {
     let attributeName = attributeNames[i];
     if (attributeName.startsWith(prefix)) {
-      let propertyName = attributeName.substring(prefix.length);
+      let propertyName = attributeName.substring(prefix.length).replace("-", "_");
       properties[propertyName] = element.getAttribute(attributeName);
     }
   }
