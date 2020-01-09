@@ -335,6 +335,11 @@ function createVisit() {
 
 function extraClickProperties(element) {
   let prefix = "data-ahoy-click-";
+  let jsonAttribute = prefix + 'json';
+
+  if (element.hasAttribute(jsonAttribute)) {
+    return JSON.parse(element.getAttribute(jsonAttribute));
+  }
 
   let properties = {};
 
