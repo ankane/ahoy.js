@@ -443,8 +443,8 @@ ahoy.trackClicks = function () {
     properties.href = target.href;
 
     let extraProperties = extraClickProperties(target);
-    if (Object.keys(extraProperties).length > 0) {
-      properties.properties = extraProperties;
+    for (var propName in extraProperties) {
+      properties[propName] = extraProperties[propName];
     }
     ahoy.track("$click", properties);
   });
