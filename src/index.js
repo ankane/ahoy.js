@@ -117,7 +117,9 @@ function onEvent(eventName, selector, callback) {
 
 // http://beeker.io/jquery-document-ready-equivalent-vanilla-javascript
 function documentReady(callback) {
-  document.readyState === "interactive" || document.readyState === "complete" ? callback() : document.addEventListener("DOMContentLoaded", callback);
+  document.readyState === "interactive" || document.readyState === "complete"
+    ? setTimeout(callback, 0)
+    : document.addEventListener("DOMContentLoaded", callback);
 }
 
 // https://stackoverflow.com/a/2117523/1177228
