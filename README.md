@@ -7,8 +7,6 @@
 
 Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/ankane/ahoy).
 
-[![Build Status](https://travis-ci.org/ankane/ahoy.js.svg?branch=master)](https://travis-ci.org/ankane/ahoy.js)
-
 ## Installation
 
 Download [ahoy.js](https://unpkg.com/ahoy.js) and include it on your page.
@@ -240,10 +238,7 @@ git clone https://github.com/ankane/ahoy.js.git
 cd ahoy.js
 yarn install
 yarn build
-yarn test:local
 ```
-
-And visit `http://localhost:8080/__zuul` in your browser.
 
 ## TODO
 
