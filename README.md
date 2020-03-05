@@ -218,7 +218,7 @@ This will [send credentials](https://developer.mozilla.org/en-US/docs/Web/API/XM
 If you use headers for authentication, pass them with:
 
 ```javascript
-ahoy.configure({headers: {"Authorization": "Bearer ..."}})
+ahoy.configure({headers: {"Authorization": "Bearer ..."}});
 ```
 
 ### Fetch
@@ -228,7 +228,7 @@ If you use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetc
 ```javascript
 fetch(url, {
   headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
-})
+});
 ```
 
 ## Dev Setup
