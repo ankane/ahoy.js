@@ -31,7 +31,7 @@ import ahoy from 'ahoy.js';
 
 When someone lands on your website, they are assigned a visit token and a visitor token.
 
-The visit token expires after 4 hours of inactivity, in which a new visit is created.  Visits are useful for tracking metrics like monthly active users.  The visitor token expires after 2 years.  A `POST` request is sent to `/ahoy/visits` with:
+The visit token expires after 4 hours, in which a new visit is created.  Visits are useful for tracking metrics like monthly active users.  The visitor token expires after 2 years.  A `POST` request is sent to `/ahoy/visits` with:
 
 - visit_token
 - visitor_token
