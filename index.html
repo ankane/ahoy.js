@@ -6,15 +6,15 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="dist/ahoy.js"></script>
     <script>
-      ahoy.configure({headers: {"test": "123"}})
-      // ahoy.trackAll();
+      // ahoy.configure({headers: {"test": "123"}})
+      ahoy.trackAll();
       // ahoy.trackView({hello: "world"});
 
-      fetch("/fetch", {
-        headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
-      })
+      // fetch("/fetch", {
+      //   headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
+      // })
 
-      ahoy.reset()
+      // ahoy.reset()
     </script>
   </head>
   <body>
