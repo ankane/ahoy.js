@@ -1,4 +1,4 @@
-import objectToFormData from "object-to-formdata";
+import { objectToFormData } from "object-to-formdata";
 import Cookies from './cookies';
 
 let config = {

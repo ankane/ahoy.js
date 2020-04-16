@@ -12,7 +12,7 @@
     "test:local": "zuul --local 8080 test/ahoy_test.js"
   },
   "dependencies": {
-    "object-to-formdata": "^1.6.4"
+    "object-to-formdata": ">=3.0.0"
   },
   "keywords": [
     "analytics",
