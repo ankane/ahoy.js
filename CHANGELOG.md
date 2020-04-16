@@ -1,4 +1,4 @@
-## 0.3.5 (unreleased)
+## 0.3.5 (2020-04-16)
 
 - Support `configure` after document is loaded
 - Fixed error with jQuery slim
