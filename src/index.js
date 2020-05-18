@@ -15,7 +15,7 @@ let config = {
   headers: {},
   visitParams: {},
   withCredentials: false,
-  expireToken: 4 * 60 // 4 hours
+  visitTtl: 4 * 60 // 4 hours
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -33,7 +33,7 @@ ahoy.configure(ahoy);
 
 let $ = window.jQuery || window.Zepto || window.$;
 let visitId, visitorId, track;
-let visitTtl = config.expireToken;
+let visitTtl = config.visitTtl;
 let visitorTtl = 2 * 365 * 24 * 60; // 2 years
 let isReady = false;
 let queue = [];
