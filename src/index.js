@@ -14,7 +14,8 @@ let config = {
   cookieDomain: null,
   headers: {},
   visitParams: {},
-  withCredentials: false
+  withCredentials: false,
+  visitTtl: 4 * 60 // 4 hours
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -32,7 +33,7 @@ ahoy.configure(ahoy);
 
 let $ = window.jQuery || window.Zepto || window.$;
 let visitId, visitorId, track;
-let visitTtl = 4 * 60; // 4 hours
+let visitTtl = config.visitTtl;
 let visitorTtl = 2 * 365 * 24 * 60; // 2 years
 let isReady = false;
 let queue = [];
