@@ -16,7 +16,7 @@ let config = {
   visitParams: {},
   withCredentials: false,
   visitTtl: 4 * 60, // default 4 hours
-  visitorTtl: 2 * 365 * 24 * 60, // default 2 years
+  visitorTtl: 2 * 365 * 24 * 60 // default 2 years
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -34,8 +34,6 @@ ahoy.configure(ahoy);
 
 let $ = window.jQuery || window.Zepto || window.$;
 let visitId, visitorId, track;
-let visitTtl = config.visitTtl;
-let visitorTtl = config.visitorTtl;
 let isReady = false;
 let queue = [];
 let canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
@@ -292,7 +290,7 @@ function createVisit() {
   } else {
     if (!visitId) {
       visitId = generateId();
-      setCookie("ahoy_visit", visitId, visitTtl);
+      setCookie("ahoy_visit", visitId, config.visitTtl);
     }
 
     // make sure cookies are enabled
@@ -301,7 +299,7 @@ function createVisit() {
 
       if (!visitorId) {
         visitorId = generateId();
-        setCookie("ahoy_visitor", visitorId, visitorTtl);
+        setCookie("ahoy_visitor", visitorId, config.visitorTtl);
       }
 
       let data = {
