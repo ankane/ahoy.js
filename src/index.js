@@ -15,8 +15,8 @@ let config = {
   headers: {},
   visitParams: {},
   withCredentials: false,
-  visitTtl: 4 * 60, // default 4 hours
-  visitorTtl: 2 * 365 * 24 * 60 // default 2 years
+  visitDuration: 4 * 60, // default 4 hours
+  visitorDuration: 2 * 365 * 24 * 60 // default 2 years
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -290,7 +290,7 @@ function createVisit() {
   } else {
     if (!visitId) {
       visitId = generateId();
-      setCookie("ahoy_visit", visitId, config.visitTtl);
+      setCookie("ahoy_visit", visitId, config.visitDuration);
     }
 
     // make sure cookies are enabled
@@ -299,7 +299,7 @@ function createVisit() {
 
       if (!visitorId) {
         visitorId = generateId();
-        setCookie("ahoy_visitor", visitorId, config.visitorTtl);
+        setCookie("ahoy_visitor", visitorId, config.visitorDuration);
       }
 
       let data = {
