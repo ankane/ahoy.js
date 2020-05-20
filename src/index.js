@@ -15,7 +15,7 @@ let config = {
   headers: {},
   visitParams: {},
   withCredentials: false,
-  visitTtl: 4 * 60 // 4 hours
+  visitTtl: 4 * 60 // default 4 hours
 };
 
 let ahoy = window.ahoy || window.Ahoy || {};
@@ -33,7 +33,6 @@ ahoy.configure(ahoy);
 
 let $ = window.jQuery || window.Zepto || window.$;
 let visitId, visitorId, track;
-let visitTtl = config.visitTtl;
 let visitorTtl = 2 * 365 * 24 * 60; // 2 years
 let isReady = false;
 let queue = [];
@@ -291,7 +290,7 @@ function createVisit() {
   } else {
     if (!visitId) {
       visitId = generateId();
-      setCookie("ahoy_visit", visitId, visitTtl);
+      setCookie("ahoy_visit", visitId, config.visitTtl);
     }
 
     // make sure cookies are enabled
