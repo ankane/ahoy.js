@@ -33,7 +33,7 @@ ahoy.configure(ahoy);
 
 let $ = window.jQuery || window.Zepto || window.$;
 let visitId, visitorId, track;
-let visitorTtl = 2 * 365 * 24 * 60; // 2 years
+let visitorTtl = config.visitTtl;
 let isReady = false;
 let queue = [];
 let canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
