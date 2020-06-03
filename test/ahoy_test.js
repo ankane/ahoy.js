@@ -42,6 +42,24 @@ test('Initialization and visit creation', (t) => {
   t.notEqual(Cookies.get('ahoy_visitor'), undefined, 'Should have ahoy_visitor cookie');
 });
 
+test('Ready callback', (t) => {
+  t.plan(1);
+
+  fauxJax.install();
+  fauxJax.once('request', function(request) {
+    request.respond(200, { 'Content-Type': 'application/json' }, '{}');
+    fauxJax.restore();
+  });
+
+  let value = false;
+  ahoy.ready(() => {
+    value = true;
+    t.equal(value, true, 'Value should be true');
+  });
+
+  ahoy.start();
+});
+
 test('Manual tracking', (t) => {
   t.plan(5);
 
