@@ -233,21 +233,6 @@ fetch(url, {
 });
 ```
 
-## Dev Setup
-
-```sh
-git clone https://github.com/ankane/ahoy.js.git
-cd ahoy.js
-yarn install
-yarn build
-```
-
-## TODO
-
-- Send events in batches
-- Add page and section for automatic events
-- Add `trackContent` method
-
 ## History
 
 View the [changelog](https://github.com/ankane/ahoy.js/blob/master/CHANGELOG.md)
