@@ -1,3 +1,8 @@
+## 0.3.6 (unreleased)
+
+- Added `visitDuration` and `visitorDuration` options
+- Added `ready` function
+
 ## 0.3.5 (2020-04-16)
 
 - Support `configure` after document is loaded
