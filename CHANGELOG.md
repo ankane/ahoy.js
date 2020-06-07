@@ -1,4 +1,4 @@
-## 0.3.6 (unreleased)
+## 0.3.6 (2020-06-07)
 
 - Added `visitDuration` and `visitorDuration` options
 - Added `ready` function

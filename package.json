@@ -1,6 +1,6 @@
 {
   "name": "ahoy.js",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "homepage": "https://github.com/ankane/ahoy.js",
   "description": "Simple, powerful JavaScript analytics",
   "main": "dist/ahoy.js",
