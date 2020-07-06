@@ -129,6 +129,36 @@ Properties
 - text - `View Account`
 - href - `/account`
 
+Setting custom properties with `data-ahoy-click-` attributes:
+
+```html
+<a href="/my_product" data-ahoy-click-product-id="123" data-ahoy-click-cat="456">Extra</a>
+```
+
+Properties
+
+- tag - `a`
+- text - `Extra`
+- href - `/my_product`
+- properties - `{product_id: "123", cat: "456"}`
+
+Setting custom properties from JSON with `data-ahoy-click-json` attribute:
+
+```html
+<a href="/my_product" data-ahoy-click-json="">Extra JSON</a>
+```
+
+<a data-ahoy-click-json="{&quot;some_flag&quot;:true,&quot;some_count&quot;:42}" href="/link">JSON</a>
+
+Properties
+
+- tag - `a`
+- text - `JSON`
+- href - `/link1`
+- properties - `{some_flag: true, some_count: 42}`
+
+JSON allows typing and nesting extra properties, but requires HTML escaping. HTML escaping is automatic in many templating systems like ERB.
+
 ### Submits
 
 ```javascript
