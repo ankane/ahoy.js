@@ -1,4 +1,4 @@
-import { objectToFormData } from "object-to-formdata";
+import { serialize } from "object-to-formdata";
 import Cookies from './cookies';
 
 let config = {
@@ -229,7 +229,7 @@ function trackEventNow(event) {
     // stringify so we keep the type
     data.events_json = JSON.stringify(data.events);
     delete data.events;
-    window.navigator.sendBeacon(eventsUrl(), objectToFormData(data));
+    window.navigator.sendBeacon(eventsUrl(), serialize(data));
   });
 }
 

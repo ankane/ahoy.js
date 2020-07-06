@@ -1,3 +1,7 @@
+## 0.3.7 (unreleased)
+
+- Added support for `object-to-formdata` 4.0
+
 ## 0.3.6 (2020-06-07)
 
 - Added `visitDuration` and `visitorDuration` options
