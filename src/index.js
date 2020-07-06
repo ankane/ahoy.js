@@ -105,6 +105,7 @@ function matchesSelector(element, selector) {
     }else if(element.parentElement){
       return matchesSelector(element.parentElement,selector)
     }
+    return false;
   } else {
     log("Unable to match");
     return false;
