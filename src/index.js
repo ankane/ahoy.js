@@ -101,20 +101,24 @@ function matchesSelector(element, selector) {
 
   if (matches) {
     if(matches.apply(element, [selector])){
-      return true;
+      return element;
     }else if(element.parentElement){
       return matchesSelector(element.parentElement,selector)
     }
-    return false;
+    return null;
   } else {
     log("Unable to match");
-    return false;
+    return null;
   }
 }
 
 function onEvent(eventName, selector, callback) {
   document.addEventListener(eventName, function (e) {
-    if (matchesSelector(e.target, selector)) {
+    var matchedElement = matchesSelector(e.target, selector);
+    if (matchedElement) {
+      if(matchedElement != e.target){
+        e.matchedElement = matchedElement;
+      }
       callback(e);
     }
   });
@@ -258,7 +262,7 @@ function cleanObject(obj) {
 }
 
 function eventProperties(e) {
-  let target = e.target;
+  let target = e.matchedElement || e.target;
   return cleanObject({
     tag: target.tagName.toLowerCase(),
     id: presence(target.id),
