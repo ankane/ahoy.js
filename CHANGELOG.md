@@ -1,4 +1,4 @@
-## 0.3.7 (unreleased)
+## 0.3.7 (2020-07-06)
 
 - Added support for `object-to-formdata` 4.0
 
