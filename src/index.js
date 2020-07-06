@@ -100,7 +100,11 @@ function matchesSelector(element, selector) {
     element.webkitMatchesSelector;
 
   if (matches) {
-    return matches.apply(element, [selector]);
+    if(matches.apply(element, [selector])){
+      return true;
+    }else if(element.parentElement){
+      return matchesSelector(element.parentElement,selector)
+    }
   } else {
     log("Unable to match");
     return false;
