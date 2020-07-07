@@ -261,15 +261,18 @@ function cleanObject(obj) {
   return obj;
 }
 
-function eventProperties(e) {
-  let target = e.matchedElement || e.target;
+function elementProperties(element){
   return cleanObject({
-    tag: target.tagName.toLowerCase(),
-    id: presence(target.id),
-    "class": presence(target.className),
+    tag: element.tagName.toLowerCase(),
+    id: presence(element.id),
+    "class": presence(element.className),
     page: page(),
-    section: getClosestSection(target)
+    section: getClosestSection(element)
   });
+}
+
+function eventProperties(e) {
+  return elementProperties(e.matchedElement || e.target);
 }
 
 function getClosestSection(element) {
@@ -428,10 +431,13 @@ ahoy.trackView = function (additionalProperties) {
 
 ahoy.trackClicks = function () {
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    let target = e.target;
+    let target = e.matchedElement || e.target;
     let properties = eventProperties(e);
     properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = target.href;
+    if(e.matchedElement){
+      properties.clickedElement = elementProperties(e.target);
+    }
     ahoy.track("$click", properties);
   });
 };
