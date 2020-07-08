@@ -252,17 +252,6 @@ function cleanObject(obj) {
   return obj;
 }
 
-function eventProperties(e) {
-  let target = e.target;
-  return cleanObject({
-    tag: target.tagName.toLowerCase(),
-    id: presence(target.id),
-    "class": presence(target.className),
-    page: page(),
-    section: getClosestSection(target)
-  });
-}
-
 function getClosestSection(element) {
   for ( ; element && element !== document; element = element.parentNode) {
     if (element.hasAttribute('data-section')) {
@@ -335,6 +324,17 @@ function createVisit() {
       setReady();
     }
   }
+}
+
+ahoy.eventProperties = function(e) {
+  let target = e.target;
+  return cleanObject({
+    tag: target.tagName.toLowerCase(),
+    id: presence(target.id),
+    "class": presence(target.className),
+    page: page(),
+    section: getClosestSection(target)
+  });
 }
 
 ahoy.getVisitId = ahoy.getVisitToken = function () {
@@ -420,7 +420,7 @@ ahoy.trackView = function (additionalProperties) {
 ahoy.trackClicks = function () {
   onEvent("click", "a, button, input[type=submit]", function (e) {
     let target = e.target;
-    let properties = eventProperties(e);
+    let properties = ahoy.eventProperties(e);
     properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = target.href;
     ahoy.track("$click", properties);
@@ -429,14 +429,14 @@ ahoy.trackClicks = function () {
 
 ahoy.trackSubmits = function () {
   onEvent("submit", "form", function (e) {
-    let properties = eventProperties(e);
+    let properties = ahoy.eventProperties(e);
     ahoy.track("$submit", properties);
   });
 };
 
 ahoy.trackChanges = function () {
   onEvent("change", "input, textarea, select", function (e) {
-    let properties = eventProperties(e);
+    let properties = ahoy.eventProperties(e);
     ahoy.track("$change", properties);
   });
 };
