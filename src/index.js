@@ -100,9 +100,9 @@ function matchesSelector(element, selector) {
     element.webkitMatchesSelector;
 
   if (matches) {
-    if(matches.apply(element, [selector])){
+    if (matches.apply(element, [selector])) {
       return element;
-    }else if(element.parentElement){
+    } else if(element.parentElement) {
       return matchesSelector(element.parentElement,selector)
     }
     return null;
@@ -423,7 +423,7 @@ ahoy.trackView = function (additionalProperties) {
 };
 
 ahoy.trackClicks = function () {
-  // <a id="link" href="/foo"><p id="text">Foo</p></a>
+  // Example: <a id="link" href="/foo"><p id="text">Foo</p></a>
   // e.target on Chrome (and likely every other browser) is not a#link tag but p#text 
   // onEvent will callback with this = a#text and e.target = p#text
   onEvent("click", "a, button, input[type=submit]", function (e) {
@@ -431,9 +431,6 @@ ahoy.trackClicks = function () {
     let properties = elementProperties(this); 
     properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = target.href;
-    if(e.target != this){
-      properties.clickedElement = elementProperties(e.target);
-    }
     ahoy.track("$click", properties);
   });
 };
