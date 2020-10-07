@@ -258,7 +258,7 @@ function cleanObject(obj) {
   return obj;
 }
 
-function eventProperties(event){
+function eventProperties(event) {
   return cleanObject({
     tag: this.tagName.toLowerCase(),
     id: presence(this.id),
