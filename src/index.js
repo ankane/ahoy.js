@@ -102,8 +102,8 @@ function matchesSelector(element, selector) {
   if (matches) {
     if (matches.apply(element, [selector])) {
       return element;
-    } else if(element.parentElement) {
-      return matchesSelector(element.parentElement,selector)
+    } else if (element.parentElement) {
+      return matchesSelector(element.parentElement, selector)
     }
     return null;
   } else {
@@ -259,13 +259,12 @@ function cleanObject(obj) {
 }
 
 function eventProperties(event){
-  let target = this;
   return cleanObject({
-    tag: target.tagName.toLowerCase(),
-    id: presence(target.id),
-    "class": presence(target.className),
+    tag: this.tagName.toLowerCase(),
+    id: presence(this.id),
+    "class": presence(this.className),
     page: page(),
-    section: getClosestSection(target)
+    section: getClosestSection(this)
   });
 }
 
@@ -428,26 +427,23 @@ ahoy.trackClicks = function () {
   // e.target on Chrome (and likely every other browser) is not a#link tag but p#text 
   // onEvent will callback with this = a#text and e.target = p#text
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    let target = this;
-    let properties = eventProperties.call(target,e); 
-    properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
-    properties.href = target.href;
+    let properties = eventProperties.call(this, e);
+    properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
+    properties.href = this.href;
     ahoy.track("$click", properties);
   });
 };
 
 ahoy.trackSubmits = function () {
   onEvent("submit", "form", function (e) {
-    let target = this;
-    let properties = eventProperties.call(target,e);
+    let properties = eventProperties.call(this, e);
     ahoy.track("$submit", properties);
   });
 };
 
 ahoy.trackChanges = function () {
   onEvent("change", "input, textarea, select", function (e) {
-    let target = this;
-    let properties = eventProperties.call(target, e);
+    let properties = eventProperties.call(this, e);
     ahoy.track("$change", properties);
   });
 };
