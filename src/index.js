@@ -258,13 +258,14 @@ function cleanObject(obj) {
   return obj;
 }
 
-function eventProperties(e){
+function eventProperties(event){
+  let target = this;
   return cleanObject({
-    tag: this.tagName.toLowerCase(),
-    id: presence(this.id),
-    "class": presence(this.className),
+    tag: target.tagName.toLowerCase(),
+    id: presence(target.id),
+    "class": presence(target.className),
     page: page(),
-    section: getClosestSection(this)
+    section: getClosestSection(target)
   });
 }
 
@@ -427,23 +428,26 @@ ahoy.trackClicks = function () {
   // e.target on Chrome (and likely every other browser) is not a#link tag but p#text 
   // onEvent will callback with this = a#text and e.target = p#text
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    let properties = eventProperties.call(this,e); 
-    properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
-    properties.href = this.href;
+    let target = this;
+    let properties = eventProperties.call(target,e); 
+    properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
+    properties.href = target.href;
     ahoy.track("$click", properties);
   });
 };
 
 ahoy.trackSubmits = function () {
   onEvent("submit", "form", function (e) {
-    let properties = eventProperties.call(this,e);
+    let target = this;
+    let properties = eventProperties.call(target,e);
     ahoy.track("$submit", properties);
   });
 };
 
 ahoy.trackChanges = function () {
   onEvent("change", "input, textarea, select", function (e) {
-    let properties = eventProperties.call(this, e);
+    let target = this;
+    let properties = eventProperties.call(target, e);
     ahoy.track("$change", properties);
   });
 };
