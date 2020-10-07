@@ -1,3 +1,7 @@
+## 0.3.8 (unreleased)
+
+- Fixed `trackClicks` for nested elements
+
 ## 0.3.7 (2020-07-06)
 
 - Added support for `object-to-formdata` 4.0
