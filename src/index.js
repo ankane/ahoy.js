@@ -423,9 +423,6 @@ ahoy.trackView = function (additionalProperties) {
 };
 
 ahoy.trackClicks = function () {
-  // Example: <a id="link" href="/foo"><p id="text">Foo</p></a>
-  // e.target on Chrome (and likely every other browser) is not a#link tag but p#text 
-  // onEvent will callback with this = a#text and e.target = p#text
   onEvent("click", "a, button, input[type=submit]", function (e) {
     let properties = eventProperties.call(this, e);
     properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
