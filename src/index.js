@@ -114,7 +114,7 @@ function matchesSelector(element, selector) {
 
 function onEvent(eventName, selector, callback) {
   document.addEventListener(eventName, function (e) {
-    var matchedElement = matchesSelector(e.target, selector);
+    let matchedElement = matchesSelector(e.target, selector);
     if (matchedElement) {
       callback.call(matchedElement, e);
     }
