@@ -100,17 +100,23 @@ function matchesSelector(element, selector) {
     element.webkitMatchesSelector;
 
   if (matches) {
-    return matches.apply(element, [selector]);
+    if (matches.apply(element, [selector])) {
+      return element;
+    } else if (element.parentElement) {
+      return matchesSelector(element.parentElement, selector)
+    }
+    return null;
   } else {
     log("Unable to match");
-    return false;
+    return null;
   }
 }
 
 function onEvent(eventName, selector, callback) {
   document.addEventListener(eventName, function (e) {
-    if (matchesSelector(e.target, selector)) {
-      callback(e);
+    let matchedElement = matchesSelector(e.target, selector);
+    if (matchedElement) {
+      callback.call(matchedElement, e);
     }
   });
 }
@@ -253,13 +259,12 @@ function cleanObject(obj) {
 }
 
 function eventProperties(e) {
-  let target = e.target;
   return cleanObject({
-    tag: target.tagName.toLowerCase(),
-    id: presence(target.id),
-    "class": presence(target.className),
+    tag: this.tagName.toLowerCase(),
+    id: presence(this.id),
+    "class": presence(this.className),
     page: page(),
-    section: getClosestSection(target)
+    section: getClosestSection(this)
   });
 }
 
@@ -418,25 +423,27 @@ ahoy.trackView = function (additionalProperties) {
 };
 
 ahoy.trackClicks = function () {
+  // Example: <a id="link" href="/foo"><p id="text">Foo</p></a>
+  // e.target on Chrome (and likely every other browser) is not a#link tag but p#text 
+  // onEvent will callback with this = a#text and e.target = p#text
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    let target = e.target;
-    let properties = eventProperties(e);
-    properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
-    properties.href = target.href;
+    let properties = eventProperties.call(this, e);
+    properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
+    properties.href = this.href;
     ahoy.track("$click", properties);
   });
 };
 
 ahoy.trackSubmits = function () {
   onEvent("submit", "form", function (e) {
-    let properties = eventProperties(e);
+    let properties = eventProperties.call(this, e);
     ahoy.track("$submit", properties);
   });
 };
 
 ahoy.trackChanges = function () {
   onEvent("change", "input, textarea, select", function (e) {
-    let properties = eventProperties(e);
+    let properties = eventProperties.call(this, e);
     ahoy.track("$change", properties);
   });
 };
