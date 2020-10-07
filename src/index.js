@@ -116,10 +116,7 @@ function onEvent(eventName, selector, callback) {
   document.addEventListener(eventName, function (e) {
     var matchedElement = matchesSelector(e.target, selector);
     if (matchedElement) {
-      if(matchedElement != e.target){
-        e.matchedElement = matchedElement;
-      }
-      callback(e);
+      callback.call(matchedElement, e);
     }
   });
 }
@@ -269,10 +266,6 @@ function elementProperties(element){
     page: page(),
     section: getClosestSection(element)
   });
-}
-
-function eventProperties(e) {
-  return elementProperties(e.matchedElement || e.target);
 }
 
 function getClosestSection(element) {
@@ -430,12 +423,15 @@ ahoy.trackView = function (additionalProperties) {
 };
 
 ahoy.trackClicks = function () {
+  // <a id="link" href="/foo"><p id="text">Foo</p></a>
+  // e.target on Chrome (and likely every other browser) is not a#link tag but p#text 
+  // onEvent will callback with this = a#text and e.target = p#text
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    let target = e.matchedElement || e.target;
-    let properties = eventProperties(e);
+    let target = this;
+    let properties = elementProperties(this); 
     properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = target.href;
-    if(e.matchedElement){
+    if(e.target != this){
       properties.clickedElement = elementProperties(e.target);
     }
     ahoy.track("$click", properties);
@@ -444,14 +440,14 @@ ahoy.trackClicks = function () {
 
 ahoy.trackSubmits = function () {
   onEvent("submit", "form", function (e) {
-    let properties = eventProperties(e);
+    let properties = elementProperties(e.target);
     ahoy.track("$submit", properties);
   });
 };
 
 ahoy.trackChanges = function () {
   onEvent("change", "input, textarea, select", function (e) {
-    let properties = eventProperties(e);
+    let properties = elementProperties(e.target);
     ahoy.track("$change", properties);
   });
 };
