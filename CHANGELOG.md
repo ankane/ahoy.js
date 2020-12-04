@@ -1,4 +1,4 @@
-## 0.3.8 (unreleased)
+## 0.3.8 (2020-12-04)
 
 - Fixed `trackClicks` for nested elements
 
