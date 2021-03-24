@@ -25,7 +25,7 @@ Include in your project's dependencies:
 And import it with:
 
 ```es6
-import ahoy from 'ahoy.js';
+import ahoy from '@patient-discovery/ahoy.js';
 ```
 
 ## How It Works
