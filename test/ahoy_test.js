@@ -102,12 +102,12 @@ test('View tracking', (t) => {
 });
 
 test('Click tracking', (t) => {
-  t.plan(6);
+  t.plan(7);
 
   fauxJax.install();
   fauxJax.once('request', function(request) {
     const event = JSON.parse(request.requestBody).events[0];
-    const properties = event.properties
+    const properties = event.properties;
 
     t.equal(request.requestMethod, 'POST', 'Should use POST method');
     t.equal(request.requestURL, '/ahoy/events', 'Should POST to correct URL');
@@ -115,6 +115,7 @@ test('Click tracking', (t) => {
     t.equal(properties.id, 'ahoy-test-link', 'Should set event id property');
     t.equal(properties.section, 'Header', 'Should set event section property');
     t.equal(properties.text, 'Home', 'Should set event text property');
+    t.equal(properties.properties, undefined, 'Should not set extra properties');
 
     request.respond(200, {}, '{}');
     fauxJax.restore();
@@ -122,4 +123,29 @@ test('Click tracking', (t) => {
 
   ahoy.trackClicks();
   document.getElementById('ahoy-test-link').click();
+});
+
+test('Click tracking extra properties', (t) => {
+  t.plan(8);
+
+  fauxJax.install();
+  fauxJax.once('request', function(request) {
+    const event = JSON.parse(request.requestBody).events[0];
+    const properties = event.properties;
+
+    t.equal(request.requestMethod, 'POST', 'Should use POST method');
+    t.equal(request.requestURL, '/ahoy/events', 'Should POST to correct URL');
+    t.equal(event.name, '$click', 'Should set event name property');
+    t.equal(properties.id, 'ahoy-test-link-extra', 'Should set event id property');
+    t.equal(properties.section, 'Header', 'Should set event section property');
+    t.equal(properties.text, 'Extra', 'Should set event text property');
+    t.equal(properties.properties.foo, 'bar', 'Should set extra property "foo"');
+    t.equal(properties.properties.the_answer, '42', 'Should set extra property "the_answer"');
+
+    request.respond(200, {}, '{}');
+    fauxJax.restore();
+  });
+
+  ahoy.trackClicks();
+  document.getElementById('ahoy-test-link-extra').click();
 });

@@ -342,6 +342,28 @@ function createVisit() {
   }
 }
 
+function extraClickProperties(element) {
+  let prefix = "data-ahoy-click-";
+  let jsonAttribute = prefix + 'json';
+
+  if (element.hasAttribute(jsonAttribute)) {
+    return JSON.parse(element.getAttribute(jsonAttribute));
+  }
+
+  let properties = {};
+
+  let attributeNames = element.getAttributeNames();
+  for (let i = 0; i < attributeNames.length; i++) {
+    let attributeName = attributeNames[i];
+    if (attributeName.startsWith(prefix)) {
+      let propertyName = attributeName.substring(prefix.length).replace("-", "_");
+      properties[propertyName] = element.getAttribute(attributeName);
+    }
+  }
+
+  return properties;
+}
+
 ahoy.getVisitId = ahoy.getVisitToken = function () {
   return getCookie("ahoy_visit");
 };
@@ -424,9 +446,15 @@ ahoy.trackView = function (additionalProperties) {
 
 ahoy.trackClicks = function () {
   onEvent("click", "a, button, input[type=submit]", function (e) {
-    let properties = eventProperties.call(this, e);
-    properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
-    properties.href = this.href;
+    let target = e.target;
+    let properties = eventProperties(e);
+    properties.text = properties.tag == "input" ? target.value : (target.textContent || target.innerText || target.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
+    properties.href = target.href;
+
+    let extraProperties = extraClickProperties(target);
+    for (var propName in extraProperties) {
+      properties[propName] = extraProperties[propName];
+    }
     ahoy.track("$click", properties);
   });
 };
