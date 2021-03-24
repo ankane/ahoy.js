@@ -6,6 +6,7 @@
   "main": "dist/ahoy.js",
   "module": "dist/ahoy.esm.js",
   "scripts": {
+    "prepare": "npm run build",
     "build": "rollup -c",
     "lint": "eslint src",
     "test": "zuul test/ahoy_test.js",
