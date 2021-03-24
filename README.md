@@ -252,6 +252,6 @@ To get started with development:
 ```sh
 git clone https://github.com/ankane/ahoy.js.git
 cd ahoy.js
-yarn install
-yarn build
+npm install
+npm build
 ```
