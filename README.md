@@ -15,7 +15,7 @@ Install using npm:
 npm install patient-discovery/ahoy.js
 ```
 
-Include in your project's dependencies:
+Include in your [project's dependencies](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#github-urls):
 ```json
 "dependencies": {
   "@patient-discovery/ahoy.js": "patient-discovery/ahoy.js"
