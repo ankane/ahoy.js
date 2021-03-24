@@ -9,16 +9,17 @@ Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/
 
 ## Installation
 
-Download [ahoy.js](https://unpkg.com/ahoy.js) and include it on your page.
-
-```html
-<script src="ahoy.js"></script>
-```
-
-Or use Yarn:
+Install using npm:
 
 ```sh
-yarn add ahoy.js
+npm install patient-discovery/ahoy.js
+```
+
+Include in your project's dependencies:
+```json
+"dependencies": {
+  "@patient-discovery/ahoy.js": "patient-discovery/ahoy.js"
+}
 ```
 
 And import it with:
