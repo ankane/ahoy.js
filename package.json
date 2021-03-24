@@ -1,7 +1,7 @@
 {
-  "name": "ahoy.js",
-  "version": "0.3.8",
-  "homepage": "https://github.com/ankane/ahoy.js",
+  "name": "@patient-discovery/ahoy.js",
+  "version": "0.3.9",
+  "homepage": "https://github.com/patient-discovery/ahoy.js",
   "description": "Simple, powerful JavaScript analytics",
   "main": "dist/ahoy.js",
   "module": "dist/ahoy.esm.js",
@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ankane/ahoy.js"
+    "url": "https://github.com/patient-discovery/ahoy.js.git"
   },
   "files": [
     "dist"
