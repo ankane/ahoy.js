@@ -9,9 +9,11 @@
     "prepare": "npm run build",
     "build": "rollup -c",
     "lint": "eslint src",
-    "test": "zuul test/ahoy_test.js",
+    "test": "jest",
+    "test:zuul": "zuul test/ahoy_test.js",
     "test:local": "zuul --local 8080 test/ahoy_test.js"
   },
+  "type": "module",
   "dependencies": {
     "object-to-formdata": "^4.0.0"
   },
@@ -32,8 +34,13 @@
     "dist"
   ],
   "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/node": "^7.13.12",
+    "@babel/preset-env": "^7.13.12",
+    "babel-jest": "^26.6.3",
     "eslint": "^5.16.0",
     "faux-jax": "^5.0.6",
+    "jest": "^26.6.3",
     "js-cookie": "^2.2.0",
     "rollup": "^1.12.0",
     "rollup-plugin-buble": "^0.19.6",
