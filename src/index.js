@@ -12,6 +12,8 @@ let config = {
   trackVisits: true,
   cookies: true,
   cookieDomain: null,
+  cookieSameSite: 'Strict',
+  cookieSecure: true,
   headers: {},
   visitParams: {},
   withCredentials: false,
@@ -58,7 +60,7 @@ function canTrackNow() {
 // cookies
 
 function setCookie(name, value, ttl) {
-  Cookies.set(name, value, ttl, config.cookieDomain || config.domain);
+  Cookies.set(name, value, ttl, config.cookieSameSite, config.cookieSecure, config.cookieDomain || config.domain);
 }
 
 function getCookie(name) {
