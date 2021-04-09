@@ -285,3 +285,12 @@ cd ahoy.js
 npm install
 npm build
 ```
+
+## Testing
+
+There are two types of tests you can run:
+
+* jest unit tests (for cookies): `npm run test`
+* zuul browser testing (ahoy functionality): `npm install zuul && npm run test:local`
+
+Jest is the newer way of testing, and zuul has been deprecated.
