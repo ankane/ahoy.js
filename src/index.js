@@ -89,7 +89,7 @@ ahoy.ready = function (callback) {
   } else {
     queue.push(callback);
   }
-}
+};
 
 function matchesSelector(element, selector) {
   let matches = element.matches ||
@@ -103,7 +103,7 @@ function matchesSelector(element, selector) {
     if (matches.apply(element, [selector])) {
       return element;
     } else if (element.parentElement) {
-      return matchesSelector(element.parentElement, selector)
+      return matchesSelector(element.parentElement, selector);
     }
     return null;
   } else {
@@ -258,7 +258,7 @@ function cleanObject(obj) {
   return obj;
 }
 
-function eventProperties(e) {
+function eventProperties() {
   return cleanObject({
     tag: this.tagName.toLowerCase(),
     id: presence(this.id),
