@@ -80,6 +80,8 @@ As a precaution, the server should reject times that do not match:
 
 ### All Events
 
+*Deprecated*
+
 Track all views and clicks with:
 
 ```javascript
@@ -118,7 +120,7 @@ Properties
 ### Clicks
 
 ```javascript
-ahoy.trackClicks();
+ahoy.trackClicks("#link1, #link2");
 ````
 
 Name - `$click`
@@ -134,15 +136,17 @@ Properties
 ### Submits
 
 ```javascript
-ahoy.trackSubmits();
+ahoy.trackSubmits("#form1, #form2");
 ````
 
 Name - `$submit`
 
 ### Changes
 
+*Deprecated*
+
 ```javascript
-ahoy.trackChanges();
+ahoy.trackChanges("#input1, #input2");
 ````
 
 Name - `$change`

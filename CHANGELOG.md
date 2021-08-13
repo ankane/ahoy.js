@@ -1,4 +1,4 @@
-## 0.3.9 (unreleased)
+## 0.3.9 (2021-08-13)
 
 - Added `selector` for `trackClicks` and `trackSubmits`
 - Deprecated `trackAll` and `trackChanges`
