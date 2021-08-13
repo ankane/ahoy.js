@@ -5,7 +5,7 @@ import resolve from "rollup-plugin-node-resolve";
 import { uglify } from "rollup-plugin-uglify";
 
 const banner =
-`/*
+`/*!
  * Ahoy.js
  * ${pkg.description}
  * ${pkg.repository.url}
@@ -13,6 +13,8 @@ const banner =
  * ${pkg.license} License
  */
 `;
+
+const minBanner = `/*! Ahoy.js v${pkg.version} | ${pkg.license} License */`;
 
 const input = "src/index.js";
 const outputName = "ahoy";
@@ -37,13 +39,18 @@ export default [
     output: {
       name: outputName,
       file: "dist/ahoy.min.js",
-      format: "umd"
+      format: "umd",
+      banner: minBanner
     },
     plugins: [
       resolve(),
       commonjs(),
       buble(),
-      uglify()
+      uglify({
+        output: {
+          comments: /^!/
+        }
+      })
     ]
   },
   {
