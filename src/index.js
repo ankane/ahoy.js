@@ -422,8 +422,12 @@ ahoy.trackView = function (additionalProperties) {
   ahoy.track("$view", properties);
 };
 
-ahoy.trackClicks = function () {
-  onEvent("click", "a, button, input[type=submit]", function (e) {
+ahoy.trackClicks = function (selector) {
+  if (selector === undefined) {
+    log("trackClicks will require a selector in 0.4.0");
+    selector = "a, button, input[type=submit]";
+  }
+  onEvent("click", selector, function (e) {
     let properties = eventProperties.call(this, e);
     properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = this.href;
@@ -431,25 +435,35 @@ ahoy.trackClicks = function () {
   });
 };
 
-ahoy.trackSubmits = function () {
-  onEvent("submit", "form", function (e) {
+ahoy.trackSubmits = function (selector) {
+  if (selector === undefined) {
+    log("trackSubmits will require a selector in 0.4.0");
+    selector = "form";
+  }
+  onEvent("submit", selector, function (e) {
     let properties = eventProperties.call(this, e);
     ahoy.track("$submit", properties);
   });
 };
 
-ahoy.trackChanges = function () {
-  onEvent("change", "input, textarea, select", function (e) {
+ahoy.trackChanges = function (selector) {
+  if (selector === undefined) {
+    // put here instead of above to prevent message with trackAll
+    log("trackChanges is deprecated and will be removed in 0.4.0");
+    selector = "input, textarea, select";
+  }
+  onEvent("change", selector, function (e) {
     let properties = eventProperties.call(this, e);
     ahoy.track("$change", properties);
   });
 };
 
 ahoy.trackAll = function() {
+  log("trackAll is deprecated and will be removed in 0.4.0");
   ahoy.trackView();
-  ahoy.trackClicks();
-  ahoy.trackSubmits();
-  ahoy.trackChanges();
+  ahoy.trackClicks("a, button, input[type=submit]");
+  ahoy.trackSubmits("form");
+  ahoy.trackChanges("input, textarea, select");
 };
 
 // push events from queue

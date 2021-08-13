@@ -1,3 +1,8 @@
+## 0.3.9 (unreleased)
+
+- Added `selector` for `trackClicks` and `trackSubmits`
+- Deprecated `trackAll` and `trackChanges`
+
 ## 0.3.8 (2020-12-04)
 
 - Fixed `trackClicks` for nested elements
