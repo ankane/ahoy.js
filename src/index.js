@@ -1,4 +1,3 @@
-import { serialize } from "object-to-formdata";
 import Cookies from './cookies';
 
 let config = {
@@ -53,6 +52,16 @@ function isEmpty(obj) {
 
 function canTrackNow() {
   return (config.useBeacon || config.trackNow) && isEmpty(config.headers) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined" && !config.withCredentials;
+}
+
+function serialize(object) {
+  let data = new FormData();
+  for (let key in object) {
+    if (object.hasOwnProperty(key)) {
+      data.append(key, object[key]);
+    }
+  }
+  return data;
 }
 
 // cookies

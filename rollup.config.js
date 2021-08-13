@@ -53,7 +53,6 @@ export default [
       format: "es",
       banner: banner
     },
-    external: ["object-to-formdata"],
     plugins: [
       buble()
     ]

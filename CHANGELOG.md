@@ -2,6 +2,7 @@
 
 - Added `selector` for `trackClicks` and `trackSubmits`
 - Deprecated `trackAll` and `trackChanges`
+- Removed dependency on object-to-formdata
 
 ## 0.3.8 (2020-12-04)
 
@@ -9,7 +10,7 @@
 
 ## 0.3.7 (2020-07-06)
 
-- Added support for `object-to-formdata` 4.0
+- Added support for object-to-formdata 4.0
 
 ## 0.3.6 (2020-06-07)
 

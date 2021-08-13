@@ -11,9 +11,6 @@
     "test": "zuul test/ahoy_test.js",
     "test:local": "zuul --local 8080 test/ahoy_test.js"
   },
-  "dependencies": {
-    "object-to-formdata": "^4.0.0"
-  },
   "keywords": [
     "analytics",
     "locations",
