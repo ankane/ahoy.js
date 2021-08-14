@@ -7,6 +7,8 @@
 
 Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/ankane/ahoy).
 
+**Ahoy.js 0.4.0 was recently released** - see [how to upgrade](#upgrading)
+
 [![Build Status](https://github.com/ankane/ahoy.js/workflows/build/badge.svg?branch=master)](https://github.com/ankane/ahoy.js/actions)
 
 ## Installation
@@ -78,32 +80,6 @@ As a precaution, the server should reject times that do not match:
 1 minute ago < time <= now
 ```
 
-### All Events
-
-*Deprecated*
-
-Track all views and clicks with:
-
-```javascript
-ahoy.trackAll();
-```
-
-Set the page with:
-
-```javascript
-ahoy.configure({page: "Landing page"});
-```
-
-And sections with:
-
-```html
-<div data-section="Header">
-  <a href="/home">Home</a>
-</div>
-```
-
-These are included in event properties if set.
-
 ### Views
 
 ```javascript
@@ -116,6 +92,13 @@ Properties
 
 - url - `https://www.streamflip.com`
 - title - `Streamflip`
+- page - `/`
+
+The page defaults to the path. Set the page with:
+
+```javascript
+ahoy.configure({page: "Landing page"});
+```
 
 ### Clicks
 
@@ -130,6 +113,7 @@ Properties
 - tag - `a`
 - id - `account-link`
 - class - `btn btn-primary`
+- page - `/`
 - text - `View Account`
 - href - `/account`
 
@@ -141,6 +125,13 @@ ahoy.trackSubmits("#form1, #form2");
 
 Name - `$submit`
 
+Properties
+
+- tag - `form`
+- id - `form1`
+- class - `form-inline`
+- page - `/`
+
 ### Changes
 
 *Deprecated*
@@ -150,6 +141,13 @@ ahoy.trackChanges("#input1, #input2");
 ````
 
 Name - `$change`
+
+Properties
+
+- tag - `input`
+- id - `input1`
+- class - `form-control`
+- page - `/`
 
 ## Development
 
@@ -237,6 +235,27 @@ If you use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetc
 fetch(url, {
   headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
 });
+```
+
+## Upgrading
+
+### 0.4.0
+
+The `trackClicks`, `trackSubmits`, and `trackChanges` functions now require selectors. The previous defaults were:
+
+```javascript
+ahoy.trackClicks("a, button, input[type=submit]");
+ahoy.trackSubmits("form");
+ahoy.trackChanges("input, textarea, select");
+```
+
+The `trackAll` function has been removed. The equivalent code is:
+
+```javascript
+ahoy.trackView();
+ahoy.trackClicks("a, button, input[type=submit]");
+ahoy.trackSubmits("form");
+ahoy.trackChanges("input, textarea, select");
 ```
 
 ## History
