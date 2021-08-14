@@ -464,14 +464,6 @@ ahoy.trackChanges = function (selector) {
   });
 };
 
-ahoy.trackAll = function() {
-  log("trackAll is deprecated and will be removed in 0.4.0");
-  ahoy.trackView();
-  ahoy.trackClicks("a, button, input[type=submit]");
-  ahoy.trackSubmits("form");
-  ahoy.trackChanges("input, textarea, select");
-};
-
 // push events from queue
 try {
   eventQueue = JSON.parse(getCookie("ahoy_events") || "[]");

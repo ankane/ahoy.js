@@ -1,6 +1,7 @@
 ## 0.4.0 (unreleased)
 
 - Required `selector` for `trackClicks`, `trackSubmits`, and `trackChanges`
+- Removed `trackAll` method
 
 ## 0.3.9 (2021-08-13)
 
