@@ -433,8 +433,7 @@ ahoy.trackView = function (additionalProperties) {
 
 ahoy.trackClicks = function (selector) {
   if (selector === undefined) {
-    log("trackClicks will require a selector in 0.4.0");
-    selector = "a, button, input[type=submit]";
+    throw new Error("Missing selector");
   }
   onEvent("click", selector, function (e) {
     let properties = eventProperties.call(this, e);
@@ -446,8 +445,7 @@ ahoy.trackClicks = function (selector) {
 
 ahoy.trackSubmits = function (selector) {
   if (selector === undefined) {
-    log("trackSubmits will require a selector in 0.4.0");
-    selector = "form";
+    throw new Error("Missing selector");
   }
   onEvent("submit", selector, function (e) {
     let properties = eventProperties.call(this, e);
@@ -456,10 +454,9 @@ ahoy.trackSubmits = function (selector) {
 };
 
 ahoy.trackChanges = function (selector) {
+  log("trackChanges is deprecated and will be removed in 0.5.0");
   if (selector === undefined) {
-    // put here instead of above to prevent message with trackAll
-    log("trackChanges is deprecated and will be removed in 0.4.0");
-    selector = "input, textarea, select";
+    throw new Error("Missing selector");
   }
   onEvent("change", selector, function (e) {
     let properties = eventProperties.call(this, e);

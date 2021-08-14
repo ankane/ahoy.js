@@ -1,6 +1,10 @@
+## 0.4.0 (unreleased)
+
+- Required `selector` for `trackClicks`, `trackSubmits`, and `trackChanges`
+
 ## 0.3.9 (2021-08-13)
 
-- Added `selector` for `trackClicks` and `trackSubmits`
+- Added `selector` for `trackClicks`, `trackSubmits`, and `trackChanges`
 - Deprecated `trackAll` and `trackChanges`
 - Removed dependency on object-to-formdata
 
