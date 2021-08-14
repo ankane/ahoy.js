@@ -2,6 +2,7 @@
 
 - Required `selector` for `trackClicks`, `trackSubmits`, and `trackChanges`
 - Removed `trackAll` method
+- Fixed `SameSite` cookie warning
 
 ## 0.3.9 (2021-08-13)
 
