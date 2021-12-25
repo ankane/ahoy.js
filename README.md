@@ -189,6 +189,7 @@ ahoy.configure({
   cookieDomain: null,
   headers: {},
   visitParams: {},
+  beforeSend: null,
   withCredentials: false,
   visitDuration: 4 * 60, // 4 hours
   visitorDuration: 2 * 365 * 24 * 60 // 2 years
