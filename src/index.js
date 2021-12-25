@@ -13,6 +13,7 @@ let config = {
   cookieDomain: null,
   headers: {},
   visitParams: {},
+  beforeSend: null,
   withCredentials: false,
   visitDuration: 4 * 60, // default 4 hours
   visitorDuration: 2 * 365 * 24 * 60 // default 2 years
@@ -170,6 +171,11 @@ function CSRFProtection(xhr) {
   if (token) xhr.setRequestHeader("X-CSRF-Token", token);
 }
 
+function beforeSend(xhr, settings) {
+  CSRFProtection(xhr);
+  if (config.beforeSend) config.beforeSend(xhr, settings);
+}
+
 function sendRequest(url, data, success) {
   if (canStringify) {
     if ($ && $.ajax) {
@@ -179,7 +185,7 @@ function sendRequest(url, data, success) {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        beforeSend: CSRFProtection,
+        beforeSend: beforeSend,
         success: success,
         headers: config.headers,
         xhrFields: {
@@ -201,7 +207,7 @@ function sendRequest(url, data, success) {
           success();
         }
       };
-      CSRFProtection(xhr);
+      beforeSend(xhr, { data: data });
       xhr.send(JSON.stringify(data));
     }
   }
