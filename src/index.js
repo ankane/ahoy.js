@@ -177,12 +177,13 @@ function beforeSend(xhr, settings) {
 }
 
 function sendRequest(url, data, success) {
+  let requestData = JSON.stringify(data);
   if (canStringify) {
     if ($ && $.ajax) {
       $.ajax({
         type: "POST",
         url: url,
-        data: JSON.stringify(data),
+        data: requestData,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         beforeSend: beforeSend,
@@ -207,8 +208,8 @@ function sendRequest(url, data, success) {
           success();
         }
       };
-      beforeSend(xhr, { data: data });
-      xhr.send(JSON.stringify(data));
+      beforeSend(xhr, { data: requestData });
+      xhr.send(requestData);
     }
   }
 }
