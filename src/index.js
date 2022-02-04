@@ -125,6 +125,9 @@ function onEvent(eventName, selector, callback) {
   document.addEventListener(eventName, function (e) {
     let matchedElement = matchesSelector(e.target, selector);
     if (matchedElement) {
+      let toggle = matchedElement.closest("[data-ahoy-skip]");
+      if (toggle && toggle.dataset.ahoySkip !== "false") return;
+
       callback.call(matchedElement, e);
     }
   });
