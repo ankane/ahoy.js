@@ -7,8 +7,6 @@
 
 Use it with any backend. For Rails, check out the [Ahoy gem](https://github.com/ankane/ahoy).
 
-**Ahoy.js 0.4.0 was recently released** - see [how to upgrade](#upgrading)
-
 [![Build Status](https://github.com/ankane/ahoy.js/workflows/build/badge.svg?branch=master)](https://github.com/ankane/ahoy.js/actions)
 
 ## Installation
