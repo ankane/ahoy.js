@@ -71,7 +71,11 @@ function setCookie(name, value, ttl) {
 }
 
 function getCookie(name) {
-  return Cookies.get(name);
+  if (config.cookieDomain) {
+    return Cookies.get(name, { domain: config.cookieDomain });
+  } else {
+    return Cookies.get(name);
+  }
 }
 
 function destroyCookie(name) {
