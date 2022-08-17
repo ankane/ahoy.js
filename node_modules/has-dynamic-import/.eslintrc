@@ -1,0 +1,29 @@
+{
+	"root": true,
+
+	"extends": "@ljharb",
+
+	"env": {
+		"node": true,
+		"browser": true,
+	},
+
+	"rules": {
+		"new-cap": ["error", {
+			"capIsNewExceptions": ["GetIntrinsic"],
+		}],
+	},
+
+	"overrides": [
+		{
+			"files": "./import.js",
+			"extends": "@ljharb/eslint-config/node/14",
+		},
+		{
+			"files": "test/**/*",
+			"rules": {
+				"id-length": 0,
+			},
+		},
+	],
+}

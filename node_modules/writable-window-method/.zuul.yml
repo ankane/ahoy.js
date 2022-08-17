@@ -1,0 +1,6 @@
+ui: tape
+scripts:
+  - http://cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.js
+browsers:
+  - name: ie
+    version: 8

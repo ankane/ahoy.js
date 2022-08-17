@@ -1,0 +1,26 @@
+{
+	"root": true,
+
+	"extends": "@ljharb",
+
+	"rules": {
+		"id-length": 0,
+		"max-statements-per-line": [2, { "max": 2 }],
+		"max-statements": [2, 12],
+		"new-cap": [2, { "capIsNewExceptions": ["RequireObjectCoercible", "ToObject", "ToUint32", "IsCallable"] }],
+		"no-magic-numbers": 0,
+		"strict": 1
+	},
+
+	"overrides": [
+		{
+			"files": "test/**",
+			"rules": {
+				"func-name-matching": 0,
+				"max-lines-per-function": 0,
+				"max-params": [2, 3],
+				"no-invalid-this": 1,
+			},
+		},
+	],
+}

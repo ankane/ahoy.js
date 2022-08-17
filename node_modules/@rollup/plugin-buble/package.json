@@ -1,0 +1,81 @@
+{
+  "name": "@rollup/plugin-buble",
+  "version": "0.21.3",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Compile ES2015 with buble",
+  "license": "MIT",
+  "repository": "rollup/plugins",
+  "author": "Rich Harris <richard.a.harris@gmail.com>",
+  "homepage": "https://github.com/rollup/plugins/tree/master/packages/buble/#readme",
+  "bugs": "https://github.com/rollup/plugins/issues",
+  "main": "dist/rollup-plugin-buble.cjs.js",
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "ci:coverage": "nyc pnpm run test && nyc report --reporter=text-lcov > coverage.lcov",
+    "ci:lint": "pnpm run build && pnpm run lint",
+    "ci:lint:commits": "commitlint --from=${CIRCLE_BRANCH} --to=${CIRCLE_SHA1}",
+    "ci:test": "pnpm run test -- --verbose",
+    "lint": "pnpm run lint:js && pnpm run lint:docs && pnpm run lint:package",
+    "lint:docs": "prettier --single-quote --write README.md",
+    "lint:js": "eslint --fix --cache src test types --ext .js,.ts",
+    "lint:package": "prettier --write package.json --plugin=prettier-plugin-package",
+    "prebuild": "del-cli dist",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "pnpm run lint && pnpm run test",
+    "pretest": "pnpm run build",
+    "test": "ava",
+    "test:ts": "tsc types/index.d.ts test/types.ts --noEmit"
+  },
+  "files": [
+    "dist",
+    "types",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "rollup",
+    "plugin",
+    "buble",
+    "es2015",
+    "npm",
+    "modules"
+  ],
+  "peerDependencies": {
+    "rollup": "^1.20.0||^2.0.0"
+  },
+  "dependencies": {
+    "@rollup/pluginutils": "^3.0.8",
+    "@types/buble": "^0.19.2",
+    "buble": "^0.20.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^3.0.0",
+    "del-cli": "^3.0.0",
+    "rollup": "^2.0.0",
+    "source-map": "^0.7.3",
+    "typescript": "^3.7.4"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "files": [
+      "!**/fixtures/**",
+      "!**/output/**",
+      "!**/helpers/**",
+      "!**/recipes/**",
+      "!**/types.ts"
+    ]
+  },
+  "module": "dist/rollup-plugin-buble.es.js",
+  "types": "types/index.d.ts"
+}
