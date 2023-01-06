@@ -6,10 +6,9 @@ import { terser } from "rollup-plugin-terser";
 
 const banner =
 `/*!
- * Ahoy.js
+ * Ahoy.js v${pkg.version}
  * ${pkg.description}
  * ${pkg.repository.url}
- * v${pkg.version}
  * ${pkg.license} License
  */
 `;
