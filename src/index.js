@@ -281,7 +281,7 @@ function eventProperties() {
 }
 
 function getClosest(element, attribute) {
-  for ( ; element && element !== document; element = element.parentNode) {
+  for (; element && element !== document; element = element.parentNode) {
     if (element.hasAttribute(attribute)) {
       return element.getAttribute(attribute);
     }
@@ -389,12 +389,12 @@ ahoy.track = function (name, properties) {
     js: true
   };
 
-  ahoy.ready( function () {
+  ahoy.ready(function () {
     if (config.cookies && !ahoy.getVisitId()) {
       createVisit();
     }
 
-    ahoy.ready( function () {
+    ahoy.ready(function () {
       log(event);
 
       event.visit_token = ahoy.getVisitId();
@@ -407,7 +407,7 @@ ahoy.track = function (name, properties) {
         saveEventQueue();
 
         // wait in case navigating to reduce duplicate events
-        setTimeout( function () {
+        setTimeout(function () {
           trackEvent(event);
         }, 1000);
       }
@@ -425,7 +425,7 @@ ahoy.trackView = function (additionalProperties) {
   };
 
   if (additionalProperties) {
-    for(const propName in additionalProperties) {
+    for (const propName in additionalProperties) {
       if (Object.prototype.hasOwnProperty.call(additionalProperties, propName)) {
         properties[propName] = additionalProperties[propName];
       }
