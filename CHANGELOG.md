@@ -1,3 +1,7 @@
+## 0.4.1 (unreleased)
+
+- Added support for `data-ahoy-skip` attribute
+
 ## 0.4.0 (2021-08-14)
 
 - Required `selector` for `trackClicks`, `trackSubmits`, and `trackChanges`
