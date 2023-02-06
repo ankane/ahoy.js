@@ -1,6 +1,6 @@
 import Cookies from './cookies';
 
-let config = {
+const config = {
   urlPrefix: "",
   visitsUrl: "/ahoy/visits",
   eventsUrl: "/ahoy/events",
@@ -18,11 +18,11 @@ let config = {
   visitorDuration: 2 * 365 * 24 * 60 // default 2 years
 };
 
-let ahoy = window.ahoy || window.Ahoy || {};
+const ahoy = window.ahoy || window.Ahoy || {};
 
 ahoy.configure = function (options) {
-  for (let key in options) {
-    if (options.hasOwnProperty(key)) {
+  for (const key in options) {
+    if (Object.prototype.hasOwnProperty.call(options, key)) {
       config[key] = options[key];
     }
   }
@@ -31,11 +31,11 @@ ahoy.configure = function (options) {
 // legacy
 ahoy.configure(ahoy);
 
-let $ = window.jQuery || window.Zepto || window.$;
+const $ = window.jQuery || window.Zepto || window.$;
 let visitId, visitorId, track;
 let isReady = false;
-let queue = [];
-let canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
+const queue = [];
+const canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
 let eventQueue = [];
 
 function visitsUrl() {
@@ -55,9 +55,9 @@ function canTrackNow() {
 }
 
 function serialize(object) {
-  let data = new FormData();
-  for (let key in object) {
-    if (object.hasOwnProperty(key)) {
+  const data = new FormData();
+  for (const key in object) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
       data.append(key, object[key]);
     }
   }
@@ -101,7 +101,7 @@ ahoy.ready = function (callback) {
 };
 
 function matchesSelector(element, selector) {
-  let matches = element.matches ||
+  const matches = element.matches ||
     element.matchesSelector ||
     element.mozMatchesSelector ||
     element.msMatchesSelector ||
@@ -123,9 +123,9 @@ function matchesSelector(element, selector) {
 
 function onEvent(eventName, selector, callback) {
   document.addEventListener(eventName, function (e) {
-    let matchedElement = matchesSelector(e.target, selector);
+    const matchedElement = matchesSelector(e.target, selector);
     if (matchedElement) {
-      let skip = getClosest(matchedElement, "data-ahoy-skip");
+      const skip = getClosest(matchedElement, "data-ahoy-skip");
       if (skip !== null && skip !== "false") return;
 
       callback.call(matchedElement, e);
@@ -144,8 +144,8 @@ function documentReady(callback) {
 
 // https://stackoverflow.com/a/2117523/1177228
 function generateId() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    let r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
     return v.toString(16);
   });
 }
@@ -159,17 +159,17 @@ function saveEventQueue() {
 // from rails-ujs
 
 function csrfToken() {
-  let meta = document.querySelector("meta[name=csrf-token]");
+  const meta = document.querySelector("meta[name=csrf-token]");
   return meta && meta.content;
 }
 
 function csrfParam() {
-  let meta = document.querySelector("meta[name=csrf-param]");
+  const meta = document.querySelector("meta[name=csrf-param]");
   return meta && meta.content;
 }
 
 function CSRFProtection(xhr) {
-  let token = csrfToken();
+  const token = csrfToken();
   if (token) xhr.setRequestHeader("X-CSRF-Token", token);
 }
 
@@ -190,16 +190,16 @@ function sendRequest(url, data, success) {
         }
       });
     } else {
-      let xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
       xhr.withCredentials = config.withCredentials;
       xhr.setRequestHeader("Content-Type", "application/json");
-      for (let header in config.headers) {
-        if (config.headers.hasOwnProperty(header)) {
+      for (const header in config.headers) {
+        if (Object.prototype.hasOwnProperty.call(config.headers, header)) {
           xhr.setRequestHeader(header, config.headers[header]);
         }
       }
-      xhr.onload = function() {
+      xhr.onload = function () {
         if (xhr.status === 200) {
           success();
         }
@@ -211,7 +211,7 @@ function sendRequest(url, data, success) {
 }
 
 function eventData(event) {
-  let data = {
+  const data = {
     events: [event]
   };
   if (config.cookies) {
@@ -225,7 +225,7 @@ function eventData(event) {
 
 function trackEvent(event) {
   ahoy.ready( function () {
-    sendRequest(eventsUrl(), eventData(event), function() {
+    sendRequest(eventsUrl(), eventData(event), function () {
       // remove from queue
       for (let i = 0; i < eventQueue.length; i++) {
         if (eventQueue[i].id == event.id) {
@@ -240,9 +240,9 @@ function trackEvent(event) {
 
 function trackEventNow(event) {
   ahoy.ready( function () {
-    let data = eventData(event);
-    let param = csrfParam();
-    let token = csrfToken();
+    const data = eventData(event);
+    const param = csrfParam();
+    const token = csrfToken();
     if (param && token) data[param] = token;
     // stringify so we keep the type
     data.events_json = JSON.stringify(data.events);
@@ -260,8 +260,8 @@ function presence(str) {
 }
 
 function cleanObject(obj) {
-  for (let key in obj) {
-    if (obj.hasOwnProperty(key)) {
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       if (obj[key] === null) {
         delete obj[key];
       }
@@ -319,7 +319,7 @@ function createVisit() {
         setCookie("ahoy_visitor", visitorId, config.visitorDuration);
       }
 
-      let data = {
+      const data = {
         visit_token: visitId,
         visitor_token: visitorId,
         platform: config.platform,
@@ -334,8 +334,8 @@ function createVisit() {
         data.referrer = document.referrer;
       }
 
-      for (let key in config.visitParams) {
-        if (config.visitParams.hasOwnProperty(key)) {
+      for (const key in config.visitParams) {
+        if (Object.prototype.hasOwnProperty.call(config.visitParam, key)) {
           data[key] = config.visitParams[key];
         }
       }
@@ -381,7 +381,7 @@ ahoy.debug = function (enabled) {
 
 ahoy.track = function (name, properties) {
   // generate unique id
-  let event = {
+  const event = {
     name: name,
     properties: properties || {},
     time: (new Date()).getTime() / 1000.0,
@@ -418,15 +418,15 @@ ahoy.track = function (name, properties) {
 };
 
 ahoy.trackView = function (additionalProperties) {
-  let properties = {
+  const properties = {
     url: window.location.href,
     title: document.title,
     page: page()
   };
 
   if (additionalProperties) {
-    for(let propName in additionalProperties) {
-      if (additionalProperties.hasOwnProperty(propName)) {
+    for(const propName in additionalProperties) {
+      if (Object.prototype.hasOwnProperty.call(additionalProperties, propName)) {
         properties[propName] = additionalProperties[propName];
       }
     }
@@ -439,7 +439,7 @@ ahoy.trackClicks = function (selector) {
     throw new Error("Missing selector");
   }
   onEvent("click", selector, function (e) {
-    let properties = eventProperties.call(this, e);
+    const properties = eventProperties.call(this, e);
     properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = this.href;
     ahoy.track("$click", properties);
@@ -451,7 +451,7 @@ ahoy.trackSubmits = function (selector) {
     throw new Error("Missing selector");
   }
   onEvent("submit", selector, function (e) {
-    let properties = eventProperties.call(this, e);
+    const properties = eventProperties.call(this, e);
     ahoy.track("$submit", properties);
   });
 };
@@ -462,7 +462,7 @@ ahoy.trackChanges = function (selector) {
     throw new Error("Missing selector");
   }
   onEvent("change", selector, function (e) {
-    let properties = eventProperties.call(this, e);
+    const properties = eventProperties.call(this, e);
     ahoy.track("$change", properties);
   });
 };
@@ -484,7 +484,7 @@ ahoy.start = function () {
   ahoy.start = function () {};
 };
 
-documentReady(function() {
+documentReady(function () {
   if (config.startOnReady) {
     ahoy.start();
   }

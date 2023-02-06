@@ -5,7 +5,7 @@ export default {
     let expires = "";
     let cookieDomain = "";
     if (ttl) {
-      let date = new Date();
+      const date = new Date();
       date.setTime(date.getTime() + (ttl * 60 * 1000));
       expires = "; expires=" + date.toGMTString();
     }
@@ -16,8 +16,8 @@ export default {
   },
   get: function (name) {
     let i, c;
-    let nameEQ = name + "=";
-    let ca = document.cookie.split(';');
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
     for (i = 0; i < ca.length; i++) {
       c = ca[i];
       while (c.charAt(0) === ' ') {
