@@ -8,7 +8,7 @@
       // ahoy.configure({headers: {"test": "123"}})
       // ahoy.trackAll();
       // ahoy.trackView({hello: "world"});
-      ahoy.trackClicks("#link2");
+      ahoy.trackClicks("a");
 
       // fetch("/fetch", {
       //   headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
@@ -19,6 +19,13 @@
   </head>
   <body>
     <a href="/" id="link1"><span>Link</span></a>
-    <a href="/" id="link2"><span>Link 2</span></a>
+    <div data-ahoy-skip="true" data-section="content">
+      <a href="/" id="link2"><span>Link 2</span></a>
+      <a href="/" id="link3" data-ahoy-skip="false"><span>Link 3</span></a>
+      <div data-ahoy-skip="false">
+        <a href="/" id="link4"><span>Link 4</span></a>
+      </div>
+    </div>
+    <a href="/" id="link5" data-ahoy-skip="true"><span>Link 5</span></a>
   </body>
 </html>
