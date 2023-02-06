@@ -224,7 +224,7 @@ function eventData(event) {
 }
 
 function trackEvent(event) {
-  ahoy.ready( function () {
+  ahoy.ready(function () {
     sendRequest(eventsUrl(), eventData(event), function () {
       // remove from queue
       for (let i = 0; i < eventQueue.length; i++) {
@@ -239,7 +239,7 @@ function trackEvent(event) {
 }
 
 function trackEventNow(event) {
-  ahoy.ready( function () {
+  ahoy.ready(function () {
     const data = eventData(event);
     const param = csrfParam();
     const token = csrfToken();
