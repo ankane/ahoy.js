@@ -145,7 +145,7 @@ function documentReady(callback) {
 // https://stackoverflow.com/a/2117523/1177228
 function generateId() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    const r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
     return v.toString(16);
   });
 }
@@ -228,7 +228,7 @@ function trackEvent(event) {
     sendRequest(eventsUrl(), eventData(event), function () {
       // remove from queue
       for (let i = 0; i < eventQueue.length; i++) {
-        if (eventQueue[i].id == event.id) {
+        if (eventQueue[i].id === event.id) {
           eventQueue.splice(i, 1);
           break;
         }
@@ -440,7 +440,7 @@ ahoy.trackClicks = function (selector) {
   }
   onEvent("click", selector, function (e) {
     const properties = eventProperties.call(this, e);
-    properties.text = properties.tag == "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
+    properties.text = properties.tag === "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = this.href;
     ahoy.track("$click", properties);
   });
