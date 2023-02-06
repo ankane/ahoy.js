@@ -125,8 +125,8 @@ function onEvent(eventName, selector, callback) {
   document.addEventListener(eventName, function (e) {
     let matchedElement = matchesSelector(e.target, selector);
     if (matchedElement) {
-      let toggle = matchedElement.closest("[data-ahoy-skip]");
-      if (toggle && toggle.dataset.ahoySkip !== "false") return;
+      let skip = getClosest(matchedElement, "data-ahoy-skip");
+      if (skip !== null && skip !== "false") return;
 
       callback.call(matchedElement, e);
     }
@@ -276,14 +276,14 @@ function eventProperties() {
     id: presence(this.id),
     "class": presence(this.className),
     page: page(),
-    section: getClosestSection(this)
+    section: getClosest(this, "data-section")
   });
 }
 
-function getClosestSection(element) {
+function getClosest(element, attribute) {
   for ( ; element && element !== document; element = element.parentNode) {
-    if (element.hasAttribute('data-section')) {
-      return element.getAttribute('data-section');
+    if (element.hasAttribute(attribute)) {
+      return element.getAttribute(attribute);
     }
   }
 
