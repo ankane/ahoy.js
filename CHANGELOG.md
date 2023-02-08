@@ -1,4 +1,4 @@
-## 0.4.1 (unreleased)
+## 0.4.1 (2023-02-07)
 
 - Added support for `data-ahoy-skip` attribute
 
