@@ -336,7 +336,7 @@ function createVisit() {
       }
 
       for (const key in config.visitParams) {
-        if (Object.prototype.hasOwnProperty.call(config.visitParam, key)) {
+        if (Object.prototype.hasOwnProperty.call(config.visitParams, key)) {
           data[key] = config.visitParams[key];
         }
       }
