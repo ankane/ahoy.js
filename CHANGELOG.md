@@ -1,3 +1,7 @@
+## 0.4.2 (unreleased)
+
+- Fixed error with `visitParams`
+
 ## 0.4.1 (2023-02-07)
 
 - Added support for `data-ahoy-skip` attribute
