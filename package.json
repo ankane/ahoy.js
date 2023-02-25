@@ -7,8 +7,10 @@
   "main": "./dist/ahoy.js",
   "module": "./dist/ahoy.esm.js",
   "exports": {
-    "require": "./dist/ahoy.js",
-    "import": "./dist/ahoy.esm.js"
+    ".": {
+      "require": "./dist/ahoy.js",
+      "import": "./dist/ahoy.esm.js"
+    }
   },
   "scripts": {
     "build": "rollup -c",
