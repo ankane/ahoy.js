@@ -14,6 +14,7 @@ const config = {
   headers: {},
   visitParams: {},
   withCredentials: false,
+  keepAlive: false,
   visitDuration: 4 * 60, // default 4 hours
   visitorDuration: 2 * 365 * 24 * 60 // default 2 years
 };
@@ -302,7 +303,9 @@ function createVisit() {
     log("Visit tracking disabled");
     setReady();
   } else if (visitId && visitorId && !track) {
-    // TODO keep visit alive?
+    if (config.keepAlive) {
+      setCookie("ahoy_visit", getCookie("ahoy_visit"), config.visitDuration);
+    }
     log("Active visit");
     setReady();
   } else {
