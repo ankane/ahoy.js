@@ -1,3 +1,7 @@
+## 0.4.4 (unreleased)
+
+- Improved UUID generation
+
 ## 0.4.3 (2023-03-11)
 
 - Fixed `exports`
