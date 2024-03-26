@@ -1,4 +1,4 @@
-## 0.4.4 (unreleased)
+## 0.4.4 (2024-03-26)
 
 - Improved UUID generation
 
