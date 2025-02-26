@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   build:
+    resource_class: small
     docker:
       - image: cimg/node:22.14.0
     steps:
@@ -16,6 +17,8 @@ jobs:
       - run:
           name: Build
           command: npm run build
+      - store_artifacts:
+          path: dist
 
 workflows:
   version: 2
