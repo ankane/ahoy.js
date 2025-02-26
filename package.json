@@ -1,15 +1,15 @@
 {
-  "name": "ahoy.js",
+  "name": "yawl",
   "version": "0.4.4",
-  "homepage": "https://github.com/ankane/ahoy.js",
+  "homepage": "https://github.com/edulib-france/yawl",
   "description": "Simple, powerful JavaScript analytics",
   "type": "module",
-  "main": "./dist/ahoy.js",
-  "module": "./dist/ahoy.esm.js",
+  "main": "./dist/yawl.js",
+  "module": "./dist/yawl.esm.js",
   "exports": {
     ".": {
-      "require": "./dist/ahoy.js",
-      "import": "./dist/ahoy.esm.js"
+      "require": "./dist/yawl.js",
+      "import": "./dist/yawl.esm.js"
     }
   },
   "scripts": {
@@ -27,7 +27,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ankane/ahoy.js"
+    "url": "https://github.com/edulib-france/yawl"
   },
   "files": [
     "dist"

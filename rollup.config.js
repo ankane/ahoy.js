@@ -6,17 +6,17 @@ import terser from "@rollup/plugin-terser";
 
 const banner =
 `/*!
- * Ahoy.js v${pkg.version}
+ * yawl v${pkg.version}
  * ${pkg.description}
  * ${pkg.repository.url}
  * ${pkg.license} License
  */
 `;
 
-const minBanner = `/*! Ahoy.js v${pkg.version} | ${pkg.license} License */`;
+const minBanner = `/*! yawl v${pkg.version} | ${pkg.license} License */`;
 
 const input = "src/index.js";
-const outputName = "ahoy";
+const outputName = "yawl";
 
 export default [
   {
@@ -37,7 +37,7 @@ export default [
     input: input,
     output: {
       name: outputName,
-      file: "dist/ahoy.min.js",
+      file: "dist/yawl.min.js",
       format: "umd",
       banner: minBanner
     },
