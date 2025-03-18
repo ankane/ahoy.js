@@ -5,27 +5,30 @@
 
     <script src="dist/yawl.js"></script>
     <script>
-      ahoy.configure({visitParams: {"test": "123"}})
-      // ahoy.trackAll();
-      // ahoy.trackView({hello: "world"});
-      ahoy.trackClicks("a");
+      yawl.configure('cda712a73aff22114b6f62871697ea15')
 
-      // fetch("/fetch", {
-      //   headers: {"Ahoy-Visit": ahoy.getVisitId(), "Ahoy-Visitor": ahoy.getVisitorId()}
-      // })
-
-      // ahoy.reset()
+      yawl.track("click", {
+        article_id: 69,
+        establishment_account_id: 109,
+        name: 'test',
+        user_type: 'client'
+      });
     </script>
   </head>
   <body>
-    <a href="/" id="link1"><span>Link</span></a>
+    <a href="/" id="link1">
+      <span>Link</span></a>
     <div data-ahoy-skip="true" data-section="content">
-      <a href="/" id="link2"><span>Link 2</span></a>
-      <a href="/" id="link3" data-ahoy-skip="false"><span>Link 3</span></a>
+      <a href="/" id="link2">
+        <span>Link 2</span></a>
+      <a href="/" id="link3" data-ahoy-skip="false">
+        <span>Link 3</span></a>
       <div data-ahoy-skip="false">
-        <a href="/" id="link4"><span>Link 4</span></a>
+        <a href="/" id="link4">
+          <span>Link 4</span></a>
       </div>
     </div>
-    <a href="/" id="link5" data-ahoy-skip="true"><span>Link 5</span></a>
+    <a href="/" id="link5" data-ahoy-skip="true">
+      <span>Link 5</span></a>
   </body>
 </html>

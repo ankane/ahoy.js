@@ -1,0 +1,27 @@
+export function setCookie(name: any, value: any, ttl: any): void;
+export function getCookie(name: any): string;
+export function destroyCookie(name: any): void;
+export function getBrowserInfo(): string;
+export function getOSAndVersion(): {
+    os: string;
+    version: string;
+};
+export function getDeviceType(): "Mobile" | "Desktop";
+export function generateId(): string;
+export function getDomainFromUrl(url: any): string;
+export function log(message: any): void;
+export function getQueryParam(param: any): string;
+export function visitsUrl(): string;
+export function eventsUrl(): string;
+export function canTrackNow(): boolean;
+export function csrfToken(): any;
+export function csrfParam(): any;
+export function CSRFProtection(xhr: any): void;
+export function matchesSelector(element: any, selector: any): any;
+export function getClosest(element: any, attribute: any): any;
+export function onEvent(eventName: any, selector: any, callback: any): void;
+export function documentReady(callback: any): void;
+export function page(): any;
+export function presence(str: any): any;
+export function canStringify(): boolean;
+export function cleanObject(obj: any): any;

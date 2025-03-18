@@ -4,16 +4,19 @@
   "homepage": "https://github.com/edulib-france/yawl",
   "description": "Simple, powerful JavaScript analytics",
   "type": "module",
+  "types": "yawl.d.ts",
   "main": "./dist/yawl.js",
   "module": "./dist/yawl.esm.js",
   "exports": {
     ".": {
       "require": "./dist/yawl.js",
-      "import": "./dist/yawl.esm.js"
+      "import": "./dist/yawl.esm.js",
+      "types": "./types/index.d.ts"
     }
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "NODE_ENV=production rollup -c",
+    "build:dev": "NODE_ENV=development rollup -c",
     "lint": "eslint src"
   },
   "keywords": [
@@ -36,8 +39,11 @@
     "@rollup/plugin-buble": "^1.0.1",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-terser": "^0.4.4",
+    "@types/node": "^22.13.10",
     "eslint": "^9.14.0",
-    "rollup": "^4.25.0"
+    "rollup": "^4.25.0",
+    "typescript": "^5.8.2"
   }
 }

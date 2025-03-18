@@ -1,88 +1,133 @@
-import Cookies from './cookies';
+import { config } from "./config";
+import {
+  canStringify,
+  canTrackNow,
+  cleanObject,
+  csrfParam,
+  CSRFProtection,
+  csrfToken,
+  destroyCookie,
+  documentReady,
+  eventsUrl,
+  generateId,
+  getBrowserInfo,
+  getClosest,
+  getCookie,
+  getDeviceType,
+  getDomainFromUrl,
+  getOSAndVersion,
+  getQueryParam,
+  log,
+  onEvent,
+  page,
+  presence,
+  setCookie,
+  visitsUrl,
+} from "./helpers";
 
-const config = {
-  urlPrefix: "",
-  visitsUrl: "/ahoy/visits",
-  eventsUrl: "/ahoy/events",
-  page: null,
-  platform: "Web",
-  useBeacon: true,
-  startOnReady: true,
-  trackVisits: true,
-  cookies: true,
-  cookieDomain: null,
-  headers: {},
-  visitParams: {},
-  withCredentials: false,
-  visitDuration: 4 * 60, // default 4 hours
-  visitorDuration: 2 * 365 * 24 * 60 // default 2 years
-};
+/**
+ * -------------------------- Old public functions ----------------------------------
+ */
 
-const ahoy = window.ahoy || window.Ahoy || {};
+// eslint-disable-next-line no-unused-vars
+function reset() {
+  destroyCookie("ahoy_visit");
+  destroyCookie("ahoy_visitor");
+  destroyCookie("ahoy_events");
+  destroyCookie("ahoy_track");
+  return true;
+}
 
-ahoy.configure = function (options) {
-  for (const key in options) {
-    if (Object.prototype.hasOwnProperty.call(options, key)) {
-      config[key] = options[key];
-    }
+// eslint-disable-next-line no-unused-vars
+function debug(enabled) {
+  if (enabled === false) {
+    destroyCookie("ahoy_debug");
+  } else {
+    setCookie("ahoy_debug", "t", 365 * 24 * 60); // 1 year
   }
-};
+  return true;
+}
 
-// legacy
-ahoy.configure(ahoy);
+// eslint-disable-next-line no-unused-vars
+function trackClicks(selector) {
+  if (selector === undefined) {
+    throw new Error("Missing selector");
+  }
+  onEvent("click", selector, function (e) {
+    const properties = eventProperties.call(this, e);
+    properties.text =
+      properties.tag === "input"
+        ? this.value
+        : (this.textContent || this.innerText || this.innerHTML)
+            .replace(/[\s\r\n]+/g, " ")
+            .trim();
+    properties.href = this.href;
+    yawl.track("$click", properties);
+  });
+}
+
+// eslint-disable-next-line no-unused-vars
+function trackSubmits(selector) {
+  if (selector === undefined) {
+    throw new Error("Missing selector");
+  }
+  onEvent("submit", selector, function (e) {
+    const properties = eventProperties.call(this, e);
+    yawl.track("$submit", properties);
+  });
+}
+
+// eslint-disable-next-line no-unused-vars
+function trackChanges(selector) {
+  log("trackChanges is deprecated and will be removed in 0.5.0");
+  if (selector === undefined) {
+    throw new Error("Missing selector");
+  }
+  onEvent("change", selector, function (e) {
+    const properties = eventProperties.call(this, e);
+    yawl.track("$change", properties);
+  });
+}
+
+/**
+ * -------------------------------------------------------
+ */
+
+/**
+ * @typedef {Object} Yawl
+ * @property {function(string): void} configure - Configures the Yawl analytics library.
+ * @property {function(string, EventProperties=): boolean} track - Tracks a custom event.
+ * @property {function(Object=): void} trackView - Tracks a page view event.
+ */
+/** @type {Yawl} */
+
+const yawl = window.yawl || window.yawl || {};
+
+/**
+ * Configures the Yawl analytics library with your API key.
+ * This function must be called before tracking events.
+ * @param {string} apiKey - Your API key for tracking events.
+ */
+yawl.configure = function (apiKey) {
+  if (!apiKey) {
+    console.error("Erreur: l'argument api_key est requis.");
+    return;
+  }
+  if (typeof apiKey !== "string") {
+    console.error(
+      "Erreur: l'argument api_key doit être une chaine de caractère"
+    );
+    return;
+  }
+  config.apiKey = apiKey;
+};
 
 const $ = window.jQuery || window.Zepto || window.$;
 let visitId, visitorId, track;
 let isReady = false;
 const queue = [];
-const canStringify = typeof(JSON) !== "undefined" && typeof(JSON.stringify) !== "undefined";
+
 let eventQueue = [];
-
-function visitsUrl() {
-  return config.urlPrefix + config.visitsUrl;
-}
-
-function eventsUrl() {
-  return config.urlPrefix + config.eventsUrl;
-}
-
-function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
-}
-
-function canTrackNow() {
-  return (config.useBeacon || config.trackNow) && isEmpty(config.headers) && canStringify && typeof(window.navigator.sendBeacon) !== "undefined" && !config.withCredentials;
-}
-
-function serialize(object) {
-  const data = new FormData();
-  for (const key in object) {
-    if (Object.prototype.hasOwnProperty.call(object, key)) {
-      data.append(key, object[key]);
-    }
-  }
-  return data;
-}
-
-// cookies
-
-function setCookie(name, value, ttl) {
-  Cookies.set(name, value, ttl, config.cookieDomain || config.domain);
-}
-
-function getCookie(name) {
-  return Cookies.get(name);
-}
-
-function destroyCookie(name) {
-  Cookies.set(name, "", -1);
-}
-
-function log(message) {
-  if (getCookie("ahoy_debug")) {
-    window.console.log(message);
-  }
-}
 
 function setReady() {
   let callback;
@@ -92,7 +137,7 @@ function setReady() {
   isReady = true;
 }
 
-ahoy.ready = function (callback) {
+yawl.ready = function (callback) {
   if (isReady) {
     callback();
   } else {
@@ -100,85 +145,18 @@ ahoy.ready = function (callback) {
   }
 };
 
-function matchesSelector(element, selector) {
-  const matches = element.matches ||
-    element.matchesSelector ||
-    element.mozMatchesSelector ||
-    element.msMatchesSelector ||
-    element.oMatchesSelector ||
-    element.webkitMatchesSelector;
-
-  if (matches) {
-    if (matches.apply(element, [selector])) {
-      return element;
-    } else if (element.parentElement) {
-      return matchesSelector(element.parentElement, selector);
-    }
-    return null;
-  } else {
-    log("Unable to match");
-    return null;
-  }
-}
-
-function onEvent(eventName, selector, callback) {
-  document.addEventListener(eventName, function (e) {
-    const matchedElement = matchesSelector(e.target, selector);
-    if (matchedElement) {
-      const skip = getClosest(matchedElement, "data-ahoy-skip");
-      if (skip !== null && skip !== "false") return;
-
-      callback.call(matchedElement, e);
-    }
-  });
-}
-
-// http://beeker.io/jquery-document-ready-equivalent-vanilla-javascript
-function documentReady(callback) {
-  if (document.readyState === "interactive" || document.readyState === "complete") {
-    setTimeout(callback, 0);
-  } else {
-    document.addEventListener("DOMContentLoaded", callback);
-  }
-}
-
-// https://stackoverflow.com/a/2117523/1177228
-function generateId() {
-  if (window.crypto && window.crypto.randomUUID) {
-    return window.crypto.randomUUID();
-  }
-
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
 function saveEventQueue() {
   if (config.cookies && canStringify) {
     setCookie("ahoy_events", JSON.stringify(eventQueue), 1);
   }
 }
 
-// from rails-ujs
-
-function csrfToken() {
-  const meta = document.querySelector("meta[name=csrf-token]");
-  return meta && meta.content;
-}
-
-function csrfParam() {
-  const meta = document.querySelector("meta[name=csrf-param]");
-  return meta && meta.content;
-}
-
-function CSRFProtection(xhr) {
-  const token = csrfToken();
-  if (token) xhr.setRequestHeader("X-CSRF-Token", token);
-}
-
 function sendRequest(url, data, success) {
+  const headers = Object.assign({}, config.headers);
+  if (config.apiKey) {
+    headers["api-key"] = config.apiKey;
+  }
+
   if (canStringify) {
     if ($ && $.ajax) {
       $.ajax({
@@ -188,20 +166,20 @@ function sendRequest(url, data, success) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         beforeSend: CSRFProtection,
-        success: success,
-        headers: config.headers,
+        success,
+        headers,
         xhrFields: {
-          withCredentials: config.withCredentials
-        }
+          withCredentials: config.withCredentials,
+        },
       });
     } else {
       const xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
       xhr.withCredentials = config.withCredentials;
       xhr.setRequestHeader("Content-Type", "application/json");
-      for (const header in config.headers) {
-        if (Object.prototype.hasOwnProperty.call(config.headers, header)) {
-          xhr.setRequestHeader(header, config.headers[header]);
+      for (const header in headers) {
+        if (Object.prototype.hasOwnProperty.call(headers, header)) {
+          xhr.setRequestHeader(header, headers[header]);
         }
       }
       xhr.onload = function () {
@@ -217,7 +195,7 @@ function sendRequest(url, data, success) {
 
 function eventData(event) {
   const data = {
-    events: [event]
+    events: [event],
   };
   if (config.cookies) {
     data.visit_token = event.visit_token;
@@ -229,7 +207,7 @@ function eventData(event) {
 }
 
 function trackEvent(event) {
-  ahoy.ready(function () {
+  yawl.ready(function () {
     sendRequest(eventsUrl(), eventData(event), function () {
       // remove from queue
       for (let i = 0; i < eventQueue.length; i++) {
@@ -244,62 +222,65 @@ function trackEvent(event) {
 }
 
 function trackEventNow(event) {
-  ahoy.ready(function () {
+  yawl.ready(function () {
     const data = eventData(event);
     const param = csrfParam();
     const token = csrfToken();
     if (param && token) data[param] = token;
-    // stringify so we keep the type
-    data.events_json = JSON.stringify(data.events);
-    delete data.events;
-    window.navigator.sendBeacon(eventsUrl(), serialize(data));
-  });
-}
+    const { properties } = event;
+    const { article_id, establishment_account_id, name, user_type } =
+      properties;
+    data.time = new Date();
 
-function page() {
-  return config.page || window.location.pathname;
-}
-
-function presence(str) {
-  return (str && str.length > 0) ? str : null;
-}
-
-function cleanObject(obj) {
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      if (obj[key] === null) {
-        delete obj[key];
-      }
+    if (article_id) {
+      data.article_id = article_id;
     }
-  }
-  return obj;
+
+    if (establishment_account_id) {
+      data.establishment_account_id = establishment_account_id;
+    }
+
+    if (name) {
+      data.name = name;
+    }
+
+    if (user_type) {
+      data.user_type = user_type;
+    }
+
+    delete data.events;
+    delete data.visitor_token;
+
+    fetch(eventsUrl(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": config.apiKey,
+      },
+      body: JSON.stringify({ event: data }),
+    })
+      .then(() => {})
+      .catch((error) => {
+        console.error("Erreur lors de l'envoi de l'événement:", error);
+      });
+  });
 }
 
 function eventProperties() {
   return cleanObject({
     tag: this.tagName.toLowerCase(),
     id: presence(this.id),
-    "class": presence(this.className),
+    class: presence(this.className),
     page: page(),
-    section: getClosest(this, "data-section")
+    section: getClosest(this, "data-section"),
   });
-}
-
-function getClosest(element, attribute) {
-  for (; element && element !== document; element = element.parentNode) {
-    if (element.hasAttribute(attribute)) {
-      return element.getAttribute(attribute);
-    }
-  }
-
-  return null;
 }
 
 function createVisit() {
   isReady = false;
 
-  visitId = ahoy.getVisitId();
-  visitorId = ahoy.getVisitorId();
+  visitId = yawl.getVisitId();
+  visitorId = yawl.getVisitorId();
   track = getCookie("ahoy_track");
 
   if (config.cookies === false || config.trackVisits === false) {
@@ -324,30 +305,37 @@ function createVisit() {
         setCookie("ahoy_visitor", visitorId, config.visitorDuration);
       }
 
+      const { os, version } = getOSAndVersion();
+
       const data = {
         visit_token: visitId,
         visitor_token: visitorId,
         platform: config.platform,
         landing_page: window.location.href,
-        screen_width: window.screen.width,
-        screen_height: window.screen.height,
-        js: true
+        js: true,
+        browser: getBrowserInfo(),
+        user_agent: navigator.userAgent,
+        os,
+        os_version: version,
+        device_type: getDeviceType(),
+        started_at: new Date().toISOString(),
       };
 
       // referrer
-      if (document.referrer.length > 0) {
+      if (document.referrer && document.referrer.length > 0) {
         data.referrer = document.referrer;
+        data.referring_domain = getDomainFromUrl(document.referrer);
       }
 
-      for (const key in config.visitParams) {
-        if (Object.prototype.hasOwnProperty.call(config.visitParams, key)) {
-          data[key] = config.visitParams[key];
-        }
-      }
+      data.utm_campaign = getQueryParam("utm_campaign");
+      data.utm_content = getQueryParam("utm_content");
+      data.utm_medium = getQueryParam("utm_medium");
+      data.utm_source = getQueryParam("utm_source");
+      data.utm_term = getQueryParam("utm_term");
 
       log(data);
 
-      sendRequest(visitsUrl(), data, function () {
+      sendRequest(visitsUrl(), { visit: data }, function () {
         // wait until successful to destroy
         destroyCookie("ahoy_track");
         setReady();
@@ -359,51 +347,67 @@ function createVisit() {
   }
 }
 
-ahoy.getVisitId = ahoy.getVisitToken = function () {
+/**
+ * Retrieves the current visit token from cookies.
+ * @returns {string|null} The visit token, or null if not set.
+ */
+yawl.getVisitId = yawl.getVisitToken = function () {
   return getCookie("ahoy_visit");
 };
 
-ahoy.getVisitorId = ahoy.getVisitorToken = function () {
+/**
+ * Retrieves the current visitor token from cookies.
+ * @returns {string|null} The visitor token, or null if not set.
+ */
+yawl.getVisitorId = yawl.getVisitorToken = function () {
   return getCookie("ahoy_visitor");
 };
 
-ahoy.reset = function () {
-  destroyCookie("ahoy_visit");
-  destroyCookie("ahoy_visitor");
-  destroyCookie("ahoy_events");
-  destroyCookie("ahoy_track");
-  return true;
-};
+/**
+ * @typedef {Object} EventProperties
+ * @property {number} [article_id] - The article ID associated with the event.
+ * @property {number} [establishment_account_id] - The establishment account ID.
+ * @property {string} [name] - The name of the event.
+ * @property {string} [user_type] - The type of user (e.g. "client", "admin", etc.).
+ */
 
-ahoy.debug = function (enabled) {
-  if (enabled === false) {
-    destroyCookie("ahoy_debug");
-  } else {
-    setCookie("ahoy_debug", "t", 365 * 24 * 60); // 1 year
-  }
-  return true;
-};
-
-ahoy.track = function (name, properties) {
+/**
+ * Tracks a custom event.
+ * The event is queued and sent via the configured transport method.
+ *
+ * Example usage:
+ *
+ * yawl.track("click", {
+ *   article_id: 69,
+ *   establishment_account_id: 109,
+ *   name: 'test',
+ *   user_type: 'client'
+ * });
+ *
+ * @param {string} name - The name of the event.
+ * @param {EventProperties} [properties={}] - Additional properties to associate with the event.
+ * @returns {boolean} True if the event is successfully queued for tracking.
+ */
+yawl.track = function (name, properties) {
   // generate unique id
   const event = {
     name: name,
     properties: properties || {},
-    time: (new Date()).getTime() / 1000.0,
+    time: new Date().getTime() / 1000.0,
     id: generateId(),
-    js: true
+    js: true,
   };
 
-  ahoy.ready(function () {
-    if (config.cookies && !ahoy.getVisitId()) {
+  yawl.ready(function () {
+    if (config.cookies && !yawl.getVisitId()) {
       createVisit();
     }
 
-    ahoy.ready(function () {
+    yawl.ready(function () {
       log(event);
 
-      event.visit_token = ahoy.getVisitId();
-      event.visitor_token = ahoy.getVisitorId();
+      event.visit_token = yawl.getVisitId();
+      event.visitor_token = yawl.getVisitorId();
 
       if (canTrackNow()) {
         trackEventNow(event);
@@ -422,54 +426,29 @@ ahoy.track = function (name, properties) {
   return true;
 };
 
-ahoy.trackView = function (additionalProperties) {
+/**
+ * Tracks a page view event.
+ * Automatically collects URL, title, and page path information.
+ * You can pass additional properties to enrich the page view data.
+ * @param {Object} [additionalProperties={}] - Additional properties to include in the page view event.
+ */
+yawl.trackView = function (additionalProperties) {
   const properties = {
     url: window.location.href,
     title: document.title,
-    page: page()
+    page: page(),
   };
 
   if (additionalProperties) {
     for (const propName in additionalProperties) {
-      if (Object.prototype.hasOwnProperty.call(additionalProperties, propName)) {
+      if (
+        Object.prototype.hasOwnProperty.call(additionalProperties, propName)
+      ) {
         properties[propName] = additionalProperties[propName];
       }
     }
   }
-  ahoy.track("$view", properties);
-};
-
-ahoy.trackClicks = function (selector) {
-  if (selector === undefined) {
-    throw new Error("Missing selector");
-  }
-  onEvent("click", selector, function (e) {
-    const properties = eventProperties.call(this, e);
-    properties.text = properties.tag === "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
-    properties.href = this.href;
-    ahoy.track("$click", properties);
-  });
-};
-
-ahoy.trackSubmits = function (selector) {
-  if (selector === undefined) {
-    throw new Error("Missing selector");
-  }
-  onEvent("submit", selector, function (e) {
-    const properties = eventProperties.call(this, e);
-    ahoy.track("$submit", properties);
-  });
-};
-
-ahoy.trackChanges = function (selector) {
-  log("trackChanges is deprecated and will be removed in 0.5.0");
-  if (selector === undefined) {
-    throw new Error("Missing selector");
-  }
-  onEvent("change", selector, function (e) {
-    const properties = eventProperties.call(this, e);
-    ahoy.track("$change", properties);
-  });
+  yawl.track("$view", properties);
 };
 
 // push events from queue
@@ -483,16 +462,16 @@ for (let i = 0; i < eventQueue.length; i++) {
   trackEvent(eventQueue[i]);
 }
 
-ahoy.start = function () {
+yawl.start = function () {
   createVisit();
 
-  ahoy.start = function () {};
+  yawl.start = function () {};
 };
 
 documentReady(function () {
   if (config.startOnReady) {
-    ahoy.start();
+    yawl.start();
   }
 });
 
-export default ahoy;
+export default yawl;
