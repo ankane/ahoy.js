@@ -1,26 +1,27 @@
 # Yawl
 
-Yawl is a simple and powerful JavaScript analytics solution, derived from a fork of [ahoy.js](https://github.com/edulib-france/yawl) by Edulib. It allows you to track visits and other custom events on your website.
+Yawl is a simple and powerful JavaScript analytics solution, derived from a fork of [ahoy.js](https://github.com/ankane/ahoy.js) by Edulib. It allows you to track visits and other custom events on your website.
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Build Scripts](#build-scripts)
-- [License](#license)
+- [Yawl](#yawl)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Via npm](#via-npm)
+    - [From the repository](#from-the-repository)
+  - [Configuration](#configuration)
+  - [Usage](#usage)
+  - [Development](#development)
 
 ## Installation
 
 ### Via npm
 
-**_TO DO (update according to the package name)_**
-
 ```bash
-npm install yawl
+npm install @edulib-france/yawl
 ```
 
-**From the repository**
+### From the repository
 
 Clone the repository and install the dependencies:
 
@@ -30,19 +31,11 @@ cd yawl
 npm install
 ```
 
-**Configuration**
+## Configuration
 
-The default configuration is located in the file src/config.js. In this file you will find, among other things:
+`yawl.configure('api-key')` must be called before tracking events.
 
-• **urlPrefix**: The URL prefix for sending visits and events.
-
-By default, it is defined based on the environment:
-
-• https://staging.edulib.fr for the development/staging environment.
-
-• https://production.edulib.fr for the production environment.
-
-**Usage**
+## Usage
 
 After configuration, you can initialize Yawl and track events on your site. For example, in your HTML file:
 
@@ -71,33 +64,14 @@ After configuration, you can initialize Yawl and track events on your site. For 
 </html>
 ```
 
+## Development
+
 **Build Scripts**
 
-The project uses Rollup to generate the bundles (UMD and ES Modules). The scripts defined in package.json include:
+The project uses Rollup to generate the bundles (UMD and ES Modules).
 
-• **Build**:
-
+**Build**:
 Generates the bundles in the dist/ folder.
-
-**Production**
-
-```
-npm run build
-```
-
-**Development**
-
-```
-npm run build:dev
-```
-
-• **Lint**:
-
-Checks the code with ESLint.
-
-```
-npm run lint
-```
 
 **License**
 
