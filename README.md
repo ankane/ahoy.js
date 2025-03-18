@@ -11,6 +11,7 @@ Yawl is a simple and powerful JavaScript analytics solution, derived from a fork
     - [From the repository](#from-the-repository)
   - [Configuration](#configuration)
   - [Usage](#usage)
+    - [Events](#events)
   - [Development](#development)
 
 ## Installation
@@ -63,6 +64,17 @@ After configuration, you can initialize Yawl and track events on your site. For 
   </body>
 </html>
 ```
+
+### Events
+
+| Paramètre                  | Type     | Description                          |
+| -------------------------- | -------- | ------------------------------------ |
+| `user_type`                | String   | Type d'utilisateur.                  |
+| `establishment_account_id` | Integer  | Identifiant du compte établissement. |
+| `ean`                      | String   | Identifiant de l'article.            |
+| `name`                     | String   | Nom de l'événement.                  |
+| `properties`               | Object   | Propriétés supplémentaires.          |
+| `time`                     | DateTime | Heure de l'événement.                |
 
 ## Development
 
