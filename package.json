@@ -1,6 +1,6 @@
 {
-  "name": "yawl",
-  "version": "0.4.4",
+  "name": "@edulib-france/yawl",
+  "version": "0.0.1",
   "homepage": "https://github.com/edulib-france/yawl",
   "description": "Simple, powerful JavaScript analytics",
   "type": "module",
@@ -25,12 +25,13 @@
     "referral"
   ],
   "authors": [
-    "ankane"
+    "ankane",
+    "edulib-france"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/edulib-france/yawl"
+    "url": "git+https://github.com/edulib-france/yawl.git"
   },
   "files": [
     "dist"
