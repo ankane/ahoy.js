@@ -34,7 +34,7 @@ npm install
 
 ## Configuration
 
-`yawl.configure('api-key')` must be called before tracking events.
+`yawl.configure({ apiKey: 'your_api_key' })` must be called before tracking events.
 
 ## Usage
 
@@ -48,14 +48,19 @@ After configuration, you can initialize Yawl and track events on your site. For 
     <script src="dist/yawl.js"></script>
     <script>
       // Initialize Yawl with your API key
-      yawl.configure('your_api_key');
+      yawl.configure({ apiKey: 'your_api_key' });
 
       // Example of tracking a custom event
       yawl.track("click", {
-        article_id: 69,
-        establishment_account_id: 109,
-        name: 'test',
-        user_type: 'client'
+        ean: 12323938432,
+        establishment_account_id: 456,
+        name: 'New Event',
+        properties: {
+          key: 'value'
+        },
+        time: '2023-10-01T12:00:00Z',
+        user_type: 'student',
+        visit_token: '789'
       });
     </script>
   </head>
@@ -67,14 +72,35 @@ After configuration, you can initialize Yawl and track events on your site. For 
 
 ### Events
 
-| Paramètre                  | Type     | Description                          |
-| -------------------------- | -------- | ------------------------------------ |
-| `user_type`                | String   | Type d'utilisateur.                  |
-| `establishment_account_id` | Integer  | Identifiant du compte établissement. |
-| `ean`                      | String   | Identifiant de l'article.            |
-| `name`                     | String   | Nom de l'événement.                  |
-| `properties`               | Object   | Propriétés supplémentaires.          |
-| `time`                     | DateTime | Heure de l'événement.                |
+The `yawl.track` function is used to track custom events on your website. It sends event data to the analytics backend for processing.
+
+Here are the parameters for the `track` event:
+
+| Parameter                  | Type     | Description                                 |
+| -------------------------- | -------- | ------------------------------------------- |
+| `ean`                      | Integer  | The article ID associated with the event.   |
+| `establishment_account_id` | Integer  | The establishment account ID.               |
+| `name`                     | String   | The name of the event (e.g., "click").      |
+| `properties`               | Object   | Additional properties related to the event. |
+| `time`                     | DateTime | The time of when the event occurred.        |
+| `user_type`                | String   | The type of user (e.g., "client", "admin"). |
+| `visit_token`              | String   | The token associated with the visit.        |
+
+Example:
+
+```javascript
+yawl.track('click', {
+  ean: 12323938432,
+  establishment_account_id: 456,
+  name: 'New Event',
+  properties: {
+    key: 'value',
+  },
+  time: '2023-10-01T12:00:00Z',
+  user_type: 'student',
+  visit_token: '789',
+});
+```
 
 ## Development
 

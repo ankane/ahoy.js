@@ -3,15 +3,15 @@ import commonjs from "@rollup/plugin-commonjs";
 import pkg from "./package.json" with { type: "json" };
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
-import replace from '@rollup/plugin-replace';
+import replace from "@rollup/plugin-replace";
 
-const banner =
-  `/*!
- * yawl v${pkg.version}
- * ${pkg.description}
- * ${pkg.repository.url}
- * ${pkg.license} License
- */
+const banner = 
+`/*!
+  * yawl v${pkg.version}
+  * ${pkg.description}
+  * ${pkg.repository.url}
+  * ${pkg.license} License
+  */
 `;
 
 const minBanner = `/*! yawl v${pkg.version} | ${pkg.license} License */`;
