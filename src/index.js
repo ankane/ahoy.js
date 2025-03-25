@@ -101,7 +101,7 @@ function trackChanges(selector) {
  */
 /** @type {Yawl} */
 
-const yawl = window.yawl || window.yawl || {};
+const yawl = window.yawl || {};
 
 /**
  * Configures the Yawl analytics library with your API key.
