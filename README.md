@@ -51,10 +51,9 @@ After configuration, you can initialize Yawl and track events on your site. For 
       yawl.configure({ apiKey: 'your_api_key' });
 
       // Example of tracking a custom event
-      yawl.track("click", {
+      yawl.track('New Event', {
         ean: 12323938432,
         establishment_account_id: 456,
-        name: 'New Event',
         properties: {
           key: 'value'
         },
@@ -89,10 +88,9 @@ Here are the parameters for the `track` event:
 Example:
 
 ```javascript
-yawl.track('click', {
+yawl.track('New Event', {
   ean: 12323938432,
   establishment_account_id: 456,
-  name: 'New Event',
   properties: {
     key: 'value',
   },

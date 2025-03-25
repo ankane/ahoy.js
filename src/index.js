@@ -92,21 +92,19 @@ function trackChanges(selector) {
 /**
  * -------------------------------------------------------
  */
-
 /**
- * @typedef {Object} Yawl
- * @property {function({ apiKey: string }): void} configure - Configures the Yawl analytics library.
- * @property {function(string, EventProperties=): boolean} track - Tracks a custom event.
- * @property {function(Object=): void} trackView - Tracks a page view event.
+ * Yawl Analytics Library
+ * @namespace Yawl
  */
-/** @type {Yawl} */
-
-const yawl = window.yawl || window.yawl || {};
+const yawl = window.yawl || {};
 
 /**
  * Configures the Yawl analytics library with your API key.
  * This function must be called before tracking events.
- * @param {{ apiKey: string }} configObj - An object containing your API key for tracking events.
+ * @function
+ * @memberof Yawl
+ * @param {Object} config - Configuration options for the Yawl library.
+ * @param {string} config.apiKey - The API key for initializing the analytics tracking.
  */
 yawl.configure = function ({ apiKey }) {
   if (!apiKey) {
@@ -378,12 +376,16 @@ yawl.getVisitorId = yawl.getVisitorToken = function () {
  * Tracks a custom event.
  * The event is queued and sent via the configured transport method.
  *
- * Example usage:
+ * @function
+ * @memberof Yawl
+ * @param {string} name - The name of the event to track.
+ * @param {EventProperties} [properties={}] - Additional properties to associate with the event.
+ * @returns {boolean} True if the event is successfully queued for tracking.
  *
- * yawl.track("click", {
+ * @example
+ * yawl.track('New Event', {
  *  ean: 12323938432,
  *  establishment_account_id: 456,
- *  name: 'New Event',
  *  properties: {
  *    key: 'value'
  *  },
@@ -391,10 +393,6 @@ yawl.getVisitorId = yawl.getVisitorToken = function () {
  *  user_type: 'student',
  *  visit_token: 789,
  * });
- *
- * @param {string} name - The name of the event.
- * @param {EventProperties} [properties={}] - Additional properties to associate with the event.
- * @returns {boolean} True if the event is successfully queued for tracking.
  */
 yawl.track = function (name, properties) {
   // generate unique id
@@ -438,6 +436,9 @@ yawl.track = function (name, properties) {
  * Tracks a page view event.
  * Automatically collects URL, title, and page path information.
  * You can pass additional properties to enrich the page view data.
+ *
+ * @function
+ * @memberof Yawl
  * @param {Object} [additionalProperties={}] - Additional properties to include in the page view event.
  */
 yawl.trackView = function (additionalProperties) {
