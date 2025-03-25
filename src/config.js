@@ -1,6 +1,5 @@
 export const config = {
-  urlPrefix:
-    ENV === "production" ? "https://edulib.fr" : "https://staging.edulib.fr",
+  urlPrefix: "https://staging.edulib.fr",
   visitsUrl: "/ahoy/visits",
   eventsUrl: "/ahoy/events",
   page: null,

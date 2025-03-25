@@ -105,8 +105,9 @@ const yawl = window.yawl || {};
  * @memberof Yawl
  * @param {Object} config - Configuration options for the Yawl library.
  * @param {string} config.apiKey - The API key for initializing the analytics tracking.
+ * @param {'prod' | 'staging'=} config.env - The API key for initializing the analytics tracking.
  */
-yawl.configure = function ({ apiKey }) {
+yawl.configure = function ({ apiKey, env = "staging" }) {
   if (!apiKey) {
     console.error("Erreur: l'argument api_key est requis.");
     return;
@@ -118,6 +119,8 @@ yawl.configure = function ({ apiKey }) {
     return;
   }
   config.apiKey = apiKey;
+  config.urlPrefix =
+    env === "prod" ? "https://edulib.fr" : "https://staging.edulib.fr";
 };
 
 const $ = window.jQuery || window.Zepto || window.$;
