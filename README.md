@@ -235,27 +235,6 @@ fetch(url, {
 });
 ```
 
-## Upgrading
-
-### 0.4.0
-
-The `trackClicks`, `trackSubmits`, and `trackChanges` functions now require selectors. The previous defaults were:
-
-```javascript
-ahoy.trackClicks("a, button, input[type=submit]");
-ahoy.trackSubmits("form");
-ahoy.trackChanges("input, textarea, select");
-```
-
-The `trackAll` function has been removed. The equivalent code is:
-
-```javascript
-ahoy.trackView();
-ahoy.trackClicks("a, button, input[type=submit]");
-ahoy.trackSubmits("form");
-ahoy.trackChanges("input, textarea, select");
-```
-
 ## History
 
 View the [changelog](https://github.com/ankane/ahoy.js/blob/master/CHANGELOG.md)
