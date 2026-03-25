@@ -1,4 +1,4 @@
-## 0.4.5 (unreleased)
+## 0.4.5 (2026-03-24)
 
 - Fixed cookie deletion with `cookieDomain` option
 
