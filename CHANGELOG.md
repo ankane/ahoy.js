@@ -1,3 +1,7 @@
+## 0.4.5 (unreleased)
+
+- Fixed cookie deletion with `cookieDomain` option
+
 ## 0.4.4 (2024-03-26)
 
 - Improved UUID generation

@@ -75,7 +75,7 @@ function getCookie(name) {
 }
 
 function destroyCookie(name) {
-  Cookies.set(name, "", -1);
+  Cookies.set(name, "", -1, config.cookieDomain || config.domain);
 }
 
 function log(message) {
