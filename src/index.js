@@ -267,12 +267,36 @@ function presence(str) {
 function cleanObject(obj) {
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      if (obj[key] === null) {
+      const value = obj[key];
+
+      if (value === null || isLiteralObject(value) && isEmpty(value)) {
         delete obj[key];
       }
     }
   }
   return obj;
+}
+
+function isLiteralObject(obj) {
+  return (!!obj) && (obj.constructor === Object);
+}
+
+function getDatasetInKebabCase(element) {
+  const datasetInKebabCase = {};
+
+  for (const attrName in element.attributes) {
+    if (Object.prototype.hasOwnProperty.call(element.attributes, attrName)) {
+      const attr = element.attributes[attrName];
+      
+      if (attr.name.startsWith('data-')) {
+        const keyWithoutDataPrefix = attr.name.replace('data-', '');
+
+        datasetInKebabCase[keyWithoutDataPrefix] = attr.value;
+      }
+    }
+  }
+
+  return datasetInKebabCase;
 }
 
 function eventProperties() {
@@ -281,7 +305,8 @@ function eventProperties() {
     id: presence(this.id),
     "class": presence(this.className),
     page: page(),
-    section: getClosest(this, "data-section")
+    section: getClosest(this, "data-section"),
+    data: getDatasetInKebabCase(this)
   });
 }
 
