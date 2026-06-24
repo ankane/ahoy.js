@@ -1,9 +1,12 @@
 {
   "name": "ahoy.js",
   "version": "0.4.5",
-  "homepage": "https://github.com/ankane/ahoy.js",
   "description": "Simple, powerful JavaScript analytics",
+  "homepage": "https://github.com/ankane/ahoy.js",
+  "license": "MIT",
+  "author": "Andrew Kane",
   "type": "module",
+  "files": ["dist"],
   "main": "./dist/ahoy.js",
   "module": "./dist/ahoy.esm.js",
   "exports": {
@@ -12,30 +15,14 @@
       "import": "./dist/ahoy.esm.js"
     }
   },
-  "scripts": {
-    "build": "rollup -c"
-  },
-  "keywords": [
-    "analytics",
-    "locations",
-    "referral"
-  ],
-  "authors": [
-    "ankane"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ankane/ahoy.js"
-  },
-  "files": [
-    "dist"
-  ],
   "devDependencies": {
     "@rollup/plugin-buble": "^1.0.1",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "rollup": "^4.25.0"
+  },
+  "scripts": {
+    "build": "rollup -c"
   }
 }
