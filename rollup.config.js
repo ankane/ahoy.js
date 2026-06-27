@@ -1,7 +1,5 @@
 import buble from "@rollup/plugin-buble";
-import commonjs from "@rollup/plugin-commonjs";
 import pkg from "./package.json" with { type: "json" };
-import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 
 const banner =
@@ -28,8 +26,6 @@ export default [
       banner: banner
     },
     plugins: [
-      resolve(),
-      commonjs(),
       buble()
     ]
   },
@@ -42,8 +38,6 @@ export default [
       banner: minBanner
     },
     plugins: [
-      resolve(),
-      commonjs(),
       buble(),
       terser()
     ]
