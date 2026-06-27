@@ -1,6 +1,4 @@
-import buble from "@rollup/plugin-buble";
 import pkg from "./package.json" with { type: "json" };
-import terser from "@rollup/plugin-terser";
 
 const banner =
 `/*!
@@ -25,9 +23,9 @@ export default [
       format: "umd",
       banner: banner
     },
-    plugins: [
-      buble()
-    ]
+    experimental: {
+      attachDebugInfo: "none"
+    }
   },
   {
     input: input,
@@ -35,12 +33,9 @@ export default [
       name: outputName,
       file: "dist/ahoy.min.js",
       format: "umd",
-      banner: minBanner
-    },
-    plugins: [
-      buble(),
-      terser()
-    ]
+      banner: minBanner,
+      minify: true
+    }
   },
   {
     input: input,
@@ -49,8 +44,8 @@ export default [
       format: "es",
       banner: banner
     },
-    plugins: [
-      buble()
-    ]
+    experimental: {
+      attachDebugInfo: "none"
+    }
   }
 ];

@@ -18,11 +18,9 @@
     }
   },
   "devDependencies": {
-    "@rollup/plugin-buble": "^1.0.1",
-    "@rollup/plugin-terser": "^1.0.0",
-    "rollup": "^4.25.0"
+    "rolldown": "^1.1.1"
   },
   "scripts": {
-    "build": "rollup -c"
+    "build": "rolldown -c"
   }
 }
