@@ -133,7 +133,7 @@ function onEvent(eventName, selector, callback) {
   });
 }
 
-// http://beeker.io/jquery-document-ready-equivalent-vanilla-javascript
+// https://beeker.io/jquery-document-ready-equivalent-vanilla-javascript
 function documentReady(callback) {
   if (document.readyState === "interactive" || document.readyState === "complete") {
     setTimeout(callback, 0);
