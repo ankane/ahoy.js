@@ -275,14 +275,21 @@ function cleanObject(obj) {
   return obj;
 }
 
-function eventProperties() {
-  return cleanObject({
-    tag: this.tagName.toLowerCase(),
-    id: presence(this.id),
-    "class": presence(this.className),
-    page: page(),
-    section: getClosest(this, "data-section")
-  });
+function defaultExtraEventProperties(element, event) {
+  return {};
+}
+
+function eventProperties(element, event, extraEventProperties=defaultExtraEventProperties) {
+  return cleanObject(Object.assign(
+    {
+      tag: element.tagName.toLowerCase(),
+      id: presence(element.id),
+      "class": presence(element.className),
+      page: page(),
+      section: getClosest(element, "data-section")
+    },
+    extraEventProperties.call(this, element, event),
+  ));
 }
 
 function getClosest(element, attribute) {
@@ -439,35 +446,35 @@ ahoy.trackView = function (additionalProperties) {
   ahoy.track("$view", properties);
 };
 
-ahoy.trackClicks = function (selector) {
+ahoy.trackClicks = function (selector, extraEventProperties) {
   if (selector === undefined) {
     throw new Error("Missing selector");
   }
   onEvent("click", selector, function (e) {
-    const properties = eventProperties.call(this, e);
+    const properties = eventProperties(this, e, extraEventProperties);
     properties.text = properties.tag === "input" ? this.value : (this.textContent || this.innerText || this.innerHTML).replace(/[\s\r\n]+/g, " ").trim();
     properties.href = this.href;
     ahoy.track("$click", properties);
   });
 };
 
-ahoy.trackSubmits = function (selector) {
+ahoy.trackSubmits = function (selector, extraEventProperties) {
   if (selector === undefined) {
     throw new Error("Missing selector");
   }
   onEvent("submit", selector, function (e) {
-    const properties = eventProperties.call(this, e);
+    const properties = eventProperties(this, e, extraEventProperties);
     ahoy.track("$submit", properties);
   });
 };
 
-ahoy.trackChanges = function (selector) {
+ahoy.trackChanges = function (selector, extraEventProperties) {
   log("trackChanges is deprecated and will be removed in 0.5.0");
   if (selector === undefined) {
     throw new Error("Missing selector");
   }
   onEvent("change", selector, function (e) {
-    const properties = eventProperties.call(this, e);
+    const properties = eventProperties(this, e, extraEventProperties);
     ahoy.track("$change", properties);
   });
 };
