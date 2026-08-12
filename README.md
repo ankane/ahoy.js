@@ -188,6 +188,7 @@ ahoy.configure({
   headers: {},
   visitParams: {},
   withCredentials: false,
+  keepAlive: false,
   visitDuration: 4 * 60, // 4 hours
   visitorDuration: 2 * 365 * 24 * 60 // 2 years
 });
@@ -196,6 +197,12 @@ ahoy.configure({
 When `trackVisits` is set to `false`, Ahoy.js will not attempt to create a visit
 on the server, but assumes that the server itself will return visit and visitor
 cookies.
+
+To keep cookies alive set:
+
+```javascript
+ahoy.configure({ keepAlive: true });
+```
 
 ### Subdomains
 
