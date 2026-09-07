@@ -1,9 +1,10 @@
 // https://www.quirksmode.org/js/cookies.html
 
 export default {
-  set: function (name, value, ttl, domain) {
+  set: function (name, value, ttl, domain, secure, sameSite) {
     let expires = "";
     let cookieDomain = "";
+    let cookieSecure = "";
     if (ttl) {
       const date = new Date();
       date.setTime(date.getTime() + (ttl * 60 * 1000));
@@ -12,7 +13,10 @@ export default {
     if (domain) {
       cookieDomain = "; domain=" + domain;
     }
-    document.cookie = name + "=" + escape(value) + expires + cookieDomain + "; path=/; samesite=lax";
+    if (secure) {
+      cookieSecure = "; secure";
+    }
+    document.cookie = name + "=" + escape(value) + expires + cookieDomain + "; path=/; samesite=" + (sameSite || "lax") + cookieSecure;
   },
   get: function (name) {
     let i, c;

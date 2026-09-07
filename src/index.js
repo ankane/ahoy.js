@@ -11,6 +11,8 @@ const config = {
   trackVisits: true,
   cookies: true,
   cookieDomain: null,
+  cookieSecure: false,
+  cookieSameSite: "lax",
   headers: {},
   visitParams: {},
   withCredentials: false,
@@ -67,7 +69,7 @@ function serialize(object) {
 // cookies
 
 function setCookie(name, value, ttl) {
-  Cookies.set(name, value, ttl, config.cookieDomain || config.domain);
+  Cookies.set(name, value, ttl, config.cookieDomain || config.domain, config.cookieSecure, config.cookieSameSite);
 }
 
 function getCookie(name) {
@@ -75,7 +77,7 @@ function getCookie(name) {
 }
 
 function destroyCookie(name) {
-  Cookies.set(name, "", -1, config.cookieDomain || config.domain);
+  Cookies.set(name, "", -1, config.cookieDomain || config.domain, config.cookieSecure, config.cookieSameSite);
 }
 
 function log(message) {
