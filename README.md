@@ -185,6 +185,8 @@ ahoy.configure({
   trackVisits: true,
   cookies: true,
   cookieDomain: null,
+  cookieSecure: false,
+  cookieSameSite: "lax",
   headers: {},
   visitParams: {},
   withCredentials: false,
