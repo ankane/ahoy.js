@@ -315,14 +315,15 @@ function createVisit() {
       setCookie("ahoy_visit", visitId, config.visitDuration);
     }
 
+    // Keep tokens available in memory when browser policy blocks cookie writes.
+    if (!visitorId) {
+      visitorId = generateId();
+      setCookie("ahoy_visitor", visitorId, config.visitorDuration);
+    }
+
     // make sure cookies are enabled
     if (getCookie("ahoy_visit")) {
       log("Visit started");
-
-      if (!visitorId) {
-        visitorId = generateId();
-        setCookie("ahoy_visitor", visitorId, config.visitorDuration);
-      }
 
       const data = {
         visit_token: visitId,
@@ -360,11 +361,11 @@ function createVisit() {
 }
 
 ahoy.getVisitId = ahoy.getVisitToken = function () {
-  return getCookie("ahoy_visit");
+  return getCookie("ahoy_visit") || visitId;
 };
 
 ahoy.getVisitorId = ahoy.getVisitorToken = function () {
-  return getCookie("ahoy_visitor");
+  return getCookie("ahoy_visitor") || visitorId;
 };
 
 ahoy.reset = function () {
@@ -372,6 +373,8 @@ ahoy.reset = function () {
   destroyCookie("ahoy_visitor");
   destroyCookie("ahoy_events");
   destroyCookie("ahoy_track");
+  visitId = null;
+  visitorId = null;
   return true;
 };
 
